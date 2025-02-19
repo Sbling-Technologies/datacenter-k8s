@@ -15,10 +15,10 @@ spec:
       helm:
         releaseName: vault
         valueFiles:
-          - $datacenter/kube/vault/values.yaml
-    - repoURL: git@github.com:Sbling-Technologies/datacenter.git
+          - $datacenter/vault/values.yaml
+    - repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
       targetRevision: HEAD
-      path: kube/vault
+      path: vault
       ref: datacenter
     - chart: vault-secrets-operator
       repoURL: https://helm.releases.hashicorp.com

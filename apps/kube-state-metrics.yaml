@@ -9,9 +9,9 @@ spec:
     server: https://kubernetes.default.svc
     namespace: kube-state-metrics
   source:
-    repoURL: git@github.com:Sbling-Technologies/datacenter.git
+    repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
     targetRevision: HEAD
-    path: kube/kube-state-metrics
+    path: kube-state-metrics
   syncPolicy:
     automated:
       selfHeal: true

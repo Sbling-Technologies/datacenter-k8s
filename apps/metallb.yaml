@@ -14,9 +14,9 @@ spec:
       targetRevision: 0.14.9
       helm:
         releaseName: metallb
-    - repoURL: git@github.com:Sbling-Technologies/datacenter.git
+    - repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
       targetRevision: HEAD
-      path: kube/metallb
+      path: metallb
   ignoreDifferences:
     - group: apiextensions.k8s.io
       kind: CustomResourceDefinition

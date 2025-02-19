@@ -15,10 +15,10 @@ spec:
       helm:
         releaseName: traefik
         valueFiles:
-          - $datacenter/kube/traefik/values.yaml
-    - repoURL: git@github.com:Sbling-Technologies/datacenter.git
+          - $datacenter/traefik/values.yaml
+    - repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
       targetRevision: HEAD
-      path: kube/traefik
+      path: traefik
       ref: datacenter
   syncPolicy:
     automated:

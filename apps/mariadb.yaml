@@ -9,9 +9,9 @@ spec:
     server: https://kubernetes.default.svc
     namespace: mariadb
   source:
-    repoURL: git@github.com:Sbling-Technologies/datacenter.git
+    repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
     targetRevision: HEAD
-    path: kube/mariadb
+    path: mariadb
   syncPolicy:
     automated:
       selfHeal: true

@@ -9,9 +9,9 @@ spec:
     server: https://kubernetes.default.svc
     namespace: gatus
   source:
-    repoURL: git@github.com:Sbling-Technologies/datacenter.git
+    repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
     targetRevision: HEAD
-    path: kube/gatus
+    path: gatus
   syncPolicy:
     automated:
       selfHeal: true

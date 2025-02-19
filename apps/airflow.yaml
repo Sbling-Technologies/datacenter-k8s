@@ -9,9 +9,9 @@
 #     server: https://kubernetes.default.svc
 #     namespace: airflow
 #   source:
-#     repoURL: git@github.com:Sbling-Technologies/datacenter.git
+#     repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
 #     targetRevision: HEAD
-#     path: kube/airflow
+#     path: airflow
 #   syncPolicy:
 #     automated:
 #       selfHeal: true
