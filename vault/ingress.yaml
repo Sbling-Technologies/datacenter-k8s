@@ -1,0 +1,16 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: vault
+  namespace: vault
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`vault.services.sbling.net`)
+      kind: Rule
+      services:
+        - name: vault-ui
+          port: 8200
+  tls:
+    secretName: vault-services-sbling-net-prod-cert

@@ -1,0 +1,26 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: traefik
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: traefik-system
+  sources:
+    - repoURL: https://traefik.github.io/charts
+      targetRevision: 33.2.1
+      chart: traefik
+      helm:
+        releaseName: traefik
+        valueFiles:
+          - $datacenter/kube/traefik/values.yaml
+    - repoURL: git@github.com:Sbling-Technologies/datacenter.git
+      targetRevision: HEAD
+      path: kube/traefik
+      ref: datacenter
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

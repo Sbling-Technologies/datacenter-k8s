@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: telegram-bots
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: telegram-bots
+  source:
+    repoURL: git@github.com:Sbling-Technologies/datacenter.git
+    targetRevision: HEAD
+    path: kube/telegram-bots
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

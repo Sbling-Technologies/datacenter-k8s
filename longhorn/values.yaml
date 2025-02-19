@@ -1,0 +1,3 @@
+persistence:
+  defaultClassReplicaCount: 3
+  reclaimPolicy: Retain

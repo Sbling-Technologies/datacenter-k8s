@@ -1,0 +1,28 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: gatus
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`gatus.services.sbling.net`)
+      kind: Rule
+      services:
+        - name: gatus
+          port: 80
+  tls:
+    secretName: gatus-services-sbling-net-prod-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: gatus-cert
+spec:
+  commonName: gatus.services.sbling.net
+  secretName: gatus-services-sbling-net-prod-cert
+  dnsNames:
+    - gatus.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod

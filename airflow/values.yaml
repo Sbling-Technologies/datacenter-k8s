@@ -1,0 +1,46 @@
+useStandardNaming: true
+createUserJob:
+  useHelmHooks: false
+  applyCustomEnv: false
+migrateDatabaseJob:
+  useHelmHooks: false
+  applyCustomEnv: false
+  jobAnnotations:
+    "argocd.argoproj.io/hook": Sync
+
+triggerer:
+  persistence:
+    size: 10Gi
+
+workers:
+  persistence:
+    size: 10Gi
+
+logs:
+  persistence:
+    size: 10Gi
+
+airflowVersion: 2.10.4
+defaultAirflowTag: 2.10.4
+
+ingress:
+  web:
+    enabled: true
+    hosts: [airflow.services.sbling.net]
+
+env:
+  - name: AIRFLOW__CORE__LOAD_EXAMPLES
+    value: "True"
+### FOR PRODUCTION ###
+# # see: https://airflow.apache.org/docs/helm-chart/stable/production-guide.html
+# postgresql:
+#   enabled: false
+#
+# # kubectl create secret generic mydatabase --from-literal=connection=postgresql://user:pass@host:5432/db
+# data:
+#   metadataSecretName: mydatabase
+# pgbouncer:
+#   enabled: true
+#
+# # kubectl create secret generic my-webserver-secret --from-literal="webserver-secret-key=$(python3 -c 'import secrets; print(secrets.token_hex(16))')"
+# webserverSecretKeySecretName: my-webserver-secret

@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: longhorn
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: longhorn-system
+  source:
+    repoURL: git@github.com:Sbling-Technologies/datacenter.git
+    targetRevision: HEAD
+    path: kube/longhorn
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

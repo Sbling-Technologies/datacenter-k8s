@@ -1,0 +1,13 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-cert
+  namespace: vault
+spec:
+  commonName: vault.services.sbling.net
+  secretName: vault-services-sbling-net-prod-cert
+  dnsNames:
+    - vault.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod

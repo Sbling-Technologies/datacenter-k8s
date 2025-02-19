@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: carpoolerbot
+spec:
+  replicas: 1
+  template:
+    spec:
+      volumes:
+        - name: carpoolerbot-data
+          persistentVolumeClaim:
+            claimName: carpoolerbot-data
+      containers:
+        - name: carpoolerbot
+          image: ghcr.io/ardubev16/carpoolerbot:v0.1.1
+          volumeMounts:
+            - mountPath: /data
+              name: carpoolerbot-data
+          env:
+            - name: DB_PATH
+              value: /data/sqlite3.db
+            - name: TZ
+              value: Europe/Rome
+          envFrom:
+            - secretRef:
+                name: carpoolerbot-env

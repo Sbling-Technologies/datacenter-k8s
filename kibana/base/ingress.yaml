@@ -1,0 +1,28 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: kibana
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`kibana.services.sbling.net`)
+      kind: Rule
+      services:
+        - name: kibana
+          port: 5601
+  tls:
+    secretName: kibana-services-sbling-net-prod-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kibana-cert
+spec:
+  commonName: kibana.services.sbling.net
+  secretName: kibana-services-sbling-net-prod-cert
+  dnsNames:
+    - kibana.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod

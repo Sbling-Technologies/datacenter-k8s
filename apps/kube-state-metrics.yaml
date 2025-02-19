@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: kube-state-metrics
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-state-metrics
+  source:
+    repoURL: git@github.com:Sbling-Technologies/datacenter.git
+    targetRevision: HEAD
+    path: kube/kube-state-metrics
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

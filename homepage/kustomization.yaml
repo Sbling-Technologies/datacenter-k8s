@@ -1,0 +1,35 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: homepage
+commonLabels:
+  app.kubernetes.io/name: homepage
+  app.kubernetes.io/instance: homepage-prod
+
+resources:
+  - base/deployment.yaml
+  - base/env-secrets.yaml
+  - base/ingress.yaml
+  - base/namespace.yaml
+  - base/rbac.yaml
+  - base/service.yaml
+
+configMapGenerator:
+  - name: homepage-config
+    files:
+      - config/bookmarks.yaml
+      - config/kubernetes.yaml
+      - config/services.yaml
+      - config/settings.yaml
+      - config/widgets.yaml
+    literals:
+      - custom.css=
+      - custom.js=
+      - docker.yaml=
+  - name: homepage-icons
+    files:
+      - icons/linear.ico
+
+images:
+  - name: ghcr.io/gethomepage/homepage
+    newTag: v0.10.9

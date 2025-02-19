@@ -1,0 +1,36 @@
+theme: dark
+color: slate
+
+statusStyle: dot
+layout:
+  Services:
+    tab: Main
+    style: row
+
+  Cluster:
+    tab: Main
+
+  Monitoring:
+    tab: Main
+
+  Management:
+    tab: Main
+
+  Development Tools:
+    tab: Main
+
+  Plex Stack:
+    tab: Media
+
+  Jellyfin Stack:
+    tab: Media
+
+  Media Management:
+    tab: Media
+
+quicklaunch:
+  searchDescriptions: true
+  hideVisitURL: true
+
+hideVersion: false
+headerStyle: boxedWidgets

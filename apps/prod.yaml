@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: prod
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: prod
+  source:
+    repoURL: git@github.com:Sbling-Technologies/datacenter.git
+    targetRevision: HEAD
+    path: kube/prod
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

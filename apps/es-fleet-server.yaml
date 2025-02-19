@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: es-fleet-server
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: kube-system
+  source:
+    repoURL: git@github.com:Sbling-Technologies/datacenter.git
+    targetRevision: HEAD
+    path: kube/es-fleet-server
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

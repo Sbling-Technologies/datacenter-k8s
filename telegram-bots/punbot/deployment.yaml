@@ -1,0 +1,24 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: punbot
+spec:
+  replicas: 1
+  template:
+    spec:
+      volumes:
+        - name: punbot-data
+          persistentVolumeClaim:
+            claimName: punbot-data
+      containers:
+        - name: punbot
+          image: ghcr.io/ardubev16/punbot:v0.1.0
+          volumeMounts:
+            - mountPath: /data
+              name: punbot-data
+          env:
+            - name: TZ
+              value: Europe/Rome
+          envFrom:
+            - secretRef:
+                name: punbot-env

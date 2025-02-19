@@ -1,0 +1,23 @@
+- unifi_console:
+    url: https://sblenghito.mgmt.sbling.net
+    username: "{{HOMEPAGE_VAR_UNIFI_USER}}"
+    password: "{{HOMEPAGE_VAR_UNIFI_PSWD}}"
+
+- kubernetes:
+    cluster:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+      label: "cluster"
+    nodes:
+      show: true
+      cpu: true
+      memory: true
+      showLabel: true
+
+- datetime:
+    locale: en
+    text_size: xl
+    format:
+      dateStyle: long

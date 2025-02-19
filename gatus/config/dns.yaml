@@ -1,0 +1,50 @@
+x-dns-common: &dns-common
+  group: DNS Zones
+  conditions:
+    - "[BODY] == any(ns1.services.sbling.net., ns2.services.sbling.net.)"
+    - "[DNS_RCODE] == NOERROR"
+  alerts:
+    - type: telegram
+
+x-ns-mgmt: &ns-mgmt
+  <<: *dns-common
+  dns:
+    query-name: mgmt.sbling.net
+    query-type: NS
+
+x-ns-services: &ns-services
+  <<: *dns-common
+  dns:
+    query-name: services.sbling.net
+    query-type: NS
+
+x-ns-vms: &ns-vms
+  <<: *dns-common
+  dns:
+    query-name: vms.sbling.net
+    query-type: NS
+
+endpoints:
+  - name: "ns1 - mgmt"
+    <<: *ns-mgmt
+    url: 172.31.50.16
+
+  - name: "ns2 - mgmt"
+    <<: *ns-mgmt
+    url: 172.31.50.17
+
+  - name: "ns1 - services"
+    <<: *ns-services
+    url: 172.31.50.16
+
+  - name: "ns2 - services"
+    <<: *ns-services
+    url: 172.31.50.17
+
+  - name: "ns1 - vms"
+    <<: *ns-vms
+    url: 172.31.50.16
+
+  - name: "ns2 - vms"
+    <<: *ns-vms
+    url: 172.31.50.17

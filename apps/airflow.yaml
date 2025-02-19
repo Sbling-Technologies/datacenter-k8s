@@ -1,0 +1,18 @@
+# apiVersion: argoproj.io/v1alpha1
+# kind: Application
+# metadata:
+#   name: airflow
+#   namespace: argocd
+# spec:
+#   project: default
+#   destination:
+#     server: https://kubernetes.default.svc
+#     namespace: airflow
+#   source:
+#     repoURL: git@github.com:Sbling-Technologies/datacenter.git
+#     targetRevision: HEAD
+#     path: kube/airflow
+#   syncPolicy:
+#     automated:
+#       selfHeal: true
+#       prune: true

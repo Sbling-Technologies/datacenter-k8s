@@ -1,0 +1,33 @@
+x-mail-common: &mail-common
+  group: Mail server
+  conditions:
+    - "[CONNECTED] == true"
+    - "[CERTIFICATE_EXPIRATION] > 168h" # 7d
+  alerts:
+    - type: telegram
+
+endpoints:
+  - name: Mailcow internal UI
+    url: https://mail.services.sbling.net
+    group: Mail server
+    conditions:
+      - "[STATUS] == 200"
+      - "[CERTIFICATE_EXPIRATION] > 168h" # 7d
+    alerts:
+      - type: telegram
+
+  - name: Mailcow internal IMAP
+    <<: *mail-common
+    url: tls://mail.services.sbling.net:993
+
+  - name: Mailcow internal SMTP
+    <<: *mail-common
+    url: starttls://mail.services.sbling.net:587
+
+  - name: Mailcow external IMAP
+    <<: *mail-common
+    url: tls://mail.sbling.net:993
+
+  - name: Mailcow external SMTP
+    <<: *mail-common
+    url: starttls://mail.sbling.net:587

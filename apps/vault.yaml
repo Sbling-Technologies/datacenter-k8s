@@ -1,0 +1,37 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: vault
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: vault
+  sources:
+    - chart: vault
+      repoURL: https://helm.releases.hashicorp.com
+      targetRevision: 0.29.1
+      helm:
+        releaseName: vault
+        valueFiles:
+          - $datacenter/kube/vault/values.yaml
+    - repoURL: git@github.com:Sbling-Technologies/datacenter.git
+      targetRevision: HEAD
+      path: kube/vault
+      ref: datacenter
+    - chart: vault-secrets-operator
+      repoURL: https://helm.releases.hashicorp.com
+      targetRevision: 0.9.1
+      helm:
+        releaseName: vault-secrets-operator
+  ignoreDifferences:
+    - group: admissionregistration.k8s.io
+      kind: MutatingWebhookConfiguration
+      name: vault-agent-injector-cfg
+      jqPathExpressions:
+        - ".webhooks[]?.clientConfig.caBundle"
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

@@ -1,0 +1,56 @@
+globalArguments:
+  - "--global.sendanonymoususage=false"
+
+additionalArguments:
+  - "--providers.kubernetescrd"
+  - "--log.level=DEBUG"
+  - "--providers.kubernetesingress.allowemptyservices=true"
+  - "--providers.kubernetesingress.allowexternalnameservices=true"
+  - "--providers.kubernetescrd.allowemptyservices=true"
+  - "--providers.kubernetescrd.allowexternalnameservices=true"
+
+deployment:
+  replicas: 2
+
+ports:
+  web:
+    redirectTo:
+      port: websecure
+  elasticsearch:
+    port: 9200
+    exposedPort: 9200
+    expose:
+      default: true
+    protocol: TCP
+    tls:
+      enabled: true
+  fleet-server:
+    port: 8220
+    exposedPort: 8220
+    expose:
+      default: true
+    protocol: TCP
+    tls:
+      enabled: true
+
+tlsStore:
+  default:
+    defaultCertificate:
+      secretName: traefik-default-services-sbling-net-prod-cert
+
+service:
+  annotations:
+    metallb.universe.tf/loadBalancerIPs: 172.31.50.128
+
+# ingressRoute:
+#   dashboard:
+#     enabled: true
+#     matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
+#     services:
+#       - name: api@internal
+#         kind: TraefikService
+
+ingressClass:
+  enabled: true
+  isDefaultClass: true
+  name: traefik

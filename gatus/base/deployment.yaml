@@ -1,0 +1,67 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: gatus
+spec:
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    spec:
+      automountServiceAccountToken: false
+      containers:
+        - image: twinproduction/gatus:v5.15.0
+          imagePullPolicy: IfNotPresent
+          livenessProbe:
+            httpGet:
+              path: /health
+              port: http
+          name: gatus
+          ports:
+            - containerPort: 8080
+              name: http
+              protocol: TCP
+          readinessProbe:
+            httpGet:
+              path: /health
+              port: http
+          securityContext:
+            readOnlyRootFilesystem: true
+            runAsGroup: 65534
+            runAsNonRoot: true
+            runAsUser: 65534
+          volumeMounts:
+            # NOTE: need to list each file otherwise it conflicts with the config.yaml file created by Gatus
+            - mountPath: /config/config.yaml
+              subPath: config.yaml
+              name: gatus-config
+              readOnly: true
+            - mountPath: /config/dns.yaml
+              subPath: dns.yaml
+              name: gatus-config
+              readOnly: true
+            - mountPath: /config/mail.yaml
+              subPath: mail.yaml
+              name: gatus-config
+              readOnly: true
+            - mountPath: /data
+              name: gatus-data
+          env:
+            - name: GATUS_CONFIG_PATH
+              value: /config
+          envFrom:
+            - configMapRef:
+                name: gatus
+            - secretRef:
+                name: gatus
+
+      securityContext:
+        fsGroup: 65534
+      serviceAccountName: default
+      volumes:
+        - name: gatus-config
+          configMap:
+            name: gatus
+        - name: gatus-data
+          persistentVolumeClaim:
+            claimName: gatus

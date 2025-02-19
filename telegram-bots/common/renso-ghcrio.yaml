@@ -1,0 +1,13 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  name: renso-ghcrio
+spec:
+  destination:
+    create: true
+    name: renso-ghcrio
+    type: "kubernetes.io/dockerconfigjson"
+  mount: kubesecrets
+  path: docker-registry/renso-ghcrio
+  type: kv-v2
+  vaultAuthRef: prod/vault-auth

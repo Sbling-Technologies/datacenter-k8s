@@ -1,0 +1,24 @@
+postgresql:
+  enabled: false
+
+externalDatabase:
+  host: mariadb.services.sbling.net
+  port: 3306
+  user: keycloak
+  database: keycloak
+  existingSecret: db-credentials
+  existingSecretPasswordKey: password
+
+extraEnvVars:
+  - name: KC_DB
+    value: "mariadb"
+  - name: KEYCLOAK_JDBC_DRIVER
+    value: mariadb
+  - name: KEYCLOAK_JDBC_PARAMS
+    value: sslMode=trust
+
+replicaCount: 3
+
+production: true
+proxyHeader: xforwarded
+proxy: edge

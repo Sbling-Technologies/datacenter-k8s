@@ -1,0 +1,28 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: fleet-server
+spec:
+  entryPoints:
+    - fleet-server
+  routes:
+    - match: Host(`fleet.services.sbling.net`)
+      kind: Rule
+      services:
+        - name: fleet-server
+          port: 8220
+  tls:
+    secretName: fleet-services-sbling-net-prod-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: fleet-server-cert
+spec:
+  commonName: fleet.services.sbling.net
+  secretName: fleet-services-sbling-net-prod-cert
+  dnsNames:
+    - fleet.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod

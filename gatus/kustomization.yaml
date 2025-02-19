@@ -1,0 +1,24 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: gatus
+
+commonLabels:
+  app.kubernetes.io/name: gatus
+  app.kubernetes.io/instance: gatus
+
+# manifests from helm chart: https://github.com/TwiN/helm-charts/tree/master/charts/gatus
+resources:
+  - base/deployment.yaml
+  - base/env-secrets.yaml
+  - base/ingress.yaml
+  - base/namespace.yaml
+  - base/pvc.yaml
+  - base/service.yaml
+
+configMapGenerator:
+  - name: gatus
+    files:
+      - config/config.yaml
+      - config/dns.yaml
+      - config/mail.yaml

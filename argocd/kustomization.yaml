@@ -1,0 +1,19 @@
+# see: https://github.com/argoproj/argoproj-deployments/blob/master/argocd/kustomization.yaml
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: argocd
+
+resources:
+  - base/argo-cd-namespace.yaml
+  - base/argo-cd-oidc-secret.yaml
+  - base/argo-cd-ui-ingress.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/master/manifests/ha/install.yaml
+
+patches:
+  - path: overlays/production/argo-cd-cm.yaml
+  - path: overlays/production/deployment-argocd-redis-ha-haproxy.yaml
+
+images:
+  - name: quay.io/argoproj/argocd
+    newTag: v2.14.2

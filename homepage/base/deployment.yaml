@@ -1,0 +1,42 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+spec:
+  revisionHistoryLimit: 3
+  replicas: 1
+  strategy:
+    type: RollingUpdate
+  template:
+    spec:
+      serviceAccountName: homepage
+      automountServiceAccountToken: true
+      dnsPolicy: ClusterFirst
+      enableServiceLinks: true
+      containers:
+        - name: homepage
+          image: ghcr.io/gethomepage/homepage:v0.10.9
+          imagePullPolicy: Always
+          ports:
+            - name: http
+              containerPort: 3000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /app/config
+              name: homepage-config
+            - mountPath: /app/public/icons
+              name: homepage-icons
+            - mountPath: /app/config/logs
+              name: logs
+          envFrom:
+            - secretRef:
+                name: homepage-env
+      volumes:
+        - name: homepage-config
+          configMap:
+            name: homepage-config
+        - name: homepage-icons
+          configMap:
+            name: homepage-icons
+        - name: logs
+          emptyDir: {}

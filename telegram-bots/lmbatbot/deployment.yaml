@@ -1,0 +1,26 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: lmbatbot
+spec:
+  replicas: 1
+  template:
+    spec:
+      volumes:
+        - name: lmbatbot-data
+          persistentVolumeClaim:
+            claimName: lmbatbot-data
+      containers:
+        - name: lmbatbot
+          image: ghcr.io/ardubev16/lmbatbot:v0.1.5
+          volumeMounts:
+            - mountPath: /data
+              name: lmbatbot-data
+          env:
+            - name: DB_URL
+              value: sqlite:////data/sqlite3.db
+            - name: GLOBAL_PVT_NOTIFICATION_USERS
+              value: '[["@itsnicolo", 262754132]]'
+          envFrom:
+            - secretRef:
+                name: lmbatbot-env

@@ -1,0 +1,28 @@
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: keycloak
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`keycloak.services.sbling.net`)
+      kind: Rule
+      services:
+        - name: keycloak
+          port: 80
+  tls:
+    secretName: keycloak-services-sbling-net-prod-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: keycloak-cert
+spec:
+  commonName: keycloak.services.sbling.net
+  secretName: keycloak-services-sbling-net-prod-cert
+  dnsNames:
+    - keycloak.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod

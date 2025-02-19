@@ -1,0 +1,21 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wpdevspranzobot
+spec:
+  replicas: 1
+  template:
+    spec:
+      containers:
+        - name: wpdevspranzobot
+          image: ghcr.io/luigimiazzo17/wpdevspranzobot:v0.1.0
+          env:
+            - name: TZ
+              value: Europe/Rome
+            - name: HOURS
+              value: "17"
+            - name: MINUTES
+              value: "0"
+          envFrom:
+            - secretRef:
+                name: wpdevspranzobot-env

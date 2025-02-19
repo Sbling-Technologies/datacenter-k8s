@@ -1,0 +1,19 @@
+# -------- #
+# Main tab #
+# -------- #
+- Development Tools:
+    - Linear:
+        - href: https://linear.app/sbling
+          icon: /icons/linear.ico
+    - Github:
+        - href: https://github.com/Sbling-Technologies
+          icon: github
+    - Jira:
+        - href: https://sbling.atlassian.net/jira
+          icon: jira
+    - Confluence:
+        - href: https://sbling.atlassian.net/wiki
+          icon: confluence
+    - Homepage:
+        - href: https://gethomepage.dev
+          icon: homepage

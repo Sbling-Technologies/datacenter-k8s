@@ -1,0 +1,82 @@
+# Vault Helm Chart Value Overrides
+global:
+  enabled: true
+
+injector:
+  enabled: true
+  image:
+    repository: "hashicorp/vault-k8s"
+    tag: "latest"
+
+  resources:
+    requests:
+      memory: 256Mi
+      cpu: 250m
+    limits:
+      memory: 256Mi
+      cpu: 250m
+
+server:
+  dataStorage:
+    enabled: true
+    size: 20Gi
+    mountPath: "/vault/data"
+    storageClass: null
+    accessMode: ReadWriteOnce
+    annotations: {}
+
+  resources:
+    requests:
+      memory: 1Gi
+      cpu: 2000m
+    limits:
+      memory: 2Gi
+      cpu: 2000m
+
+  readinessProbe:
+    enabled: false
+  livenessProbe:
+    enabled: false
+
+  auditStorage:
+    enabled: true
+
+  standalone:
+    enabled: false
+
+  ha:
+    enabled: true
+    replicas: 3
+    raft:
+      enabled: true
+      setNodeId: false
+
+      config: |
+        ui = true
+
+        listener "tcp" {
+          tls_disable = 1
+          address = "[::]:8200"
+          cluster_address = "[::]:8201"
+        }
+
+        storage "raft" {
+          path = "/vault/data"
+
+          retry_join {
+          leader_api_addr = "http://vault-0.vault-internal:8200"
+          }
+          retry_join {
+          leader_api_addr = "http://vault-1.vault-internal:8200"
+          }
+          retry_join {
+          leader_api_addr = "http://vault-2.vault-internal:8200"
+          }
+        }
+
+        service_registration "kubernetes" {}
+
+ui:
+  enabled: true
+  serviceType: "ClusterIP"
+  externalPort: 8200

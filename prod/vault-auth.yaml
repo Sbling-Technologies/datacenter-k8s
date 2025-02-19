@@ -1,0 +1,22 @@
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultAuth
+metadata:
+  name: vault-auth
+  namespace: prod
+spec:
+  vaultConnectionRef: vault/vault-connection
+  method: kubernetes
+  mount: kubernetes
+  allowedNamespaces:
+    - argocd
+    - authentik
+    - gatus
+    - homepage
+    - keycloak
+    - kibana
+    - kube-system
+    - mariadb
+    - telegram-bots
+  kubernetes:
+    role: kubesecret-reader
+    serviceAccount: default

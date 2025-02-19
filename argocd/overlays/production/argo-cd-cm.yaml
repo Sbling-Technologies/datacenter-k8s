@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-cm
+data:
+  url: https://argocd.services.sbling.net
+
+  kustomize.buildOptions: --enable-helm
+
+  # admin.enabled: "false"
+  oidc.config: |
+    name: Sbling
+    issuer: https://keycloak.services.sbling.net/realms/sbling
+    clientID: argocd
+    clientSecret: $argocd-oidc-secret:oidc.vault.clientSecret
+
+    requestedScopes: ["openid", "email", "groups"]

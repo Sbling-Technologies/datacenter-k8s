@@ -1,0 +1,58 @@
+storage:
+  type: sqlite
+  path: /data/data.db
+
+alerting:
+  telegram:
+    token: ${TELEGRAM_BOT_TOKEN}
+    id: ${TELEGRAM_CHAT_ID}
+    default-alert:
+      send-on-resolved: true
+      failure-threshold: 2
+      success-threshold: 2
+
+x-https-common: &https-common
+  conditions:
+    - "[STATUS] == 200"
+    - "[CERTIFICATE_EXPIRATION] > 168h" # 7d
+  alerts:
+    - type: telegram
+
+endpoints:
+  - name: Healthcheck.io
+    method: POST
+    interval: 5m
+    conditions:
+      - "[STATUS] == 200"
+      - "[BODY] == OK"
+    alerts:
+      - type: telegram
+    url: ${HEALTHCHECK_IO_URL}
+
+  - name: UDM
+    <<: *https-common
+    url: https://sblenghito.mgmt.sbling.net/
+
+  - name: TrueNAS
+    <<: *https-common
+    url: https://truenas.services.sbling.net/
+
+  - name: Traefik
+    <<: *https-common
+    url: https://traefik.services.sbling.net/
+
+  - name: Portainer
+    <<: *https-common
+    url: https://portainer.services.sbling.net/
+
+  - name: Bitwarden
+    <<: *https-common
+    url: https://bitwarden.services.sbling.net/
+
+  - name: Homepage
+    <<: *https-common
+    url: https://homepage.services.sbling.net/
+
+  - name: Neteye
+    <<: *https-common
+    url: https://neteye.services.sbling.net/
