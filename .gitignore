@@ -1,0 +1,2 @@
+# kustomize --enable-helm ... downloads the Helm Chart and puts it in the `charts` folder
+charts
