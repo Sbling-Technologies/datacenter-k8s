@@ -14,8 +14,10 @@ deployment:
 
 ports:
   web:
-    redirectTo:
-      port: websecure
+    redirections:
+      entryPoint:
+        to: websecure
+        scheme: https
   elasticsearch:
     port: 9200
     exposedPort: 9200
