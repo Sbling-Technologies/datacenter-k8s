@@ -4,7 +4,11 @@ kind: Kustomization
 namespace: vitess
 
 resources:
-  - namespace.yaml
+  - base/authorization.yaml
+  - base/ingress.yaml
+  - base/namespace.yaml
+  - base/secrets.yaml
+  - base/vcluster-primary.yaml
   - https://raw.githubusercontent.com/vitessio/vitess/refs/heads/main/examples/operator/operator.yaml
 
 images:

@@ -17,6 +17,7 @@ spec:
     - kube-system
     - mariadb
     - telegram-bots
+    - vitess
   kubernetes:
     role: kubesecret-reader
     serviceAccount: default

@@ -1,0 +1,17 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: vcluster-authorization
+data:
+  authorization.json: |
+    {
+      "table_groups": [
+          {
+              "name": "keycloak",
+              "table_names_or_prefixes": ["%"],
+              "readers": ["keycloak"],
+              "writers": ["keycloak"],
+              "admins": ["keycloak"]
+          }
+      ]
+    }
