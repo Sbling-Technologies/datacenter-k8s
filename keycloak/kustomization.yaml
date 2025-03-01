@@ -13,6 +13,15 @@ helmCharts:
 resources:
   - base/ingress.yaml
   - base/namespace.yaml
+  - base/secrets.yaml
+
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: StatefulSet
+      name: keycloak
+    path: ./overlays/statefulset-patch.yaml
 
 images:
   - name: docker.io/bitnami/keycloak

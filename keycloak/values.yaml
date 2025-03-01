@@ -2,7 +2,7 @@ postgresql:
   enabled: false
 
 externalDatabase:
-  host: mariadb.services.sbling.net
+  host: mysql.services.sbling.net
   port: 3306
   user: keycloak
   database: keycloak
@@ -11,13 +11,11 @@ externalDatabase:
 
 extraEnvVars:
   - name: KC_DB
-    value: "mariadb"
+    value: mysql
   - name: KEYCLOAK_JDBC_DRIVER
-    value: mariadb
-  - name: KEYCLOAK_JDBC_PARAMS
-    value: sslMode=trust
+    value: mysql
 
-replicaCount: 3
+replicaCount: 1
 
 production: true
 proxyHeader: xforwarded
