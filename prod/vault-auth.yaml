@@ -15,7 +15,6 @@ spec:
     - keycloak
     - kibana
     - kube-system
-    - mariadb
     - telegram-bots
     - vitess
   kubernetes:
