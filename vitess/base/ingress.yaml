@@ -3,7 +3,7 @@ kind: Service
 metadata:
   name: mysql-svc
   annotations:
-    metallb.io/loadBalancerIPs: 172.31.50.130
+    metallb.io/loadBalancerIPs: 172.31.50.129
 spec:
   type: LoadBalancer
   ports:
