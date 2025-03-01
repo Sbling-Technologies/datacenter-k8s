@@ -1,0 +1,11 @@
+{
+    "table_groups": [
+        {
+            "name": "keycloak",
+            "table_names_or_prefixes": ["%"],
+            "readers": ["keycloak"],
+            "writers": ["keycloak"],
+            "admins": ["keycloak"]
+        }
+    ]
+}

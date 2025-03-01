@@ -4,12 +4,18 @@ kind: Kustomization
 namespace: vitess
 
 resources:
-  - base/acls/keycloak.yaml
   - base/ingress.yaml
   - base/namespace.yaml
   - base/secrets.yaml
   - base/vcluster-primary.yaml
   - https://raw.githubusercontent.com/vitessio/vitess/refs/heads/main/examples/operator/operator.yaml
+
+configMapGenerator:
+  - name: keycloak-acl
+    files:
+      - authorization.json=acls/keycloak.json
+    options:
+      disableNameSuffixHash: true
 
 images:
   - name: planetscale/vitess-operator
