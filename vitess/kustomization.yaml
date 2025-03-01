@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: vitess
 
 resources:
-  - base/authorization.yaml
+  - base/acls/keycloak.yaml
   - base/ingress.yaml
   - base/namespace.yaml
   - base/secrets.yaml

@@ -35,7 +35,7 @@ spec:
                   extraVolumes:
                     - name: acl-auth-vol
                       configMap:
-                        name: vcluster-authorization
+                        name: keycloak-acl
                   extraVolumeMounts:
                     - name: acl-auth-vol
                       mountPath: /mnt
