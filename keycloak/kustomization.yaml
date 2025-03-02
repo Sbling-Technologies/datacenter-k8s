@@ -1,3 +1,5 @@
+# NOTE: Images are automatically updated when the chart version is updated
+
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
@@ -22,7 +24,3 @@ patches:
       kind: StatefulSet
       name: keycloak
     path: ./overlays/statefulset-patch.yaml
-
-images:
-  - name: docker.io/bitnami/keycloak
-    newTag: 26.1.2-debian-12-r1
