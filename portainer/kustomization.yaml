@@ -9,7 +9,7 @@ helmCharts:
   - repo: https://portainer.github.io/k8s
     name: portainer
     releaseName: portainer
-    version: 1.0.59
+    version: 1.0.61
     valuesInline:
       tls:
         force: true
