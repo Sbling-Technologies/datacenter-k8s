@@ -10,7 +10,7 @@ externalDatabase:
   existingSecretPasswordKey: password
 
 extraEnvVars:
-  - name: KC_DB
+  - name: KEYCLOAK_DATABASE_VENDOR
     value: mysql
   - name: KEYCLOAK_JDBC_DRIVER
     value: mysql
