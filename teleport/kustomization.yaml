@@ -1,0 +1,15 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: teleport-cluster
+
+helmCharts:
+  - repo: https://charts.releases.teleport.dev
+    name: teleport-cluster
+    releaseName: teleport-cluster
+    version: 17.3.0
+    valuesFile: values.yaml
+    namespace: teleport-cluster
+
+resources:
+  - base/namespace.yaml

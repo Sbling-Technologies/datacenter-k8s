@@ -1,0 +1,18 @@
+apiVersion: argoproj.io/v1alpha1
+kind: Application
+metadata:
+  name: teleport
+  namespace: argocd
+spec:
+  project: default
+  destination:
+    server: https://kubernetes.default.svc
+    namespace: teleport-cluster
+  source:
+    repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
+    targetRevision: HEAD
+    path: teleport
+  syncPolicy:
+    automated:
+      selfHeal: true
+      prune: true

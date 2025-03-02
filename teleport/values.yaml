@@ -1,0 +1,10 @@
+clusterName: teleport.services.sbling.net
+proxyListenerMode: multiplex
+
+highAvailability:
+  certManager:
+    enabled: true
+    issuerKind: ClusterIssuer
+    issuerName: cert-issuer-prod
+# ingress:
+#   enabled: true
