@@ -1,7 +1,7 @@
 apiVersion: planetscale.com/v2
 kind: VitessCluster
 metadata:
-  name: vcluster-primary
+  name: vcluster-prod
 spec:
   images:
     vtadmin: vitess/vtadmin:latest
