@@ -4,10 +4,11 @@ kind: Kustomization
 namespace: vitess
 
 resources:
-  - base/ingress.yaml
+  - base/mysql-ingress.yaml
   - base/namespace.yaml
   - base/secrets.yaml
   - base/vcluster-primary.yaml
+  - base/vtadmin-ingress.yaml
   - https://raw.githubusercontent.com/vitessio/vitess/refs/heads/main/examples/operator/operator.yaml
 
 configMapGenerator:

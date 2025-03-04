@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: vtadmin-web-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 15000
+      targetPort: 15000
+  selector:
+    planetscale.com/component: vtadmin
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: vtadmin-api-svc
+spec:
+  type: ClusterIP
+  ports:
+    - port: 15001
+      targetPort: 15001
+  selector:
+    planetscale.com/component: vtadmin
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  name: vtadmin-ingress
+spec:
+  entryPoints:
+    - websecure
+  routes:
+    - match: Host(`vtadmin.services.sbling.net`) && PathPrefix(`/api`)
+      kind: Rule
+      priority: 10
+      services:
+        - name: vtadmin-api-svc
+          port: 15001
+    - match: Host(`vtadmin.services.sbling.net`)
+      kind: Rule
+      priority: 1
+      services:
+        - name: vtadmin-web-svc
+          port: 15000
+  tls:
+    secretName: vtadmin-services-sbling-net-prod-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vtadmin-cert
+spec:
+  commonName: vtadmin.services.sbling.net
+  secretName: vtadmin-services-sbling-net-prod-cert
+  dnsNames:
+    - vtadmin.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod

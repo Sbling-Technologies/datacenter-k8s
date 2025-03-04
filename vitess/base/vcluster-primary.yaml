@@ -3,6 +3,13 @@ kind: VitessCluster
 metadata:
   name: vcluster-primary
 spec:
+  images:
+    vtadmin: vitess/vtadmin:latest
+  vtadmin:
+    apiAddresses:
+      - https://vtadmin.services.sbling.net
+    replicas: 1
+    readOnly: true
   cells:
     - name: sblingdc
       gateway:
