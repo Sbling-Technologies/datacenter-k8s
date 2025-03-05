@@ -12,5 +12,5 @@ helmCharts:
 
 resources:
   - base/namespace.yaml
-  # - base/postgres.yaml
+  - base/postgres.yaml
   - base/secrets.yaml
