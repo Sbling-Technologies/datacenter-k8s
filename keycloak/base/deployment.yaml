@@ -5,8 +5,8 @@ metadata:
 spec:
   instances: 3
   db:
-    vendor: mysql
-    host: mysql.services.sbling.net
+    vendor: postgres
+    host: keycloak-rw.postgres.svc.cluster.local
     usernameSecret:
       name: db-credentials
       key: username
