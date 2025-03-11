@@ -9,7 +9,7 @@ spec:
     - match: Host(`longhorn.services.sbling.net`)
       kind: Rule
       middlewares:
-        - name: dashboard-ingress-auth
+        - name: oidc-middleware
           namespace: longhorn-system
       services:
         - name: longhorn-frontend

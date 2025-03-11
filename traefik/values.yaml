@@ -9,6 +9,12 @@ additionalArguments:
   - "--providers.kubernetescrd.allowemptyservices=true"
   - "--providers.kubernetescrd.allowexternalnameservices=true"
 
+experimental:
+  plugins:
+    traefikoidc:
+      moduleName: github.com/lukaszraczylo/traefikoidc
+      version: v0.5.34
+
 deployment:
   replicas: 2
 

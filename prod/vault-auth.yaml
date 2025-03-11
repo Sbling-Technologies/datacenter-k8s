@@ -15,6 +15,7 @@ spec:
     - keycloak
     - kibana
     - kube-system
+    - longhorn-system
     - postgres
     - telegram-bots
     - vitess

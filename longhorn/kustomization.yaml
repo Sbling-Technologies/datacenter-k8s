@@ -12,5 +12,6 @@ helmCharts:
 
 resources:
   - base/ingress.yaml
-  - base/middleware-basic-auth.yaml
+  - base/middleware-oidc-auth.yaml
   - base/namespace.yaml
+  - base/secrets.yaml
