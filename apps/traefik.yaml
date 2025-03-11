@@ -10,7 +10,7 @@ spec:
     namespace: traefik-system
   sources:
     - repoURL: https://traefik.github.io/charts
-      targetRevision: 34.4.0
+      targetRevision: 34.4.1
       chart: traefik
       helm:
         releaseName: traefik
