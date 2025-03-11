@@ -7,3 +7,6 @@ spec:
     rollingUpdate:
       # due to rolling update in combination with anti affinity rules and nodes count=replica count
       maxUnavailable: 34%
+  template:
+    spec:
+      automountServiceAccountToken: true # TODO: Remove this once fixed upstream https://github.com/argoproj/argo-cd/issues/22226
