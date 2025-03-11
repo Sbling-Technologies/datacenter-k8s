@@ -16,4 +16,4 @@ patches:
 
 images:
   - name: quay.io/argoproj/argocd
-    newTag: v2.14.3
+    newTag: v2.14.5
