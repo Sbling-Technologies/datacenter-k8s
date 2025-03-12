@@ -1,3 +1,7 @@
+# https://longhorn.io/docs/1.8.1/deploy/install/install-with-argocd/
+preUpgradeChecker:
+  jobEnabled: false
+
 persistence:
   defaultClassReplicaCount: 3
   reclaimPolicy: Retain
