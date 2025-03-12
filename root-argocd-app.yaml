@@ -1,17 +1,17 @@
 apiVersion: argoproj.io/v1alpha1
 kind: Application
 metadata:
-  name: vitess
+  name: root-argocd-app
   namespace: argocd
 spec:
   project: default
   destination:
     server: https://kubernetes.default.svc
-    namespace: vitess
+    namespace: argocd
   source:
     repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
     targetRevision: HEAD
-    path: vitess
+    path: appsets
   syncPolicy:
     automated:
       selfHeal: true

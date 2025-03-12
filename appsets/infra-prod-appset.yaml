@@ -1,0 +1,32 @@
+apiVersion: argoproj.io/v1alpha1
+kind: ApplicationSet
+metadata:
+  name: infrastructure-prod
+  namespace: argocd
+spec:
+  goTemplate: true
+  goTemplateOptions: ["missingkey=error"]
+  generators:
+    - git:
+        repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
+        revision: HEAD
+        directories:
+          - path: infrastructure/operators/*
+          - path: infrastructure/system/*
+
+  template:
+    metadata:
+      name: "infra-{{.path.basenameNormalized}}"
+    spec:
+      project: default
+      destination:
+        server: https://kubernetes.default.svc
+        namespace: "{{.path.basenameNormalized}}"
+      source:
+        repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
+        targetRevision: HEAD
+        path: "{{.path.path}}"
+      syncPolicy:
+        automated:
+          selfHeal: true
+          prune: true
