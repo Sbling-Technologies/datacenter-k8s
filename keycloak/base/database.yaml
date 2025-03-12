@@ -1,0 +1,15 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: keycloak
+spec:
+  instances: 3
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+
+  bootstrap:
+    bootstrap:
+      recovery:
+        source: keycloak-backup
+
+  storage:
+    size: 5Gi

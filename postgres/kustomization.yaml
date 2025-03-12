@@ -11,6 +11,7 @@ helmCharts:
     namespace: postgres
 
 resources:
+  - base/backup.yaml
   - base/namespace.yaml
   - base/postgres.yaml
   - base/secrets.yaml
