@@ -10,10 +10,11 @@ commonLabels:
 # manifests from helm chart: https://github.com/TwiN/helm-charts/tree/master/charts/gatus
 resources:
   - base/deployment.yaml
-  - base/env-secrets.yaml
   - base/ingress.yaml
+  - base/middleware-oidc-auth.yaml
   - base/namespace.yaml
   - base/pvc.yaml
+  - base/secrets.yaml
   - base/service.yaml
 
 configMapGenerator:

@@ -1,0 +1,22 @@
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  name: oidc-middleware
+spec:
+  plugin:
+    traefikoidc:
+      providerURL: https://keycloak.services.sbling.net/realms/sbling
+      clientID: homepage
+      clientSecret: urn:k8s:secret:oidc-secret:clientSecret
+      sessionEncryptionKey: urn:k8s:secret:oidc-secret:encryptionSecret
+      callbackURL: /oauth2/callback
+      logoutURL: /oauth2/logout
+      logLevel: debug
+      forceHTTPS: true
+      scopes:
+        - openid
+        - email
+        - profile
+        - groups
+      allowedRolesAndGroups:
+        - admin
