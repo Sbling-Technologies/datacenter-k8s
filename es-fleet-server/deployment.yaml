@@ -24,7 +24,7 @@ spec:
       dnsPolicy: ClusterFirstWithHostNet
       containers:
         - name: elastic-agent
-          image: docker.elastic.co/elastic-agent/elastic-agent:8.17.2
+          image: docker.elastic.co/elastic-agent/elastic-agent:8.17.3
           env:
             - name: FLEET_SERVER_ENABLE
               value: "true"
