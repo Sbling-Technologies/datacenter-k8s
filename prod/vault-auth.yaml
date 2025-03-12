@@ -18,6 +18,7 @@ spec:
     - longhorn-system
     - postgres
     - telegram-bots
+    - traefik-system
     - vitess
   kubernetes:
     role: kubesecret-reader

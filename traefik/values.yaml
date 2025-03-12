@@ -50,13 +50,18 @@ service:
   annotations:
     metallb.universe.tf/loadBalancerIPs: 172.31.50.128
 
-# ingressRoute:
-#   dashboard:
-#     enabled: true
-#     matchRule: PathPrefix(`/dashboard`) || PathPrefix(`/api`)
-#     services:
-#       - name: api@internal
-#         kind: TraefikService
+ingressRoute:
+  dashboard:
+    enabled: true
+    # matchRule: Host(`traefik-k8s.services.sbling.net`)
+    # services:
+    #   - name: api@internal
+    #     kind: TraefikService
+    # middlewares:
+    #   - name: oidc-middleware
+    #     namespace: traefik-system
+    # tls:
+    #   secretName: traefik-k8s-services-sbling-net-prod-cert
 
 ingressClass:
   enabled: true
