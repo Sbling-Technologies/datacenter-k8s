@@ -52,7 +52,3 @@ endpoints:
   - name: Homepage
     <<: *https-common
     url: https://homepage.services.sbling.net/
-
-  - name: Neteye
-    <<: *https-common
-    url: https://neteye.services.sbling.net/
