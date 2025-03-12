@@ -4,6 +4,7 @@ kind: Kustomization
 namespace: keycloak
 
 resources:
+  - base/database.yaml
   - base/deployment.yaml
   - base/ingress.yaml
   - base/namespace.yaml
