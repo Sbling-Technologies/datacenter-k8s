@@ -27,6 +27,4 @@ spec:
         targetRevision: HEAD
         path: "{{.path.path}}"
       syncPolicy:
-        automated:
-          selfHeal: true
-          prune: true
+        automated: {}
