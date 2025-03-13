@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: infra-longhorn
+namespace: longhorn-system
 
 helmCharts:
   - repo: https://charts.longhorn.io
@@ -9,10 +9,9 @@ helmCharts:
     releaseName: longhorn
     version: 1.8.1
     valuesFile: values.yaml
-    namespace: infra-longhorn
+    namespace: longhorn-system
 
 resources:
   - base/ingress.yaml
   - base/middleware-oidc-auth.yaml
-  - base/namespace.yaml
   - base/secrets.yaml
