@@ -33,4 +33,4 @@ configMapGenerator:
 
 images:
   - name: ghcr.io/gethomepage/homepage
-    newTag: v0.10.9
+    newTag: v1.0.3
