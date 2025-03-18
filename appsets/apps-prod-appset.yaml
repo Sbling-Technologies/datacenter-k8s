@@ -1,7 +1,7 @@
 apiVersion: argoproj.io/v1alpha1
 kind: ApplicationSet
 metadata:
-  name: infrastructure-prod
+  name: apps-prod
   namespace: argocd
 spec:
   goTemplate: true
@@ -11,24 +11,21 @@ spec:
         repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
         revision: HEAD
         directories:
-          - path: infrastructure/operators/*
-          - path: infrastructure/system/*
+          - path: applications/*
 
   template:
     metadata:
-      name: "infra-{{.path.basenameNormalized}}"
+      name: "prod-{{.path.basenameNormalized}}"
     spec:
       project: default
       destination:
         server: https://kubernetes.default.svc
-        namespace: "{{.path.basenameNormalized}}"
+        namespace: "prod-{{.path.basenameNormalized}}"
       source:
         repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
         targetRevision: HEAD
         path: "{{.path.path}}"
       syncPolicy:
         automated:
-          selfHeal: true
+          selfHeal: false
           prune: false
-        syncOptions:
-          - CreateNamespace=true

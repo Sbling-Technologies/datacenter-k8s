@@ -1,0 +1,16 @@
+kind: role
+version: v7
+metadata:
+  name: member
+spec:
+  allow:
+    kubernetes_groups: ["system:masters"]
+    kubernetes_labels:
+      "*": "*"
+    kubernetes_resources:
+      - kind: "*"
+        namespace: "*"
+        name: "*"
+        verbs: ["*"]
+# kubectl -n teleport-cluster exec -i deployment/teleport-cluster-auth -- tctl create -f < teleport/manual/member.yaml
+# kubectl -n teleport-cluster exec -ti deployment/teleport-cluster-auth -- tctl users add localAdmin --roles=member,access,editor
