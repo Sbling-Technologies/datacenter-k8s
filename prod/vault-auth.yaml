@@ -16,7 +16,7 @@ spec:
     - longhorn-system
     - prod-gatus
     - prod-keycloak
-    - telegram-bots
+    - prod-telegram-bots
     - traefik-system
     - vitess
   kubernetes:
