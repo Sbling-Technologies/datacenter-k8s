@@ -7,3 +7,41 @@ resources:
   - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.1.3/kubernetes/keycloakrealmimports.k8s.keycloak.org-v1.yml
   - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.1.3/kubernetes/keycloaks.k8s.keycloak.org-v1.yml
   - https://raw.githubusercontent.com/keycloak/keycloak-k8s-resources/26.1.3/kubernetes/kubernetes.yml
+
+patches:
+  - target:
+      group: apps
+      version: v1
+      kind: Deployment
+      name: keycloak-operator
+    path: overlays/deployment.yaml
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: RoleBinding
+      name: keycloakrealmimportcontroller-role-binding
+    path: overlays/replace-to-ClusterRoleBinding.yaml
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: RoleBinding
+      name: keycloak-operator-role-binding
+    path: overlays/keycloak-operator-role-binding.yaml
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: RoleBinding
+      name: keycloak-operator-view
+    path: overlays/replace-to-ClusterRoleBinding.yaml
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: RoleBinding
+      name: keycloakcontroller-role-binding
+    path: overlays/replace-to-ClusterRoleBinding.yaml
+  - target:
+      group: rbac.authorization.k8s.io
+      version: v1
+      kind: Role
+      name: keycloak-operator-role
+    path: overlays/replace-to-ClusterRole.yaml

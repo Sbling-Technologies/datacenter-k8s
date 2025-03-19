@@ -1,0 +1,5 @@
+- op: add
+  path: /spec/template/spec/containers/0/env/-
+  value:
+    name: QUARKUS_OPERATOR_SDK_NAMESPACES
+    value: JOSDK_ALL_NAMESPACES
