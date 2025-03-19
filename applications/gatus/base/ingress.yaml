@@ -10,7 +10,7 @@ spec:
       kind: Rule
       middlewares:
         - name: oidc-middleware
-          namespace: gatus
+          namespace: prod-gatus
       services:
         - name: gatus
           port: 80
