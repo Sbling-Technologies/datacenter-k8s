@@ -18,7 +18,6 @@ spec:
     - prod-keycloak
     - prod-telegram-bots
     - traefik-system
-    - vitess
   kubernetes:
     role: kubesecret-reader
     serviceAccount: default
