@@ -10,11 +10,11 @@ spec:
   allowedNamespaces:
     - argocd
     - authentik
-    - homepage
     - kibana
     - kube-system
     - longhorn-system
     - prod-gatus
+    - prod-homepage
     - prod-keycloak
     - prod-telegram-bots
     - traefik-system

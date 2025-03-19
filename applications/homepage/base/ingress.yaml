@@ -10,7 +10,7 @@ spec:
       kind: Rule
       middlewares:
         - name: oidc-middleware
-          namespace: homepage
+          namespace: prod-homepage
       services:
         - kind: Service
           name: homepage

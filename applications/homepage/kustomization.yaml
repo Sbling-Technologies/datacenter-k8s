@@ -1,7 +1,7 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: homepage
+namespace: prod-homepage
 commonLabels:
   app.kubernetes.io/name: homepage
   app.kubernetes.io/instance: homepage-prod
