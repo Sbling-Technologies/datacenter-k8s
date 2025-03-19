@@ -9,7 +9,6 @@ spec:
   mount: kubernetes
   allowedNamespaces:
     - argocd
-    - authentik
     - kube-system
     - longhorn-system
     - prod-gatus
