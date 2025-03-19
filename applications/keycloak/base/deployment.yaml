@@ -6,7 +6,7 @@ spec:
   instances: 3
   db:
     vendor: postgres
-    host: keycloak-db-rw.keycloak.svc.cluster.local
+    host: keycloak-db-rw.prod-keycloak.svc.cluster.local
     usernameSecret:
       name: db-credentials
       key: username
