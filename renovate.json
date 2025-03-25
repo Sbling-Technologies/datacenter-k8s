@@ -7,8 +7,7 @@
         "security:openssf-scorecard",
         ":disableDependencyDashboard"
     ],
-    "assignees": ["LuigiMiazzo17"],
-    "reviewers": ["ardubev16"],
+    "reviewers": ["ardubev16", "LuigiMiazzo17"],
     "argocd": {
         "fileMatch": ["^apps/.+\\.yaml$", "^app-of-apps.yaml$"]
     },
