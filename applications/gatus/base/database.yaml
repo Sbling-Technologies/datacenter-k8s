@@ -1,0 +1,17 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: gatus-db
+spec:
+  instances: 1
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+
+  bootstrap:
+    initdb:
+      database: gatus
+      owner: gatus
+      secret:
+        name: gatus-db-user
+
+  storage:
+    size: 5Gi

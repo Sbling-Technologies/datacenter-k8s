@@ -44,8 +44,6 @@ spec:
               subPath: mail.yaml
               name: gatus-config
               readOnly: true
-            - mountPath: /data
-              name: gatus-data
           env:
             - name: GATUS_CONFIG_PATH
               value: /config
@@ -62,6 +60,3 @@ spec:
         - name: gatus-config
           configMap:
             name: gatus
-        - name: gatus-data
-          persistentVolumeClaim:
-            claimName: gatus
