@@ -2,7 +2,6 @@ apiVersion: metallb.io/v1beta1
 kind: IPAddressPool
 metadata:
   name: services-pool
-  namespace: metallb-system
 spec:
   addresses:
     - 172.31.50.128-172.31.50.254
