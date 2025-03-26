@@ -21,7 +21,7 @@ x-https-common: &https-common
 endpoints:
   - name: Healthcheck.io
     method: POST
-    interval: 5m
+    interval: 1m
     conditions:
       - "[STATUS] == 200"
       - "[BODY] == OK"
