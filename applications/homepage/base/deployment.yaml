@@ -31,6 +31,9 @@ spec:
           envFrom:
             - secretRef:
                 name: homepage-env
+          env:
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: homepage.services.sbling.net
       volumes:
         - name: homepage-config
           configMap:
