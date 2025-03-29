@@ -8,9 +8,9 @@ spec:
   routes:
     - match: Host(`homepage.services.sbling.net`)
       kind: Rule
-      middlewares:
-        - name: oidc-middleware
-          namespace: prod-homepage
+      # middlewares:
+      #   - name: oidc-middleware
+      #     namespace: prod-homepage
       services:
         - kind: Service
           name: homepage
