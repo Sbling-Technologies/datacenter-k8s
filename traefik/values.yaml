@@ -3,7 +3,6 @@ globalArguments:
 
 additionalArguments:
   - "--providers.kubernetescrd"
-  - "--log.level=DEBUG"
   - "--providers.kubernetesingress.allowemptyservices=true"
   - "--providers.kubernetesingress.allowexternalnameservices=true"
   - "--providers.kubernetescrd.allowemptyservices=true"
