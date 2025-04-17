@@ -4,13 +4,9 @@ kind: Kustomization
 namespace: prod-elasticsearch
 
 resources:
+  - base/configmap.yaml
+  - base/deployment.yaml
   - base/ingress.yaml
   - base/namespace.yaml
-  - base/services.yaml
-
-secretGenerator:
-  - name: es-root-ca
-    options:
-      disableNameSuffixHash: true
-    files:
-      - ca.crt
+  - base/secret.yaml
+  - base/service.yaml

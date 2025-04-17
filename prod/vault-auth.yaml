@@ -11,6 +11,7 @@ spec:
     - argocd
     - kube-system
     - longhorn-system
+    - prod-elasticsearch
     - prod-gatus
     - prod-harbor
     - prod-homepage

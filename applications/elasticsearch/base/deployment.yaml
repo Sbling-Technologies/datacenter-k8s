@@ -1,0 +1,51 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: elastic-proxy
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: elastic-proxy
+  template:
+    metadata:
+      labels:
+        app: elastic-proxy
+    spec:
+      imagePullSecrets:
+        - name: sbling-regcred
+      containers:
+        - name: elastic-proxy
+          image: harbor.services.sbling.net/prod-sbling/elastic-proxy:latest
+          imagePullPolicy: Always
+          env:
+            - name: ELASTIC_HOST_LIST
+              value: es-node01.vms.sbling.net:9200,es-node02.vms.sbling.net:9200,es-node03.vms.sbling.net:9200
+            - name: STATEFUL_SET_PREFIX
+              value: elastic-proxy
+          volumeMounts:
+            - name: ca-cert
+              mountPath: /etc/ssl/certs/elastic-ca.pem
+              subPath: elastic-ca.pem
+              readOnly: true
+          livenessProbe:
+            httpGet:
+              path: /live
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            failureThreshold: 3
+          readinessProbe:
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+            failureThreshold: 3
+      volumes:
+        - name: ca-cert
+          configMap:
+            name: elastic-ca
+            items:
+              - key: elastic-ca.pem
+                path: elastic-ca.pem
