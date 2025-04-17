@@ -1,0 +1,32 @@
+expose:
+  ingress:
+    hosts:
+      core: harbor.services.sbling.net
+  tls:
+    certSource: secret
+    secret:
+      secretName: harbor-services-sbling-net-prod-cert
+
+externalURL: https://harbor.services.sbling.net
+
+database:
+  type: external
+  external:
+    host: harbor-db-rw.prod-harbor.svc.cluster.local
+    coreDatabase: harbor
+    username: harbor
+    existingSecret: db-credentials
+
+jobservice:
+  replicas: 2
+
+registry:
+  replicas: 2
+
+persistence:
+  persistentVolumeClaim:
+    registry:
+      accessMode: ReadWriteMany
+    jobservice:
+      jobLog:
+        accessMode: ReadWriteMany

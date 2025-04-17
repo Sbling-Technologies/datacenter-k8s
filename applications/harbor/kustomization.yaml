@@ -1,0 +1,17 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: prod-harbor
+
+helmCharts:
+  - repo: https://helm.goharbor.io
+    name: harbor
+    releaseName: harbor
+    version: 1.16.2
+    valuesFile: values.yaml
+
+resources:
+  - base/certificate.yaml
+  - base/database.yaml
+  - base/namespace.yaml
+  - base/secrets.yaml
