@@ -12,6 +12,7 @@ spec:
     - kube-system
     - longhorn-system
     - prod-gatus
+    - prod-harbor
     - prod-homepage
     - prod-keycloak
     - prod-kibana

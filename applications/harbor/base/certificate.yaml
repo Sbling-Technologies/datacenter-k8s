@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: harbor-cert
+spec:
+  commonName: harbor.services.sbling.net
+  secretName: harbor-services-sbling-net-prod-cert
+  dnsNames:
+    - harbor.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod
