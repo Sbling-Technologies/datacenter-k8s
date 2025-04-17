@@ -11,7 +11,7 @@ spec:
       sessionEncryptionKey: urn:k8s:secret:oidc-secret:encryptionSecret
       callbackURL: /oauth2/callback
       logoutURL: /oauth2/logout
-      logLevel: debug
+      logLevel: error
       forceHTTPS: true
       scopes:
         - openid
