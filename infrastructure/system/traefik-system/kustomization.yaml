@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+namespace: traefik-system
+
+helmCharts:
+  - repo: https://traefik.github.io/charts
+    name: traefik
+    releaseName: traefik
+    version: 34.4.1
+    valuesFile: values.yaml
+
+resources:
+  - base/certificate.yaml
+  - base/middleware-oidc-auth.yaml
+  - base/secrets.yaml

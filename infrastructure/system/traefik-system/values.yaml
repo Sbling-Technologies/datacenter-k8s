@@ -3,10 +3,6 @@ globalArguments:
 
 additionalArguments:
   - "--providers.kubernetescrd"
-  - "--providers.kubernetesingress.allowemptyservices=true"
-  - "--providers.kubernetesingress.allowexternalnameservices=true"
-  - "--providers.kubernetescrd.allowemptyservices=true"
-  - "--providers.kubernetescrd.allowexternalnameservices=true"
 
 experimental:
   plugins:
@@ -16,6 +12,8 @@ experimental:
 
 deployment:
   replicas: 2
+  podLabels:
+    app: traefik
 
 ports:
   web:
@@ -52,15 +50,10 @@ service:
 ingressRoute:
   dashboard:
     enabled: true
-    # matchRule: Host(`traefik-k8s.services.sbling.net`)
-    # services:
-    #   - name: api@internal
-    #     kind: TraefikService
-    # middlewares:
-    #   - name: oidc-middleware
-    #     namespace: traefik-system
-    # tls:
-    #   secretName: traefik-k8s-services-sbling-net-prod-cert
+    matchRule: Host(`traefik-k8s.services.sbling.net`)
+    entryPoints: ["websecure"]
+    middlewares:
+      - name: oidc-middleware
 
 ingressClass:
   enabled: true
