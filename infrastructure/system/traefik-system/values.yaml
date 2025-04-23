@@ -21,6 +21,8 @@ ports:
       entryPoint:
         to: websecure
         scheme: https
+  websecure:
+    asDefault: true
   elasticsearch:
     port: 9200
     exposedPort: 9200
