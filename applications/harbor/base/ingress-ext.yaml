@@ -1,0 +1,36 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  annotations:
+    traefik.ingress.kubernetes.io/router.entrypoints: webext,websecureext
+  name: harbor-ingress-ext
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: harbor.sbling.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: harbor-core
+                port:
+                  number: 80
+            path: /v2/
+            pathType: Prefix
+  tls:
+    - hosts:
+        - harbor.sbling.net
+      secretName: harbor-sbling-net-prod-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: harbor-cert-ext
+spec:
+  commonName: harbor.sbling.net
+  secretName: harbor-sbling-net-prod-cert
+  dnsNames:
+    - harbor.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod
