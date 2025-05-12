@@ -26,3 +26,15 @@ spec:
   issuerRef:
     kind: ClusterIssuer
     name: cert-issuer-prod
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRouteUDP
+metadata:
+  name: syslog-udp
+spec:
+  entryPoints:
+    - syslog-udp
+  routes:
+    - services:
+        - name: fleet-server-syslog-udp
+          port: 514
