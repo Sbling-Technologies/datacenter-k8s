@@ -9,6 +9,7 @@ helmCharts:
     releaseName: traefik
     version: 35.4.0
     valuesFile: values.yaml
+    namespace: traefik-system
 
 resources:
   - base/certificate.yaml
