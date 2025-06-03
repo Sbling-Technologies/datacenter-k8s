@@ -79,7 +79,7 @@ tlsStore:
 
 service:
   annotations:
-    metallb.universe.tf/loadBalancerIPs: 172.31.50.128
+    metallb.io/loadBalancerIPs: 172.31.50.128
 
 ingressRoute:
   dashboard:
