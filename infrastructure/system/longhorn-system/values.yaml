@@ -3,5 +3,5 @@ preUpgradeChecker:
   jobEnabled: false
 
 persistence:
-  defaultClassReplicaCount: 3
+  defaultClassReplicaCount: 2
   reclaimPolicy: Retain
