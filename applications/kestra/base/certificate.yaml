@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: kestra-cert
+spec:
+  commonName: kestra.services.sbling.net
+  secretName: kestra-services-sbling-net-prod-cert
+  dnsNames:
+    - kestra.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod

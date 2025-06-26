@@ -1,0 +1,14 @@
+dind:
+  enabled: false
+
+ingress:
+  enabled: true
+  hosts:
+    - host: kestra.services.sbling.net
+      paths:
+        - pathType: Prefix
+          path: /
+  tls:
+    - secretName: kestra-services-sbling-net-prod-cert
+      hosts:
+        - kestra.services.sbling.net
