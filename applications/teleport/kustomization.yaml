@@ -7,7 +7,7 @@ helmCharts:
   - repo: https://charts.releases.teleport.dev
     name: teleport-cluster
     releaseName: teleport-cluster
-    version: 17.5.2
+    version: 18.0.0
     valuesFile: values.yaml
     namespace: prod-teleport
 
