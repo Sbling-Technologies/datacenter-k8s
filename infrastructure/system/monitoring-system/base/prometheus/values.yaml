@@ -1,0 +1,7 @@
+grafana:
+  enabled: false
+  forceDeployDashboards: true
+  operator:
+    dashboardsConfigMapRefEnabled: true
+    matchLabels:
+      dashboards: grafana
