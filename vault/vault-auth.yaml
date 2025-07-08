@@ -12,6 +12,7 @@ spec:
     - kube-system
     - longhorn-system
     - monitoring-external
+    - monitoring-system
     - prod-elasticsearch
     - prod-gatus
     - prod-harbor
