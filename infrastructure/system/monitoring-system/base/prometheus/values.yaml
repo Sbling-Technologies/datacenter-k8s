@@ -6,7 +6,19 @@ grafana:
     matchLabels:
       dashboards: grafana
 
+kubeControllerManager:
+  endpoints:
+    - 172.31.50.48
+    - 172.31.50.49
+    - 172.31.50.50
+
 kubeEtcd:
+  endpoints:
+    - 172.31.50.48
+    - 172.31.50.49
+    - 172.31.50.50
+
+kubeScheduler:
   endpoints:
     - 172.31.50.48
     - 172.31.50.49
