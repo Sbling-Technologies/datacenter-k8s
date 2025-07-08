@@ -3,6 +3,7 @@ kind: GrafanaFolder
 metadata:
   name: unpoller
 spec:
+  allowCrossNamespaceImport: true
   instanceSelector:
     matchLabels:
       dashboards: grafana
@@ -13,6 +14,7 @@ kind: GrafanaDashboard
 metadata:
   name: unpoller-client-insights
 spec:
+  allowCrossNamespaceImport: true
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
@@ -27,6 +29,7 @@ kind: GrafanaDashboard
 metadata:
   name: unpoller-network-sites
 spec:
+  allowCrossNamespaceImport: true
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
@@ -41,6 +44,7 @@ kind: GrafanaDashboard
 metadata:
   name: unpoller-uap-insights
 spec:
+  allowCrossNamespaceImport: true
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
@@ -55,6 +59,7 @@ kind: GrafanaDashboard
 metadata:
   name: unpoller-usg-insights
 spec:
+  allowCrossNamespaceImport: true
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
@@ -69,6 +74,7 @@ kind: GrafanaDashboard
 metadata:
   name: unpoller-usw-insights
 spec:
+  allowCrossNamespaceImport: true
   datasources:
     - datasourceName: prometheus
       inputName: DS_PROMETHEUS
