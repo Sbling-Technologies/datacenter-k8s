@@ -4,7 +4,7 @@ metadata:
   name: longhorn-prometheus-servicemonitor
   labels:
     name: longhorn-prometheus-servicemonitor
-    release: kube-prometheus-stack
+    monitoring: system
 spec:
   selector:
     matchLabels:

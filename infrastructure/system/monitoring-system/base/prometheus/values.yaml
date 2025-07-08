@@ -1,3 +1,6 @@
+commonLabels:
+  monitoring: system
+
 grafana:
   enabled: false
   forceDeployDashboards: true
@@ -29,3 +32,25 @@ kubeProxy:
     - 172.31.50.48
     - 172.31.50.49
     - 172.31.50.50
+
+prometheus:
+  prometheusSpec:
+    ruleSelector:
+      matchLabels:
+        monitoring: system
+
+    serviceMonitorSelector:
+      matchLabels:
+        monitoring: system
+
+    podMonitorSelector:
+      matchLabels:
+        monitoring: system
+
+    probeSelector:
+      matchLabels:
+        monitoring: system
+
+    scrapeConfigSelector:
+      matchLabels:
+        monitoring: system
