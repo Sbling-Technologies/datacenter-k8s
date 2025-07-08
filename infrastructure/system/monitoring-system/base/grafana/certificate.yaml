@@ -1,0 +1,12 @@
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: grafana-cert
+spec:
+  commonName: grafana.services.sbling.net
+  secretName: grafana-services-sbling-net-prod-cert
+  dnsNames:
+    - grafana.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod
