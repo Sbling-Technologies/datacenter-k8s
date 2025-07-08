@@ -10,6 +10,8 @@ spec:
       mode: console
     auth:
       disable_login_form: "false"
+    date_formats:
+      default_timezone: browser
   ingress:
     spec:
       ingressClassName: traefik
