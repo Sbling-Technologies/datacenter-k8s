@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  labels:
+    app: unpoller
+  name: unpoller
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: unpoller
+  template:
+    metadata:
+      labels:
+        app: unpoller
+    spec:
+      containers:
+        - image: ghcr.io/unpoller/unpoller:v2.11.2
+          name: unpoller
+          livenessProbe:
+            httpGet:
+              path: /
+              port: tcp
+          readinessProbe:
+            httpGet:
+              path: /
+              port: tcp
+          ports:
+            - containerPort: 9130
+              name: tcp
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /etc/unpoller/up.conf
+              name: config-volume
+              subPath: up.conf
+          envFrom:
+            - secretRef:
+                name: unifi-credentials
+      volumes:
+        - name: config-volume
+          configMap:
+            name: unpoller-config
+---
+apiVersion: monitoring.coreos.com/v1
+kind: PodMonitor
+metadata:
+  name: unifi-poller
+  labels:
+    monitoring: system
+spec:
+  podMetricsEndpoints:
+    - port: tcp
+  selector:
+    matchLabels:
+      app: unpoller
