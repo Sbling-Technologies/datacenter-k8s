@@ -1,10 +1,10 @@
 apiVersion: secrets.hashicorp.com/v1beta1
 kind: VaultAuth
 metadata:
-  name: vault-auth
+  name: default
   namespace: vault
 spec:
-  vaultConnectionRef: vault/vault-connection
+  vaultConnectionRef: vault-connection
   method: kubernetes
   mount: kubernetes
   allowedNamespaces:
