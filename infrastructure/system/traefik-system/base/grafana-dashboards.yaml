@@ -7,4 +7,5 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
+  folder: Kubernetes Default
   url: https://grafana.com/api/dashboards/17347/revisions/latest/download

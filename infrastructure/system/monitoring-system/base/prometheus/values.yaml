@@ -6,6 +6,7 @@ grafana:
   forceDeployDashboards: true
   operator:
     dashboardsConfigMapRefEnabled: true
+    folder: Kubernetes Default
     matchLabels:
       dashboards: grafana
 

@@ -7,4 +7,5 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
+  folder: Kubernetes Default
   url: https://raw.githubusercontent.com/argoproj/argo-cd/refs/heads/master/examples/dashboard.json
