@@ -5,3 +5,9 @@ grafana:
     dashboardsConfigMapRefEnabled: true
     matchLabels:
       dashboards: grafana
+
+kubeEtcd:
+  endpoints:
+    - 172.31.50.48
+    - 172.31.50.49
+    - 172.31.50.50
