@@ -47,11 +47,19 @@ spec:
           env:
             - name: GATUS_CONFIG_PATH
               value: /config
+            - name: POSTGRES_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: gatus-db-user
+                  key: username
+            - name: POSTGRES_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: gatus-db-user
+                  key: password
           envFrom:
-            - configMapRef:
-                name: gatus
             - secretRef:
-                name: gatus
+                name: gatus-env
 
       securityContext:
         fsGroup: 65534
@@ -59,4 +67,4 @@ spec:
       volumes:
         - name: gatus-config
           configMap:
-            name: gatus
+            name: gatus-config

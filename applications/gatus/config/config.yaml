@@ -1,6 +1,6 @@
 storage:
   type: postgres
-  path: ${POSTGRES_STORAGE_URL}
+  path: postgres://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@gatus-db-rw:5432/gatus
 
 alerting:
   telegram:

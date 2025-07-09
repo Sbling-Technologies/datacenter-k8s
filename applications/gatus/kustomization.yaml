@@ -18,7 +18,7 @@ resources:
   - base/service.yaml
 
 configMapGenerator:
-  - name: gatus
+  - name: gatus-config
     files:
       - config/config.yaml
       - config/dns.yaml
