@@ -3,6 +3,15 @@ dind:
 
 ingress:
   enabled: true
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Kestra
+    gethomepage.dev/description: Workflow Automation Platform.
+    gethomepage.dev/group: Services
+    gethomepage.dev/icon: kestra
+    gethomepage.dev/pod-selector: ""
+
+  className: traefik
   hosts:
     - host: kestra.services.sbling.net
       paths:
