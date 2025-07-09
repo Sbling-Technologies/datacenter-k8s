@@ -26,19 +26,7 @@
         href: &n8n_url https://n8n.services.sbling.net
         siteMonitor: *n8n_url
 
-    - Apache Airflow:
-        description: Apache Airflow® is a platform created by the community to programmatically author, schedule and monitor workflows.
-        icon: apache-airflow
-        href: &airflow_url https://airflow.services.sbling.net
-        siteMonitor: *airflow_url
-
 - Cluster:
-    - Portainer:
-        description: Lightweight service delivery platform for containerized applications that can be used to manage Docker, Swarm and Kubernetes
-        icon: portainer
-        href: &portainer_url https://portainer.services.sbling.net
-        siteMonitor: *portainer_url
-
     - ArgoCD:
         description: Declarative GitOps CD for Kubernetes
         icon: argo-cd
@@ -58,10 +46,10 @@
         siteMonitor: *vault_url
 
 - Monitoring:
-    - Grafana:
-        description: Dashboards & graphs
+    - Grafana Old:
+        description: Old instance on docker-main
         icon: grafana
-        href: &grafana_url https://grafana.services.sbling.net
+        href: &grafana_url https://grafana-old.services.sbling.net
         siteMonitor: *grafana_url
         widget:
           type: grafana
@@ -69,8 +57,8 @@
           username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
           password: "{{HOMEPAGE_VAR_GRAFANA_PSWD}}"
 
-    - Prometheus:
-        description: Metrics aggregation
+    - Prometheus Old:
+        description: Old instance on docker-main
         icon: prometheus
         href: &prometheus_url https://prometheus.services.sbling.net
         siteMonitor: *prometheus_url
