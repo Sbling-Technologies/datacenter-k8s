@@ -6,3 +6,19 @@ highAvailability:
     enabled: true
     issuerKind: ClusterIssuer
     issuerName: cert-issuer-prod
+
+service:
+  type: ClusterIP
+ingress:
+  enabled: true
+  spec:
+    ingressClassName: traefik
+
+annotations:
+  ingress:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Teleport
+    gethomepage.dev/description: The easiest, and most secure way to access and protect all of your infrastructure.
+    gethomepage.dev/group: Services
+    gethomepage.dev/icon: teleport
+    gethomepage.dev/pod-selector: ""
