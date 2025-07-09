@@ -44,6 +44,14 @@ spec:
                       key: client-secret
 
   ingress:
+    metadata:
+      annotations:
+        gethomepage.dev/enabled: "true"
+        gethomepage.dev/name: Grafana
+        gethomepage.dev/description: Dashboards & graphs
+        gethomepage.dev/group: Monitoring
+        gethomepage.dev/icon: grafana
+        gethomepage.dev/pod-selector: ""
     spec:
       ingressClassName: traefik
       rules:
