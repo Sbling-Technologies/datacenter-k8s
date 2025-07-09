@@ -1,18 +1,31 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: keycloak
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Keycloak
+    gethomepage.dev/description: Open Source Identity and Access Management For Modern Applications and Services
+    gethomepage.dev/group: Cluster
+    gethomepage.dev/icon: keycloak
+    gethomepage.dev/pod-selector: ""
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`keycloak.services.sbling.net`)
-      kind: Rule
-      services:
-        - name: keycloak-service
-          port: 8080
+  ingressClassName: traefik
+  rules:
+    - host: keycloak.services.sbling.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: keycloak-service
+                port:
+                  number: 8080
+            path: /
+            pathType: Prefix
   tls:
-    secretName: keycloak-services-sbling-net-prod-cert
+    - hosts:
+        - keycloak.services.sbling.net
+      secretName: keycloak-services-sbling-net-prod-cert
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
