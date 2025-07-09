@@ -12,7 +12,6 @@ resources:
   - base/database.yaml
   - base/deployment.yaml
   - base/ingress.yaml
-  - base/middleware-oidc-auth.yaml
   - base/namespace.yaml
   - base/secrets.yaml
   - base/service.yaml

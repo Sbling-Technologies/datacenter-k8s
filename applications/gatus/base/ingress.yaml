@@ -8,9 +8,6 @@ spec:
   routes:
     - match: Host(`gatus.services.sbling.net`)
       kind: Rule
-      # middlewares:
-      #   - name: oidc-middleware
-      #     namespace: prod-gatus
       services:
         - name: gatus
           port: 80

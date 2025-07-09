@@ -2,6 +2,14 @@ storage:
   type: postgres
   path: postgres://${POSTGRES_USERNAME}:${POSTGRES_PASSWORD}@gatus-db-rw:5432/gatus
 
+security:
+  oidc:
+    issuer-url: https://keycloak.services.sbling.net/realms/sbling
+    redirect-url: https://gatus.services.sbling.net/authorization-code/callback
+    client-id: gatus
+    client-secret: ${OIDC_CLIENT_SECRET}
+    scopes: [openid]
+
 alerting:
   telegram:
     token: ${TELEGRAM_BOT_TOKEN}
