@@ -27,12 +27,6 @@
         siteMonitor: *n8n_url
 
 - Cluster:
-    - Longhorn:
-        description: Cloud native distributed block storage for Kubernetes
-        icon: longhorn
-        href: &longhorn_url https://longhorn.services.sbling.net
-        siteMonitor: *longhorn_url
-
     - Vault:
         description: A tool for secrets management, encryption as a service, and privileged access management
         icon: hashicorp-vault

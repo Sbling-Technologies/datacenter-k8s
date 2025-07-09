@@ -2,6 +2,15 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: longhorn
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Longhorn
+    gethomepage.dev/description: Cloud native distributed block storage for Kubernetes
+    gethomepage.dev/group: Cluster
+    gethomepage.dev/icon: longhorn
+    gethomepage.dev/pod-selector: ""
+    # NOTE: because this is an IngressRoute
+    gethomepage.dev/href: https://longhorn.services.sbling.net
 spec:
   entryPoints:
     - websecure
