@@ -49,10 +49,6 @@ endpoints:
     <<: *https-common
     url: https://traefik.services.sbling.net/
 
-  - name: Portainer
-    <<: *https-common
-    url: https://portainer.services.sbling.net/
-
   - name: Bitwarden
     <<: *https-common
     url: https://bitwarden.services.sbling.net/
