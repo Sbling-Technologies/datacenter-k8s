@@ -9,12 +9,11 @@ data:
 
   # admin.enabled: "false"
   oidc.config: |
-    name: Sbling
+    name: Keycloak
     issuer: https://keycloak.services.sbling.net/realms/sbling
     clientID: argocd
-    clientSecret: $argocd-oidc-secret:oidc.vault.clientSecret
-
-    requestedScopes: ["openid", "email", "groups"]
+    enablePKCEAuthentication: true
+    requestedScopes: ["openid", "profile", "email", "groups"]
 
   resource.exclusions: |
     ### Network resources created by the Kubernetes control plane and excluded to reduce the number of watched events and UI clutter

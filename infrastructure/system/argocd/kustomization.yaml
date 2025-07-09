@@ -7,7 +7,6 @@ namespace: argocd
 resources:
   - base/monitoring
   - base/argo-cd-namespace.yaml
-  - base/argo-cd-oidc-secret.yaml
   - base/argo-cd-ui-ingress.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/v3.0.5/manifests/ha/install.yaml
 
