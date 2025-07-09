@@ -26,13 +26,6 @@
         href: &n8n_url https://n8n.services.sbling.net
         siteMonitor: *n8n_url
 
-- Cluster:
-    - Vault:
-        description: A tool for secrets management, encryption as a service, and privileged access management
-        icon: hashicorp-vault
-        href: &vault_url https://vault.services.sbling.net
-        siteMonitor: *vault_url
-
 - Monitoring:
     - Grafana Old:
         description: Old instance on docker-main

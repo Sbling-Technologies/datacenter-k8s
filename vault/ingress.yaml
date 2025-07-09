@@ -1,16 +1,43 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: vault
   namespace: vault
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Hashicorp Vault
+    gethomepage.dev/description: A tool for secrets management, encryption as a service, and privileged access management
+    gethomepage.dev/group: Cluster
+    gethomepage.dev/icon: hashicorp-vault
+    gethomepage.dev/pod-selector: ""
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`vault.services.sbling.net`)
-      kind: Rule
-      services:
-        - name: vault-ui
-          port: 8200
+  ingressClassName: traefik
+  rules:
+    - host: vault.services.sbling.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: vault-ui
+                port:
+                  number: 8200
+            path: /
+            pathType: Prefix
   tls:
-    secretName: vault-services-sbling-net-prod-cert
+    - hosts:
+        - vault.services.sbling.net
+      secretName: vault-services-sbling-net-prod-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: vault-cert
+  namespace: vault
+spec:
+  commonName: vault.services.sbling.net
+  secretName: vault-services-sbling-net-prod-cert
+  dnsNames:
+    - vault.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod
