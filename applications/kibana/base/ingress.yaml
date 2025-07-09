@@ -1,18 +1,31 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: kibana
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Elasticsearch Kibana
+    gethomepage.dev/description: You Know, for Search
+    gethomepage.dev/group: Services
+    gethomepage.dev/icon: elasticsearch
+    gethomepage.dev/pod-selector: ""
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`kibana.services.sbling.net`)
-      kind: Rule
-      services:
-        - name: kibana
-          port: 5601
+  ingressClassName: traefik
+  rules:
+    - host: kibana.services.sbling.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: kibana
+                port:
+                  number: 5601
+            path: /
+            pathType: Prefix
   tls:
-    secretName: kibana-services-sbling-net-prod-cert
+    - hosts:
+        - kibana.services.sbling.net
+      secretName: kibana-services-sbling-net-prod-cert
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
