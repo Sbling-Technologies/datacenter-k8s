@@ -84,6 +84,16 @@ service:
 ingressRoute:
   dashboard:
     enabled: true
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/name: Traefik
+      gethomepage.dev/description: Kubernetes cluster ingress controller dashboard.
+      gethomepage.dev/group: Cluster
+      gethomepage.dev/icon: traefik-proxy
+      gethomepage.dev/pod-selector: ""
+      # NOTE: because this is an IngressRoute
+      gethomepage.dev/href: https://traefik-k8s.services.sbling.net
+      gethomepage.dev/app: traefik
     matchRule: Host(`traefik-k8s.services.sbling.net`)
     entryPoints: ["websecure"]
     middlewares:
