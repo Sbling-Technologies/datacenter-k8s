@@ -58,15 +58,6 @@
         siteMonitor: *vault_url
 
 - Monitoring:
-    - Gatus:
-        description: Automated developer-oriented status page
-        icon: gatus
-        href: &gatus_url https://gatus.services.sbling.net
-        siteMonitor: *gatus_url
-        widget:
-          type: gatus
-          url: *gatus_url
-
     - Grafana:
         description: Dashboards & graphs
         icon: grafana
