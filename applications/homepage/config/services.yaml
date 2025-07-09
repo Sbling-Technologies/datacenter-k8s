@@ -27,12 +27,6 @@
         siteMonitor: *n8n_url
 
 - Cluster:
-    - ArgoCD:
-        description: Declarative GitOps CD for Kubernetes
-        icon: argo-cd
-        href: &argocd_url https://argocd.services.sbling.net
-        siteMonitor: *argocd_url
-
     - Longhorn:
         description: Cloud native distributed block storage for Kubernetes
         icon: longhorn

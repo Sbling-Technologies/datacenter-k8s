@@ -2,7 +2,16 @@ apiVersion: traefik.io/v1alpha1
 kind: IngressRoute
 metadata:
   name: argocd
-  namespace: argocd
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: ArgoCD
+    gethomepage.dev/description: Declarative GitOps CD for Kubernetes
+    gethomepage.dev/group: Cluster
+    gethomepage.dev/icon: argo-cd
+    gethomepage.dev/pod-selector: ""
+    # NOTE: because this is an IngressRoute
+    gethomepage.dev/href: https://argocd.services.sbling.net
+    gethomepage.dev/app: argocd-server
 spec:
   entryPoints:
     - websecure
@@ -20,7 +29,6 @@ apiVersion: traefik.io/v1alpha1
 kind: ServersTransport
 metadata:
   name: no-verify-tls
-  namespace: argocd
 spec:
   insecureSkipVerify: true
 ---
@@ -28,7 +36,6 @@ apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
   name: argocd-cert
-  namespace: argocd
 spec:
   commonName: argocd.services.sbling.net
   secretName: argocd-services-sbling-net-prod-cert
