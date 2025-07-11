@@ -7,7 +7,7 @@ helmCharts:
   - repo: https://helm.kestra.io
     name: kestra
     releaseName: kestra
-    version: 0.23.1
+    version: 0.23.5
     valuesFile: values.yaml
     namespace: prod-kestra
 
