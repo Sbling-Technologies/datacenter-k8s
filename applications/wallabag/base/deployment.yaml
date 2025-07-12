@@ -1,0 +1,55 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: wallabag
+  labels:
+    app: wallabag
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: wallabag
+  template:
+    metadata:
+      labels:
+        app: wallabag
+    spec:
+      initContainers:
+        - name: wallabag-db-init
+          image: wallabag/wallabag:2.6.13
+          command: [/entrypoint.sh, migrate]
+          env:
+            - name: SYMFONY__ENV__DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: wallabag-db-user
+                  key: username
+            - name: SYMFONY__ENV__DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wallabag-db-user
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: wallabag-config
+
+      containers:
+        - name: wallabag
+          image: wallabag/wallabag:2.6.13
+          ports:
+            - name: http
+              containerPort: 80
+          env:
+            - name: SYMFONY__ENV__DATABASE_USER
+              valueFrom:
+                secretKeyRef:
+                  name: wallabag-db-user
+                  key: username
+            - name: SYMFONY__ENV__DATABASE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: wallabag-db-user
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: wallabag-config

@@ -20,6 +20,7 @@ spec:
     - prod-keycloak
     - prod-kibana
     - prod-telegram-bots
+    - prod-wallabag
     - traefik-system
   kubernetes:
     role: kubesecret-reader
