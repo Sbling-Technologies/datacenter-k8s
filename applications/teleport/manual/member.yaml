@@ -12,5 +12,5 @@ spec:
         namespace: "*"
         name: "*"
         verbs: ["*"]
-# kubectl -n teleport-cluster exec -i deployment/teleport-cluster-auth -- tctl create -f < teleport/manual/member.yaml
-# kubectl -n teleport-cluster exec -ti deployment/teleport-cluster-auth -- tctl users add localAdmin --roles=member,access,editor
+# kubectl -n prod-teleport exec -i deployment/teleport-cluster-auth -- tctl create -f < applications/teleport/manual/member.yaml
+# kubectl -n prod-teleport exec -ti deployment/teleport-cluster-auth -- tctl users add localAdmin --roles=member,access,editor
