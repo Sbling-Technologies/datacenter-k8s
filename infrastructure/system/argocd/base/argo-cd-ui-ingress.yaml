@@ -1,5 +1,5 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: argocd
   annotations:
@@ -9,21 +9,23 @@ metadata:
     gethomepage.dev/group: Cluster
     gethomepage.dev/icon: argo-cd
     gethomepage.dev/pod-selector: ""
-    # NOTE: because this is an IngressRoute
-    gethomepage.dev/href: https://argocd.services.sbling.net
-    gethomepage.dev/app: argocd-server
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`argocd.services.sbling.net`)
-      kind: Rule
-      services:
-        - name: argocd-server
-          port: 443
-          serversTransport: no-verify-tls
+  ingressClassName: traefik
+  rules:
+    - host: argocd.services.sbling.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: argocd-server
+                port:
+                  number: 443
+            path: /
+            pathType: Prefix
   tls:
-    secretName: argocd-services-sbling-net-prod-cert
+    - hosts:
+        - argocd.services.sbling.net
+      secretName: argocd-services-sbling-net-prod-cert
 ---
 apiVersion: traefik.io/v1alpha1
 kind: ServersTransport

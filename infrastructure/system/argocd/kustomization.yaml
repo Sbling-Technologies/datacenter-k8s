@@ -13,3 +13,4 @@ resources:
 patches:
   - path: overlays/production/argo-cd-cm.yaml
   - path: overlays/production/deployment-argocd-redis-ha-haproxy.yaml
+  - path: overlays/production/service-argocd-server.yaml
