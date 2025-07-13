@@ -13,3 +13,4 @@ helmCharts:
 
 resources:
   - base/namespace.yaml
+  - base/servers-transport.yaml
