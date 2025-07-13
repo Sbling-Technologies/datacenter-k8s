@@ -1,30 +1,32 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: longhorn
   annotations:
+    traefik.ingress.kubernetes.io/router.middlewares: longhorn-system-oidc-middleware@kubernetescrd
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: Longhorn
     gethomepage.dev/description: Cloud native distributed block storage for Kubernetes
     gethomepage.dev/group: Cluster
     gethomepage.dev/icon: longhorn
     gethomepage.dev/pod-selector: ""
-    # NOTE: because this is an IngressRoute
-    gethomepage.dev/href: https://longhorn.services.sbling.net
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`longhorn.services.sbling.net`)
-      kind: Rule
-      middlewares:
-        - name: oidc-middleware
-          namespace: longhorn-system
-      services:
-        - name: longhorn-frontend
-          port: 80
+  ingressClassName: traefik
+  rules:
+    - host: longhorn.services.sbling.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: longhorn-frontend
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
   tls:
-    secretName: longhorn-services-sbling-net-prod-cert
+    - hosts:
+        - longhorn.services.sbling.net
+      secretName: longhorn-services-sbling-net-prod-cert
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
