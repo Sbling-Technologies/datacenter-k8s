@@ -1,27 +1,24 @@
-apiVersion: traefik.io/v1alpha1
-kind: IngressRoute
+apiVersion: networking.k8s.io/v1
+kind: Ingress
 metadata:
   name: homepage
 spec:
-  entryPoints:
-    - websecure
-  routes:
-    - match: Host(`homepage.services.sbling.net`)
-      kind: Rule
-      # middlewares:
-      #   - name: oidc-middleware
-      #     namespace: prod-homepage
-      services:
-        - kind: Service
-          name: homepage
-          port: 3000
-          sticky:
-            cookie:
-              httpOnly: true
-              secure: true
-              sameSite: none
+  ingressClassName: traefik
+  rules:
+    - host: homepage.services.sbling.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: homepage
+                port:
+                  number: 3000
+            path: /
+            pathType: Prefix
   tls:
-    secretName: homepage-services-sbling-net-prod-cert
+    - hosts:
+        - homepage.services.sbling.net
+      secretName: homepage-services-sbling-net-prod-cert
 ---
 apiVersion: cert-manager.io/v1
 kind: Certificate
