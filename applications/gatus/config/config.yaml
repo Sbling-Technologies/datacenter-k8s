@@ -38,8 +38,11 @@ endpoints:
     url: ${HEALTHCHECK_IO_URL}
 
   - name: UDM
-    <<: *https-common
-    url: https://sblenghito.mgmt.sbling.net/
+    conditions:
+      - " [CONNECTED] == true"
+    alerts:
+      - type: telegram
+    url: icmp://gateway.services.sbling.net
 
   - name: TrueNAS
     <<: *https-common
