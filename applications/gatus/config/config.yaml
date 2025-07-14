@@ -37,13 +37,6 @@ endpoints:
       - type: telegram
     url: ${HEALTHCHECK_IO_URL}
 
-  - name: UDM
-    conditions:
-      - " [CONNECTED] == true"
-    alerts:
-      - type: telegram
-    url: icmp://gateway.services.sbling.net
-
   - name: TrueNAS
     <<: *https-common
     url: https://truenas.services.sbling.net/
