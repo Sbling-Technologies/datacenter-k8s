@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: longhorn
   annotations:
-    traefik.ingress.kubernetes.io/router.middlewares: longhorn-system-oidc-middleware@kubernetescrd
+    # traefik.ingress.kubernetes.io/router.middlewares: longhorn-system-oidc-middleware@kubernetescrd
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: Longhorn
     gethomepage.dev/description: Cloud native distributed block storage for Kubernetes
