@@ -7,7 +7,7 @@ data:
 
   kustomize.buildOptions: --enable-helm
 
-  # admin.enabled: "false"
+  admin.enabled: "false"
   # https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/keycloak/#keycloak-and-argocd-with-pkce
   oidc.config: |
     name: Keycloak
