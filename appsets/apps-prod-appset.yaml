@@ -29,3 +29,10 @@ spec:
         automated:
           selfHeal: true
           prune: true
+        syncOptions:
+          - RespectIgnoreDifferences=true
+      # https://github.com/argoproj/argo-cd/issues/12569
+      ignoreDifferences:
+        - jsonPointers:
+            - /spec/volumeName
+          kind: PersistentVolumeClaim
