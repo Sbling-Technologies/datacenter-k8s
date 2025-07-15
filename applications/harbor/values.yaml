@@ -2,6 +2,13 @@ expose:
   ingress:
     hosts:
       core: harbor.services.sbling.net
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/name: Harbor
+      gethomepage.dev/description: An open source trusted cloud native registry project that stores, signs, and scans content.
+      gethomepage.dev/group: Services
+      gethomepage.dev/icon: harbor
+      gethomepage.dev/pod-selector: ""
   tls:
     certSource: secret
     secret:
