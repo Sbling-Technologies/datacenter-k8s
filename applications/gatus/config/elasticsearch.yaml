@@ -1,0 +1,41 @@
+x-elasticsearch-common: &elasticsearch-common
+  group: Elasticsearch
+  conditions:
+    - "[CONNECTED] == true"
+    - "[CERTIFICATE_EXPIRATION] > 168h" # 7d
+  alerts:
+    - type: telegram
+
+x-elasticsearch-vm-common: &elasticsearch-vm-common
+  <<: *elasticsearch-common
+  client:
+    insecure: true
+
+endpoints:
+  - name: Elasticsearch VM 01 - REST
+    <<: *elasticsearch-vm-common
+    url: https://es-node01.vms.sbling.net:9200
+
+  - name: Elasticsearch VM 01 - Transport
+    <<: *elasticsearch-vm-common
+    url: tls://es-node01.vms.sbling.net:9300
+
+  - name: Elasticsearch VM 02 - REST
+    <<: *elasticsearch-vm-common
+    url: https://es-node02.vms.sbling.net:9200
+
+  - name: Elasticsearch VM 02 - Transport
+    <<: *elasticsearch-vm-common
+    url: tls://es-node02.vms.sbling.net:9300
+
+  - name: Elasticsearch VM 03 - REST
+    <<: *elasticsearch-vm-common
+    url: https://es-node03.vms.sbling.net:9200
+
+  - name: Elasticsearch VM 03 - Transport
+    <<: *elasticsearch-vm-common
+    url: tls://es-node03.vms.sbling.net:9300
+
+  - name: Fleet Server
+    <<: *elasticsearch-common
+    url: https://fleet.services.sbling.net:8220/api/status

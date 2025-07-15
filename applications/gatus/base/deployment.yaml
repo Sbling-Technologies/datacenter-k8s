@@ -40,6 +40,10 @@ spec:
               subPath: dns.yaml
               name: gatus-config
               readOnly: true
+            - mountPath: /config/elasticsearch.yaml
+              subPath: elasticsearch.yaml
+              name: gatus-config
+              readOnly: true
             - mountPath: /config/mail.yaml
               subPath: mail.yaml
               name: gatus-config
