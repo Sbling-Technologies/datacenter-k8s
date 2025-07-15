@@ -4,4 +4,4 @@ kind: Kustomization
 namespace: prod-elasticsearch
 
 resources:
-  - base
+  - overlays/prod
