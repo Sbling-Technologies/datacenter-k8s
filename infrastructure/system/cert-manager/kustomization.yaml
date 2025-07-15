@@ -24,4 +24,5 @@ helmCharts:
 
 resources:
   - base/cluster-cert-issuer-prod.yaml
+  - base/cluster-cert-issuer-staging.yaml
   - base/namespace.yaml
