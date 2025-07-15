@@ -1,21 +1,6 @@
 apiVersion: cert-manager.io/v1
 kind: Certificate
 metadata:
-  name: traefik-default-cert
-  namespace: traefik-system
-spec:
-  commonName: services.sbling.net
-  secretName: traefik-default-services-sbling-net-prod-cert
-  dnsNames:
-    - "services.sbling.net"
-    - "*.services.sbling.net"
-  issuerRef:
-    kind: ClusterIssuer
-    name: cert-issuer-prod
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
   name: traefik-daashborad-cert
 spec:
   commonName: traefik-k8s.services.sbling.net

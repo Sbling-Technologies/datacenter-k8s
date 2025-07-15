@@ -72,11 +72,6 @@ ports:
     tls:
       enabled: true
 
-tlsStore:
-  default:
-    defaultCertificate:
-      secretName: traefik-default-services-sbling-net-prod-cert
-
 service:
   annotations:
     metallb.io/loadBalancerIPs: 172.31.50.128
