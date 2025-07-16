@@ -26,6 +26,7 @@ configMapGenerator:
       - custom.css=
       - custom.js=
       - docker.yaml=
+      - proxmox.yaml=
   - name: homepage-icons
     files:
       - icons/linear.ico
