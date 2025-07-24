@@ -7,6 +7,6 @@ labels:
     includeSelectors: true
 
 resources:
+  - database.yaml
   - deployment.yaml
-  - env-secrets.yaml
-  - pvc.yaml
+  - secrets.yaml

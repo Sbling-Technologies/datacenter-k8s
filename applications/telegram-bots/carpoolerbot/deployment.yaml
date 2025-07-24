@@ -6,21 +6,26 @@ spec:
   replicas: 1
   template:
     spec:
-      volumes:
-        - name: carpoolerbot-data
-          persistentVolumeClaim:
-            claimName: carpoolerbot-data
       containers:
         - name: carpoolerbot
-          image: ghcr.io/ardubev16/carpoolerbot:v0.1.2
-          volumeMounts:
-            - mountPath: /data
-              name: carpoolerbot-data
+          image: ghcr.io/ardubev16/carpoolerbot:v0.2.1
           env:
-            - name: DB_URL
-              value: sqlite:////data/sqlite3.db
             - name: TZ
               value: Europe/Rome
+            - name: DB_HOST
+              value: carpoolerbot-db-rw
+            - name: DB_NAME
+              value: carpoolerbot
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: carpoolerbot-db-user
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: carpoolerbot-db-user
+                  key: password
           envFrom:
             - secretRef:
                 name: carpoolerbot-env
