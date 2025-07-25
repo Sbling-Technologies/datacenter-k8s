@@ -1,0 +1,29 @@
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDatasource
+metadata:
+  name: carpoolerbot-db
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  allowCrossNamespaceImport: true
+  valuesFrom:
+    - targetPath: user
+      valueFrom:
+        secretKeyRef:
+          name: carpoolerbot-db-user
+          key: username
+    - targetPath: secureJsonData.password
+      valueFrom:
+        secretKeyRef:
+          name: carpoolerbot-db-user
+          key: password
+  datasource:
+    name: carpoolerbot-db
+    type: postgres
+    url: carpoolerbot-db-ro:5432
+    user: ${username}
+    secureJsonData:
+      password: ${password}
+    jsonData:
+      database: carpoolerbot

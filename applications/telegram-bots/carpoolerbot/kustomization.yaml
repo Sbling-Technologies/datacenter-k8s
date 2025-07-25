@@ -9,4 +9,5 @@ labels:
 resources:
   - database.yaml
   - deployment.yaml
+  - grafana-datasource.yaml
   - secrets.yaml
