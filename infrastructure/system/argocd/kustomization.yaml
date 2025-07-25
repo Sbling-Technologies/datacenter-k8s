@@ -8,7 +8,7 @@ resources:
   - base/monitoring
   - base/argo-cd-namespace.yaml
   - base/argo-cd-ui-ingress.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.0.11/manifests/ha/install.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.0.12/manifests/ha/install.yaml
 
 patches:
   - path: overlays/production/argo-cd-cm.yaml
