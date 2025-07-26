@@ -21,7 +21,8 @@ spec:
   datasource:
     name: carpoolerbot-db
     type: postgres
-    url: carpoolerbot-db-ro:5432
+    url: carpoolerbot-db-r.prod-telegram-bots.svc.cluster.local:5432
+    access: proxy
     user: ${username}
     secureJsonData:
       password: ${password}
