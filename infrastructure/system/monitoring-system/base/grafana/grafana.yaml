@@ -8,7 +8,6 @@ spec:
   config:
     log:
       mode: console
-      level: debug
     date_formats:
       default_timezone: browser
     server:
