@@ -29,8 +29,8 @@ spec:
       token_url: https://keycloak.services.sbling.net/realms/sbling/protocol/openid-connect/token
       api_url: https://keycloak.services.sbling.net/realms/sbling/protocol/openid-connect/userinfo
       role_attribute_path: >-
-        contains(roles[*], 'admin') && 'Admin' ||
-        contains(roles[*], 'editor') && 'Editor' ||
+        contains(resource_access."grafana-oauth".roles[*], 'admin') && 'Admin' ||
+        contains(resource_access."grafana-oauth".roles[*], 'editor') && 'Editor' ||
         'Viewer'
 
   deployment:
