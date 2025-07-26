@@ -45,6 +45,20 @@ spec:
                     secretKeyRef:
                       name: grafana-oidc-secret
                       key: client-secret
+          securityContext:
+            fsGroup: 10001
+          volumes:
+            - name: grafana-data
+              persistentVolumeClaim:
+                claimName: grafana-pvc
+
+  persistentVolumeClaim:
+    spec:
+      accessModes:
+        - ReadWriteOnce
+      resources:
+        requests:
+          storage: 10Gi
 
   ingress:
     metadata:
