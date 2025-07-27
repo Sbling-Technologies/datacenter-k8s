@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: carpoolerbot
-          image: ghcr.io/ardubev16/carpoolerbot:v0.2.2
+          image: ghcr.io/ardubev16/carpoolerbot:v0.2.3
           env:
             - name: TZ
               value: Europe/Rome
