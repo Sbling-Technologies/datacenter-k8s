@@ -16,7 +16,7 @@ spec:
     spec:
       containers:
         - name: kibana
-          image: docker.elastic.co/kibana/kibana:9.0.3
+          image: docker.elastic.co/kibana/kibana:9.0.4
           env:
             - name: ELASTICSEARCH_HOSTS
               value: '["https://elasticsearch.services.sbling.net:9200"]'
