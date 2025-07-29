@@ -10,6 +10,18 @@ grafana:
     matchLabels:
       dashboards: grafana
 
+kube-state-metrics:
+  prometheus:
+    monitor:
+      additionalLabels:
+        monitoring: system
+
+prometheus-node-exporter:
+  prometheus:
+    monitor:
+      additionalLabels:
+        monitoring: system
+
 kubeControllerManager:
   endpoints:
     - 172.31.50.48
