@@ -10,6 +10,13 @@ grafana:
     matchLabels:
       dashboards: grafana
 
+nodeExporter:
+  operatingSystems:
+    aix:
+      enabled: false
+    darwin:
+      enabled: false
+
 kube-state-metrics:
   prometheus:
     monitor:
