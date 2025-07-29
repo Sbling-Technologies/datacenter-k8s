@@ -1,0 +1,10 @@
+- op: add
+  path: /spec/ingress/-
+  value:
+    from:
+      - namespaceSelector:
+          matchLabels:
+            kubernetes.io/metadata.name: monitoring-system
+    ports:
+      - port: 9101
+        protocol: TCP
