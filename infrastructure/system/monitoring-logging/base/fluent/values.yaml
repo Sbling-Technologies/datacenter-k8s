@@ -1,7 +1,10 @@
-containerRuntime: containerd
-
 fluentbit:
   output:
     loki:
       enable: true
-      host: loki-write
+      host: loki-gateway
+      port: 80
+      httpUser: null
+      httpPassword: null
+      tenantID: null
+      autoKubernetesLabels: on
