@@ -21,12 +21,16 @@ spec:
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{index .path.segments 3}}-{{index .path.segments 1}}"
-      source:
-        repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
-        targetRevision: HEAD
-        path: "{{.path.path}}"
-        kustomize:
-          namespace: "{{index .path.segments 3}}-{{index .path.segments 1}}"
+      sourceHydrator:
+        drySource:
+          repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
+          targetRevision: HEAD
+          path: "{{.path.path}}"
+          kustomize:
+            namespace: "{{index .path.segments 3}}-{{index .path.segments 1}}"
+        syncSource:
+          targetBranch: environments/staging
+          path: "{{index .path.segments 0}}/{{index .path.segments 1}}"
       syncPolicy:
         automated:
           selfHeal: true
