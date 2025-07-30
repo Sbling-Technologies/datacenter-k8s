@@ -33,5 +33,4 @@ minio:
   enabled: true
 
 gateway:
-  service:
-    type: LoadBalancer
+  enabled: false
