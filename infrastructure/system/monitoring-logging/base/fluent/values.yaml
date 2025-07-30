@@ -4,4 +4,13 @@ fluentbit:
   output:
     loki:
       enable: true
-      host: loki-write
+      host: loki-gateway
+      port: 80
+      httpUser: null
+      httpPassword: null
+      tenantID: null
+      autoKubernetesLabels: "on"
+      labelKeys:
+        - $kubernetes['namespace_name']
+        - $kubernetes['pod_name']
+        - $kubernetes['container_name']

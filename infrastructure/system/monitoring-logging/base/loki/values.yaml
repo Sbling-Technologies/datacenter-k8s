@@ -1,4 +1,5 @@
 loki:
+  auth_enabled: false
   schemaConfig:
     configs:
       - from: "2024-04-01"
@@ -31,6 +32,3 @@ write:
 # Enable minio for storage
 minio:
   enabled: true
-
-gateway:
-  enabled: false
