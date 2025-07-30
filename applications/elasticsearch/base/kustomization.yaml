@@ -5,6 +5,5 @@ resources:
   - configmap.yaml
   - deployment.yaml
   - middleware.yaml
-  - namespace.yaml
   - secret.yaml
   - service.yaml
