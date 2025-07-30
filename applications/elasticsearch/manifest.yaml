@@ -1,0 +1,164 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: staging-elasticsearch:/Namespace:/prod-elasticsearch
+  name: prod-elasticsearch
+---
+apiVersion: v1
+data:
+  elastic-ca.pem: |
+    -----BEGIN CERTIFICATE-----
+    MIIDSjCCAjKgAwIBAgIVAOYQrz/1vZSHFkC2zlV20mJIwESYMA0GCSqGSIb3DQEB
+    CwUAMDQxMjAwBgNVBAMTKUVsYXN0aWMgQ2VydGlmaWNhdGUgVG9vbCBBdXRvZ2Vu
+    ZXJhdGVkIENBMB4XDTI1MDEyNTE1MDkwM1oXDTI4MDEyNTE1MDkwM1owNDEyMDAG
+    A1UEAxMpRWxhc3RpYyBDZXJ0aWZpY2F0ZSBUb29sIEF1dG9nZW5lcmF0ZWQgQ0Ew
+    ggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDOPBYufD3VDYgjb6A7CePK
+    L8wh1Dg6j/SxBkFMMTZWKa6W+4IIgaGFD+ZShJgHFhruElZYSBajPcz5Y/bvEzJn
+    kN2/5LpmKlINV4LGx3e8py04hTkcUuHArn9TXmIxo6AVtOUlLLv4oZoPcX7WFoQH
+    rIC4CON5CpivRaeuye7MBaR1vxcpEZIsOjZmm6RWKDw5U1W7WRq/3PH3YGiEf5ZX
+    he9kdq2PZXN1+uXfip9xMyu02cjXADTxz8yQ+oupOYBnL3dk/X7mMmBUxPEih9jE
+    4bpHb+dFACf/F5Wi9s3jCBkAmPzL8h1jROX/52t5MhfcNiVuBm+lBHesgSkm4KXd
+    AgMBAAGjUzBRMB0GA1UdDgQWBBRTglFo6Og6RKMfM/cZWTKZsD3/pzAfBgNVHSME
+    GDAWgBRTglFo6Og6RKMfM/cZWTKZsD3/pzAPBgNVHRMBAf8EBTADAQH/MA0GCSqG
+    SIb3DQEBCwUAA4IBAQA4adDw7QQS0WN922Iv0UHfssujQbfHG+7JscL/2qvOdIw+
+    Z1t8pUe/dzhM3UTaeDEx2Nc4cuWMAgRGFIC13jtzR3rsF/ELzySBG8jpoXDDOXIz
+    hDnKjYHUBCwLjmiQDjNDMs2XHipjtkl5BgQj7ACqEjaT+HMDjI+DnFsl4oGopYdL
+    dEs9V1e1pNWLbs8LSA2ebJIR7puu7T72MkVOw2sP+Wp76CKD62MKadJySC9FzJnA
+    +7RSQojAKpAwPpItJLKdtUaNVyWwLGKVksOuzZU5Olvo2IKLEKxueozkRkn08rPl
+    7y2lURHHmZ7fXLqZNi7lanf42iKZhnM0wLPTnlth
+    -----END CERTIFICATE-----
+kind: ConfigMap
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: staging-elasticsearch:/ConfigMap:/elastic-ca
+  name: elastic-ca
+---
+apiVersion: v1
+kind: Service
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: staging-elasticsearch:/Service:/elastic-proxy
+  name: elastic-proxy
+spec:
+  ports:
+    - name: http
+      port: 8080
+      targetPort: 8080
+  selector:
+    app: elastic-proxy
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: staging-elasticsearch:apps/StatefulSet:/elastic-proxy
+  name: elastic-proxy
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: elastic-proxy
+  template:
+    metadata:
+      labels:
+        app: elastic-proxy
+    spec:
+      containers:
+        - env:
+            - name: ELASTIC_HOST_LIST
+              value: es-node01.vms.sbling.net:9200,es-node02.vms.sbling.net:9200,es-node03.vms.sbling.net:9200
+            - name: STATEFUL_SET_PREFIX
+              value: elastic-proxy
+          image: harbor.services.sbling.net/prod-sbling/elastic-proxy:latest
+          imagePullPolicy: Always
+          livenessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /live
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 10
+          name: elastic-proxy
+          readinessProbe:
+            failureThreshold: 3
+            httpGet:
+              path: /ready
+              port: 8080
+            initialDelaySeconds: 10
+            periodSeconds: 5
+          volumeMounts:
+            - mountPath: /etc/ssl/certs/elastic-ca.pem
+              name: ca-cert
+              readOnly: true
+              subPath: elastic-ca.pem
+      imagePullSecrets:
+        - name: sbling-regcred
+      volumes:
+        - configMap:
+            items:
+              - key: elastic-ca.pem
+                path: elastic-ca.pem
+            name: elastic-ca
+          name: ca-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: staging-elasticsearch:cert-manager.io/Certificate:/internal-ingress-cert
+  name: internal-ingress-cert
+spec:
+  commonName: staging.elasticsearch.services.sbling.net
+  dnsNames:
+    - staging.elasticsearch.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-staging
+  secretName: internal-ingress-cert
+---
+apiVersion: secrets.hashicorp.com/v1beta1
+kind: VaultStaticSecret
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: staging-elasticsearch:secrets.hashicorp.com/VaultStaticSecret:/sbling-regcred
+  name: sbling-regcred
+spec:
+  destination:
+    create: true
+    name: sbling-regcred
+    type: kubernetes.io/dockerconfigjson
+  mount: kubesecrets
+  path: harbor/sbling-regcred
+  type: kv-v2
+---
+apiVersion: traefik.io/v1alpha1
+kind: IngressRoute
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: staging-elasticsearch:traefik.io/IngressRoute:/elasticsearch
+  name: elasticsearch
+spec:
+  entryPoints:
+    - elasticsearch
+  routes:
+    - kind: Rule
+      match: Host(`staging.elasticsearch.services.sbling.net`)
+      middlewares:
+        - name: add-proxy-suffix
+      services:
+        - name: elastic-proxy
+          port: 8080
+          scheme: http
+  tls:
+    secretName: internal-ingress-cert
+---
+apiVersion: traefik.io/v1alpha1
+kind: Middleware
+metadata:
+  annotations:
+    argocd.argoproj.io/tracking-id: staging-elasticsearch:traefik.io/Middleware:/add-proxy-suffix
+  name: add-proxy-suffix
+spec:
+  addPrefix:
+    prefix: /proxy
