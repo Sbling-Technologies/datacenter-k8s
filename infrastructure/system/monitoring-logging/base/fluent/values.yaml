@@ -1,0 +1,7 @@
+containerRuntime: containerd
+
+fluentbit:
+  output:
+    loki:
+      enable: true
+      host: loki-write
