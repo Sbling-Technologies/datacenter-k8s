@@ -10,7 +10,4 @@ fluentbit:
       httpPassword: null
       tenantID: null
       autoKubernetesLabels: "on"
-      labelKeys:
-        - $kubernetes['namespace_name']
-        - $kubernetes['pod_name']
-        - $kubernetes['container_name']
+      removeKeys: [service, stream]
