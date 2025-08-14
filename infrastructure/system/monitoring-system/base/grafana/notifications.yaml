@@ -56,7 +56,8 @@ spec:
     {{ if eq .Status "firing" }}🔴{{ else }}🟢{{ end }}
         {{- if ne (index .Labels "severity") "" -}}
             <u><b>P{{ index .Labels "severity" }}</b></u> {{ end -}}
-    <b>{{ index .Labels "alertname" }}</b> 🕙 {{ .StartsAt.Format "15:04:05    🗓️ 2006-01-02" }}{{ end -}}
+    <b>{{ index .Labels "alertname" }}</b>
+    🕙 {{ .StartsAt.Format "15:04:05 🗓️ 2006-01-02" }}{{ end -}}
     {{ if len .Annotations }}
     <i>Annotations:</i>
         {{ range .Annotations.SortedPairs -}}
@@ -69,12 +70,11 @@ spec:
         - {{ .Name }}: {{ .Value }}
         {{ end -}}
     {{ end }}
-    <i>Value:</i> <pre>{{ .ValueString }}</pre>
+    <i>Value:</i> <code>{{ .ValueString }}</code>
         {{- if gt (len .GeneratorURL) 0 }}<a href="{{ .GeneratorURL }}">source</a>  |  {{ end }}
         {{- if gt (len .SilenceURL) 0 }}<a href="{{ .SilenceURL }}">🔕 silence</a>  |  {{ end }}
         {{- if gt (len .DashboardURL) 0 }}<a href="{{ .DashboardURL }}">📁 dashboard</a>  |  {{ end }}
         {{- if gt (len .PanelURL) 0 }}<a href="{{ .PanelURL }}">panel</a> {{- end -}}
-        <pre>--------</pre>
     {{- end -}} {{- /* range */ -}}
     {{- end -}} {{- /* define __alerts_list */ -}}
 
