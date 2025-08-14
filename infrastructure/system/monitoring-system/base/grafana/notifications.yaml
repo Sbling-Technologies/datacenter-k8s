@@ -8,8 +8,8 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
-  settings: {}
-  #   message: '{{ template "default.message" . }}'
+  settings:
+    message: '{{ template "telegram.message" . }}'
   valuesFrom:
     - targetPath: bottoken
       valueFrom:
@@ -35,3 +35,61 @@ spec:
     group_by:
       - grafana_folder
       - alertname
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaNotificationTemplate
+metadata:
+  name: telegram-notification-template
+spec:
+  instanceSelector:
+    matchLabels:
+      dashboards: grafana
+  name: telegram-notification-template
+  # src: https://gist.github.com/gelldur/94b57b2fa276fe9de180378bf6855877
+  template: |
+    {{- /* Telegram message to use: {{ template "telegram.message" . }} */ -}}
+    {{ define "__alerts_list" -}}
+    {{ range . }}
+    {{if ne (index .Labels "alertname") "" -}}
+    {{ if eq .Status "firing" }}🔴{{ else }}🟢{{ end }}
+        {{- if ne (index .Labels "severity") "" -}}
+            <u><b>P{{ index .Labels "severity" }}</b></u> {{ end -}}
+    <b>{{ index .Labels "alertname" }}</b> 🕙 {{ .StartsAt.Format "15:04:05    🗓️ 2006-01-02" }}{{ end -}}
+    {{ if len .Annotations }}
+    <i>Annotations:</i>
+        {{ range .Annotations.SortedPairs -}}
+        - {{ .Name }}: {{ .Value }}
+        {{ end -}}
+    {{ end }}
+    {{ if len .Labels -}}
+    <i>Labels:</i>
+        {{ range .Labels.SortedPairs -}}
+        - {{ .Name }}: {{ .Value }}
+        {{ end -}}
+    {{ end }}
+    <i>Value:</i> <pre>{{ .ValueString }}</pre>
+        {{- if gt (len .GeneratorURL) 0 }}<a href="{{ .GeneratorURL }}">source</a>  |  {{ end }}
+        {{- if gt (len .SilenceURL) 0 }}<a href="{{ .SilenceURL }}">🔕 silence</a>  |  {{ end }}
+        {{- if gt (len .DashboardURL) 0 }}<a href="{{ .DashboardURL }}">📁 dashboard</a>  |  {{ end }}
+        {{- if gt (len .PanelURL) 0 }}<a href="{{ .PanelURL }}">panel</a> {{- end -}}
+        <pre>--------</pre>
+    {{- end -}} {{- /* range */ -}}
+    {{- end -}} {{- /* define __alerts_list */ -}}
+
+    {{ define "__telegram.title" -}}
+    {{ if ne (index .CommonLabels "severity") "" }} <u><b>P{{ index .CommonLabels "severity" }}</b></u> {{ end -}}
+    {{ if ne (index .CommonLabels "alertname") "" -}}
+        [{{ index .CommonLabels "alertname" }}]
+    {{- end -}}
+    {{- end -}}{{- /* define __telegram */ -}}
+
+    {{ define "telegram.message" }}
+        {{ if gt (len .Alerts.Firing) 0 }}
+        🚨 <b>ALARM</b> (#{{ .Alerts.Firing | len }})
+        {{- template "__alerts_list" .Alerts.Firing }}{{ end -}}
+        {{ if gt (len .Alerts.Resolved) 0 }}
+        ✅ <b>RESOLVED</b>{{ template "__telegram.title" . }} (#{{ .Alerts.Resolved | len }})
+        {{- template "__alerts_list" .Alerts.Resolved }}{{ end }}
+
+    <a href="{{ .ExternalURL }}">📲 Grafana</a>
+    {{- end -}}
