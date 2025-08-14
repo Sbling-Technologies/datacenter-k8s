@@ -30,6 +30,7 @@ spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
+  editable: false
   route:
     receiver: inchident-telegram-contact
     group_by:
@@ -45,6 +46,7 @@ spec:
     matchLabels:
       dashboards: grafana
   name: telegram-notification-template
+  editable: false
   # src: https://gist.github.com/gelldur/94b57b2fa276fe9de180378bf6855877
   template: |
     {{- /* Telegram message to use: {{ template "telegram.message" . }} */ -}}
