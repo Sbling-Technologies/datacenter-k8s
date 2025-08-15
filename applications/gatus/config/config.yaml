@@ -19,6 +19,8 @@ alerting:
       failure-threshold: 2
       success-threshold: 2
 
+metrics: true
+
 x-https-common: &https-common
   conditions:
     - "[STATUS] == 200"

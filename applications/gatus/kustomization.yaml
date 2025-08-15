@@ -14,6 +14,7 @@ resources:
   - base/ingress.yaml
   - base/namespace.yaml
   - base/secrets.yaml
+  - base/service-monitor.yaml
   - base/service.yaml
 
 configMapGenerator:
