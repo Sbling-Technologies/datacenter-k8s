@@ -1,5 +1,8 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
   "drySha": "d971891914f2c691497525f7e7f66bd69ac76f70",
-  "commands": null
+  "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
+  "date": "2025-08-15T22:45:20Z",
+  "subject": "Merge pull request #28 from Sbling-Technologies/renovate/all-minor-patch",
+  "body": "chore(deps): update all non-major dependencies\n"
 }
