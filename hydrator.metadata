@@ -1,6 +1,6 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "989ae88bccd74800a940507f1e4b35697013e70b",
+  "drySha": "7505c95b4f73e77d4ab35c0426e31c00b8e3eb02",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
   "date": "2025-08-15T23:01:31Z",
   "subject": "fix(harbor): allow cnpg operator network ingress"
