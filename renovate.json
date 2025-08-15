@@ -9,15 +9,13 @@
     ],
     "reviewers": ["ardubev16", "LuigiMiazzo17"],
     "argocd": {
-        "fileMatch": ["^apps/.+\\.yaml$", "^app-of-apps.yaml$"]
+        "managerFilePatterns": ["/^apps/.+\\.yaml$/", "/^app-of-apps.yaml$/"]
     },
-    "kubernetes": {
-        "fileMatch": ["^.+\\.yaml$"]
-    },
+    "kubernetes": { "managerFilePatterns": ["/^.+\\.yaml$/"] },
     "customManagers": [
         {
             "customType": "regex",
-            "fileMatch": ["^.+/kustomization.yaml$"],
+            "managerFilePatterns": ["/^.+/kustomization.yaml$/"],
             "matchStrings": [
                 "https://raw\\.githubusercontent\\.com/(?<depName>[^/]+/[^/]+)/(?<currentValue>[^/]+)/.*"
             ],
@@ -25,11 +23,23 @@
         },
         {
             "customType": "regex",
-            "fileMatch": ["^.+/kustomization.yaml$"],
+            "managerFilePatterns": ["/^.+/kustomization.yaml$/"],
             "matchStrings": [
                 "https://github\\.com/(?<depName>[^/]+/[^/]+)/releases/download/(?<currentValue>[^/]+)/.*"
             ],
             "datasourceTemplate": "github-releases"
+        }
+    ],
+    "packageRules": [
+        {
+            "matchPackageNames": [
+                "docker.elastic.co/elastic-agent/elastic-agent",
+                "docker.elastic.co/kibana/kibana"
+            ],
+            "groupName": "Elastic stack (kibana + agent)",
+            "separateMajorMinor": false,
+            "separateMinorPatch": false,
+            "reviewers": ["LuigiMiazzo17"]
         }
     ]
 }
