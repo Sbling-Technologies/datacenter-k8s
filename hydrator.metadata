@@ -1,8 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "d971891914f2c691497525f7e7f66bd69ac76f70",
+  "drySha": "e9a2457c085e2bbea1bfbd075bbec99b95fda727",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-15T22:45:20Z",
-  "subject": "Merge pull request #28 from Sbling-Technologies/renovate/all-minor-patch",
-  "body": "chore(deps): update all non-major dependencies\n"
+  "date": "2025-08-15T23:01:31Z",
+  "subject": "fix(harbor): allow cnpg operator network ingress"
 }
