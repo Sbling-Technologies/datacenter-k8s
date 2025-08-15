@@ -9,7 +9,7 @@ resources:
   - base/ingress.yaml
   - base/namespace.yaml
   - base/secrets.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.0.12/manifests/ha/install-with-hydrator.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.1.0/manifests/ha/install-with-hydrator.yaml
 
 patches:
   - path: overlays/production/argocd-cm.yaml
