@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "52cc9a70b05d13a38b984baa7efb501da8e30bb2",
+  "drySha": "340b1cfa19802a5b5f4fadf51f02d3ee28bbe257",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-16T22:20:46Z",
-  "subject": "feat: migrate to cilium part2"
+  "date": "2025-08-16T23:16:33Z",
+  "subject": "chore: cleanup and enable hubble"
 }
