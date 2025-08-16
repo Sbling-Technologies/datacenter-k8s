@@ -1,6 +1,6 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "e367d348023493e0bde479909fbd8d8ad662b737",
+  "drySha": "52cc9a70b05d13a38b984baa7efb501da8e30bb2",
   "commands": [
     "kustomize build ./applications/elasticsearch/overlays/staging --enable-helm"
   ]
