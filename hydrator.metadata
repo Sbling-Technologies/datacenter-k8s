@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "5218daf0ee55c07a0e9de60678c411fe85533d7a",
+  "drySha": "7ae3eb9b907c467d9777924d2644c03a6086f163",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-16T00:12:15Z",
-  "subject": "style: use 2 space tabs for json files"
+  "date": "2025-08-16T10:07:03Z",
+  "subject": "Merge pull request #32 from Sbling-Technologies/update-readme"
 }
