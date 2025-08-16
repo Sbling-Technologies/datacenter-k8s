@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "d5f2d4d85fdf98fc842be65739498f5262318dcf",
+  "drySha": "5218daf0ee55c07a0e9de60678c411fe85533d7a",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-15T23:01:31Z",
-  "subject": "fix(harbor): allow cnpg operator network ingress"
+  "date": "2025-08-16T00:12:15Z",
+  "subject": "style: use 2 space tabs for json files"
 }
