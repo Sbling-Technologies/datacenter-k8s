@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "7ae3eb9b907c467d9777924d2644c03a6086f163",
+  "drySha": "e367d348023493e0bde479909fbd8d8ad662b737",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-16T10:07:03Z",
-  "subject": "Merge pull request #32 from Sbling-Technologies/update-readme"
+  "date": "2025-08-16T17:35:08Z",
+  "subject": "feat: migrate to cilium part1"
 }
