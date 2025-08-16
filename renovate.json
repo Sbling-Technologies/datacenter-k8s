@@ -1,45 +1,45 @@
 {
-    "$schema": "https://docs.renovatebot.com/renovate-schema.json",
-    "extends": [
-        "config:recommended",
-        "group:recommended",
-        "group:allNonMajor",
-        "security:openssf-scorecard",
-        ":disableDependencyDashboard"
-    ],
-    "reviewers": ["ardubev16", "LuigiMiazzo17"],
-    "argocd": {
-        "managerFilePatterns": ["/^apps/.+\\.yaml$/", "/^app-of-apps.yaml$/"]
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:recommended",
+    "group:recommended",
+    "group:allNonMajor",
+    "security:openssf-scorecard",
+    ":disableDependencyDashboard"
+  ],
+  "reviewers": ["ardubev16", "LuigiMiazzo17"],
+  "argocd": {
+    "managerFilePatterns": ["/^apps/.+\\.yaml$/", "/^app-of-apps.yaml$/"]
+  },
+  "kubernetes": { "managerFilePatterns": ["/^.+\\.yaml$/"] },
+  "customManagers": [
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^.+/kustomization.yaml$/"],
+      "matchStrings": [
+        "https://raw\\.githubusercontent\\.com/(?<depName>[^/]+/[^/]+)/(?<currentValue>[^/]+)/.*"
+      ],
+      "datasourceTemplate": "github-tags"
     },
-    "kubernetes": { "managerFilePatterns": ["/^.+\\.yaml$/"] },
-    "customManagers": [
-        {
-            "customType": "regex",
-            "managerFilePatterns": ["/^.+/kustomization.yaml$/"],
-            "matchStrings": [
-                "https://raw\\.githubusercontent\\.com/(?<depName>[^/]+/[^/]+)/(?<currentValue>[^/]+)/.*"
-            ],
-            "datasourceTemplate": "github-tags"
-        },
-        {
-            "customType": "regex",
-            "managerFilePatterns": ["/^.+/kustomization.yaml$/"],
-            "matchStrings": [
-                "https://github\\.com/(?<depName>[^/]+/[^/]+)/releases/download/(?<currentValue>[^/]+)/.*"
-            ],
-            "datasourceTemplate": "github-releases"
-        }
-    ],
-    "packageRules": [
-        {
-            "matchPackageNames": [
-                "docker.elastic.co/elastic-agent/elastic-agent",
-                "docker.elastic.co/kibana/kibana"
-            ],
-            "groupName": "Elastic stack (kibana + agent)",
-            "separateMajorMinor": false,
-            "separateMinorPatch": false,
-            "reviewers": ["LuigiMiazzo17"]
-        }
-    ]
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^.+/kustomization.yaml$/"],
+      "matchStrings": [
+        "https://github\\.com/(?<depName>[^/]+/[^/]+)/releases/download/(?<currentValue>[^/]+)/.*"
+      ],
+      "datasourceTemplate": "github-releases"
+    }
+  ],
+  "packageRules": [
+    {
+      "matchPackageNames": [
+        "docker.elastic.co/elastic-agent/elastic-agent",
+        "docker.elastic.co/kibana/kibana"
+      ],
+      "groupName": "Elastic stack (kibana + agent)",
+      "separateMajorMinor": false,
+      "separateMinorPatch": false,
+      "reviewers": ["LuigiMiazzo17"]
+    }
+  ]
 }
