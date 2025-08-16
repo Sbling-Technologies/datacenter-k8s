@@ -1,0 +1,20 @@
+bpf:
+  hostLegacyRouting: true
+cluster:
+  name: sbling-prod
+cni:
+  customConf: true
+  uninstall: false
+ipam:
+  mode: cluster-pool
+  operator:
+    clusterPoolIPv4PodCIDRList:
+    - 10.44.0.0/16
+operator:
+  replicas: 1
+  unmanagedPodWatcher:
+    restart: false
+policyEnforcementMode: never
+routingMode: tunnel
+tunnelPort: 8473
+tunnelProtocol: vxlan
