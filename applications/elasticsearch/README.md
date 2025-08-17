@@ -5,6 +5,6 @@ To hydrate the manifests in this repository, run the following commands:
 ```shell
 git clone git@github.com:Sbling-Technologies/datacenter-k8s.git
 # cd into the cloned directory
-git checkout 4f5d964c4dce0805478eaabbc86cba42bd465fb0
+git checkout 24c5a80cd6e6f3d6b7ba3841bbb29f8d82328d21
 kustomize build ./applications/elasticsearch/overlays/staging --enable-helm
 ```

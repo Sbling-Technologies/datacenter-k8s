@@ -1,7 +1,8 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "4f5d964c4dce0805478eaabbc86cba42bd465fb0",
-  "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-17T10:42:23Z",
-  "subject": "feat: update network policy to use cilium"
+  "drySha": "24c5a80cd6e6f3d6b7ba3841bbb29f8d82328d21",
+  "author": "Minimi <17008163+LuigiMiazzo17@users.noreply.github.com>",
+  "date": "2025-08-17T21:54:31Z",
+  "subject": "Merge pull request #31 from Sbling-Technologies/renovate/elastic-stack-(kibana-+-agent)",
+  "body": "chore(deps): update elastic stack (kibana + agent) to v9.1.2\n"
 }
