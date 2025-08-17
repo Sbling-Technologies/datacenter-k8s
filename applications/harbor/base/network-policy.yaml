@@ -31,8 +31,6 @@ spec:
             matchLabels:
               k8s-app: kube-dns
       ports:
-        - protocol: TCP
-          port: 53
         - protocol: UDP
           port: 53
 ---
@@ -53,19 +51,18 @@ spec:
             matchLabels:
               app.kubernetes.io/name: traefik
 ---
-# Needed to make requests to Keycloak, it's a bit too permissive but NetworkPolicy doesn't support FQDN-based rules.
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
 metadata:
-  name: allow-to-traefik-external-ip
+  name: allow-to-keycloak
 spec:
-  podSelector: {}
-  policyTypes:
-    - Egress
+  endpointSelector:
+    matchLabels:
+      app: harbor
+      component: core
   egress:
-    - to:
-        - ipBlock:
-            cidr: 172.31.50.128/32
-      ports:
-        - protocol: TCP
-          port: 443
+    - toFQDNs:
+        - matchName: keycloak.services.sbling.net
+      toPorts:
+        - ports:
+            - port: "443"

@@ -14,27 +14,18 @@ spec:
   storage:
     size: 5Gi
 ---
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
 metadata:
   name: allow-cnpg-operator
 spec:
-  podSelector:
+  endpointSelector:
     matchLabels:
       cnpg.io/cluster: harbor-db
-  policyTypes:
-    - Ingress
-    - Egress
   ingress:
-    - from:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: cnpg-operator
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: cnpg-operator
   egress:
-    - to:
-        - ipBlock:
-            # IP of the "kubernetes" service in the "default" namespace
-            cidr: 10.43.0.1/32
-      ports:
-        - protocol: TCP
-          port: 443
+    - toEntities:
+        - kube-apiserver
