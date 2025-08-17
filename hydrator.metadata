@@ -1,6 +1,6 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "94d9f6c74a1083a58eb7a4c62ff2eefc2d1f9d0c",
+  "drySha": "4f5d964c4dce0805478eaabbc86cba42bd465fb0",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
   "date": "2025-08-17T10:42:23Z",
   "subject": "feat: update network policy to use cilium"
