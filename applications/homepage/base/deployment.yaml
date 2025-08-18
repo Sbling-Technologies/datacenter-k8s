@@ -4,7 +4,7 @@ metadata:
   name: homepage
 spec:
   revisionHistoryLimit: 3
-  replicas: 1
+  replicas: 2
   strategy:
     type: RollingUpdate
   template:
