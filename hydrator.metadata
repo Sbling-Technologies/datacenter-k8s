@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "e6c1d57b9cdf78f194be52b13cf60fa31e2971c0",
+  "drySha": "c39d27d220f5176633725c3b0e893e68072fa56d",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-18T20:59:01Z",
-  "subject": "fix: remove redundant labels"
+  "date": "2025-08-18T20:35:12Z",
+  "subject": "feat: enable monitoring for cnpg clusters"
 }
