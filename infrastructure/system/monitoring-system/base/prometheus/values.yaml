@@ -40,6 +40,17 @@ kubeProxy:
 
 prometheus:
   prometheusSpec:
+    replicas: 2
+    retentionSize: 30GiB
+    storageSpec:
+      volumeClaimTemplate:
+        spec:
+          storageClassName: longhorn-single-replica
+          accessModes: ["ReadWriteOnce"]
+          resources:
+            requests:
+              storage: 30Gi
+
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
     podMonitorSelectorNilUsesHelmValues: false
