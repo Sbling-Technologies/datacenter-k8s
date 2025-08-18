@@ -4,7 +4,6 @@ metadata:
   name: longhorn-prometheus-servicemonitor
   labels:
     name: longhorn-prometheus-servicemonitor
-    monitoring: system
 spec:
   selector:
     matchLabels:

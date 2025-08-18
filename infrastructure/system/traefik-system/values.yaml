@@ -110,8 +110,6 @@ metrics:
 
     serviceMonitor:
       enabled: true
-      additionalLabels:
-        monitoring: system
       metricRelabelings:
         - sourceLabels: [__name__]
           separator: ;
@@ -131,8 +129,6 @@ metrics:
 
     prometheusRule:
       enabled: true
-      additionalLabels:
-        monitoring: system
       rules:
         - alert: TraefikDown
           expr: up{job="traefik"} == 0

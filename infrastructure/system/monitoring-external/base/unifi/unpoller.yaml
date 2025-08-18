@@ -48,8 +48,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: PodMonitor
 metadata:
   name: unifi-poller
-  labels:
-    monitoring: system
 spec:
   podMetricsEndpoints:
     - port: tcp

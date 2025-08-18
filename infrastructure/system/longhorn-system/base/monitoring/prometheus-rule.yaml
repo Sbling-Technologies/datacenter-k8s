@@ -4,7 +4,6 @@ metadata:
   labels:
     prometheus: longhorn
     role: alert-rules
-    monitoring: system
   name: prometheus-longhorn-rules
 spec:
   groups:

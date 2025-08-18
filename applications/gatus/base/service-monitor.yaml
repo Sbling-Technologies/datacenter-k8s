@@ -2,8 +2,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: gatus-metrics
-  labels:
-    monitoring: system
 spec:
   selector:
     matchLabels:

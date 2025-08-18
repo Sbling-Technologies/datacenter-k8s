@@ -2,8 +2,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: argocd-metrics
-  labels:
-    monitoring: system
 spec:
   selector:
     matchLabels:
@@ -15,8 +13,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: argocd-server-metrics
-  labels:
-    monitoring: system
 spec:
   selector:
     matchLabels:
@@ -28,8 +24,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: argocd-repo-server-metrics
-  labels:
-    monitoring: system
 spec:
   selector:
     matchLabels:
@@ -41,8 +35,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: argocd-applicationset-controller-metrics
-  labels:
-    monitoring: system
 spec:
   selector:
     matchLabels:
@@ -54,8 +46,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: argocd-dex-server
-  labels:
-    monitoring: system
 spec:
   selector:
     matchLabels:
@@ -67,8 +57,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: argocd-redis-haproxy-metrics
-  labels:
-    monitoring: system
 spec:
   selector:
     matchLabels:
@@ -80,8 +68,6 @@ apiVersion: monitoring.coreos.com/v1
 kind: ServiceMonitor
 metadata:
   name: argocd-notifications-controller
-  labels:
-    monitoring: system
 spec:
   selector:
     matchLabels:
