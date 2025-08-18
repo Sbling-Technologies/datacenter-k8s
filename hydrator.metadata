@@ -1,6 +1,6 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "40713f9cd075f131f1203f51a1d724b2343934d9",
+  "drySha": "7d1a88bd1274c952f8a23e402923daace6be707a",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
   "date": "2025-08-18T20:35:12Z",
   "subject": "feat: enable monitoring for cnpg clusters"
