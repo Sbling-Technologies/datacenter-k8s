@@ -17,4 +17,5 @@ spec:
         name: carpoolerbot-db-user
 
   storage:
+    storageClass: longhorn-single-replica-retain
     size: 5Gi
