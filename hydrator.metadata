@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "b0b66aef30f28e35889506357ce9ee7bee93eab6",
+  "drySha": "e088f06ced661b962ddf748d0a89582e49ebf44e",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-18T20:35:12Z",
-  "subject": "feat: enable monitoring for cnpg clusters"
+  "date": "2025-08-18T21:50:00Z",
+  "subject": "feat: add single replica storage classes"
 }
