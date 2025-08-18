@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "bf5c3939b20b907bc068bc95a827da1bce1f291a",
+  "drySha": "ecb9345a342ada106c315b92dfe3afb15d979ca4",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-18T23:06:01Z",
-  "subject": "feat: add retention to prometheus"
+  "date": "2025-08-18T23:25:58Z",
+  "subject": "feat: homepage 2 replicas"
 }
