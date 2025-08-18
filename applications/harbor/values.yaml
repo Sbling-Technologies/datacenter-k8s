@@ -31,3 +31,11 @@ persistence:
     jobservice:
       jobLog:
         accessMode: ReadWriteMany
+
+core:
+  replicas: 2
+
+metrics:
+  enabled: true
+  serviceMonitor:
+    enabled: true

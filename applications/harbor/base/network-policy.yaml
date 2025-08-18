@@ -66,3 +66,15 @@ spec:
       toPorts:
         - ports:
             - port: "443"
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-monitoring
+spec:
+  endpointSelector: {}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: monitoring-system
+            app.kubernetes.io/name: prometheus

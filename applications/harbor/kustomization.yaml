@@ -13,6 +13,7 @@ helmCharts:
 resources:
   - base/certificate.yaml
   - base/database.yaml
+  - base/grafana-dashboard.yaml
   - base/ingress-ext.yaml
   - base/namespace.yaml
   - base/network-policy.yaml

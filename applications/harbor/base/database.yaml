@@ -31,10 +31,6 @@ spec:
   ingress:
     - fromEndpoints:
         - matchLabels:
-            io.kubernetes.pod.namespace: monitoring-system
-            app.kubernetes.io/name: prometheus
-    - fromEndpoints:
-        - matchLabels:
             io.kubernetes.pod.namespace: cnpg-operator
   egress:
     - toEntities:
