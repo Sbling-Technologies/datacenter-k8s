@@ -3,14 +3,19 @@ kind: Cluster
 metadata:
   name: harbor-db
 spec:
-  instances: 3
+  instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+
+  monitoring:
+    enablePodMonitor: true
+
   bootstrap:
     initdb:
       database: harbor
       owner: harbor
       secret:
         name: db-credentials
+
   storage:
     size: 5Gi
 ---
@@ -23,6 +28,10 @@ spec:
     matchLabels:
       cnpg.io/cluster: harbor-db
   ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: monitoring-system
+            app.kubernetes.io/name: prometheus
     - fromEndpoints:
         - matchLabels:
             io.kubernetes.pod.namespace: cnpg-operator

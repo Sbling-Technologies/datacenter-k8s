@@ -3,8 +3,11 @@ kind: Cluster
 metadata:
   name: keycloak-db
 spec:
-  instances: 3
+  instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+
+  monitoring:
+    enablePodMonitor: true
 
   bootstrap:
     initdb:

@@ -3,8 +3,11 @@ kind: Cluster
 metadata:
   name: gatus-db
 spec:
-  instances: 1
+  instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+
+  monitoring:
+    enablePodMonitor: true
 
   bootstrap:
     initdb:
