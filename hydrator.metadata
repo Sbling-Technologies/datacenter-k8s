@@ -1,6 +1,6 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "fba6c8a75bd29885be82b3554000a319e679c08a",
+  "drySha": "8ad17eb3f96488e7ceb552318dd7969bb24b338c",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
   "date": "2025-08-18T21:57:23Z",
   "subject": "feat: migrate dbs to single replica dataclass"
