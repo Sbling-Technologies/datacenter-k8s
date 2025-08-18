@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "ecb9345a342ada106c315b92dfe3afb15d979ca4",
+  "drySha": "d8cd7a621a5b2b0686d6a6f6e517ec6ac3608ecf",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-18T23:25:58Z",
-  "subject": "feat: homepage 2 replicas"
+  "date": "2025-08-18T23:40:24Z",
+  "subject": "feat(harbor): core replicas -> 2, monitoring and dashboard"
 }
