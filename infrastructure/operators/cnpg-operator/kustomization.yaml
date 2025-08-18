@@ -9,3 +9,7 @@ helmCharts:
     releaseName: cnpg-operator
     version: 0.26.0
     namespace: cnpg-operator
+    valuesFile: values.yaml
+
+resources:
+  - monitoring/dashboards.yaml

@@ -1,0 +1,6 @@
+replicaCount: 2
+
+monitoring:
+  podMonitorEnabled: true
+  podMonitorAdditionalLabels:
+    monitoring: system
