@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "351dd20f83b0dd0be55f44c971c18df5a021baca",
+  "drySha": "daf6ab3730f9f1682f566858ec0e2dacc063807b",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-19T19:36:29Z",
-  "subject": "Merge pull request #33 from Sbling-Technologies/renovate/all-minor-patch"
+  "date": "2025-08-19T19:54:24Z",
+  "subject": "feat: change default sorting"
 }
