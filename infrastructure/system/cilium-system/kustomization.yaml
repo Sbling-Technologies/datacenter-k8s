@@ -9,3 +9,6 @@ helmCharts:
     includeCRDs: true
     valuesFile: values.yaml
     namespace: kube-system
+
+resources:
+  - monitoring/dashboards.yaml
