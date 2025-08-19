@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "2f60ff2a3d581395b9b9d29c0e07ff843ccc274d",
+  "drySha": "5d165a9893b89e6777fa117788fc6ff8885ab9f3",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-19T16:20:23Z",
-  "subject": "doc: add Cilium"
+  "date": "2025-08-19T16:43:32Z",
+  "subject": "feat: use default port for tunneling"
 }
