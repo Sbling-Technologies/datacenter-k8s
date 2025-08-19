@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "07b4ec282a225e1465b3b1ec1b14b36c9c1eca68",
+  "drySha": "351dd20f83b0dd0be55f44c971c18df5a021baca",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-19T17:32:33Z",
-  "subject": "feat(cilium): enable monitoring"
+  "date": "2025-08-19T19:36:29Z",
+  "subject": "Merge pull request #33 from Sbling-Technologies/renovate/all-minor-patch"
 }
