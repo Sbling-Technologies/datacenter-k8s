@@ -1,7 +1,7 @@
 {
   "repoURL": "git@github.com:Sbling-Technologies/datacenter-k8s.git",
-  "drySha": "cf78dda76a80136e11132a5768a257f10440a128",
+  "drySha": "2f60ff2a3d581395b9b9d29c0e07ff843ccc274d",
   "author": "Lorenzo Bevilacqua <43483037+ardubev16@users.noreply.github.com>",
-  "date": "2025-08-18T23:40:24Z",
-  "subject": "feat(harbor): core replicas -> 2, monitoring and dashboard"
+  "date": "2025-08-19T16:20:23Z",
+  "subject": "doc: add Cilium"
 }
