@@ -60,6 +60,3 @@ of manifests for a Kubernetes cluster. Here's a breakdown of the directory struc
 
 - `vault`: _(Will be moved to `infrastructure` directory for consistency)_ This directory
   contains the configuration for HashiCorp Vault, which is used for secrets management.
-
-- `es-fleet-server`: _(Will be moved to `applications` directory for consistency)_
-  This directory contains the configuration for the Elasticsearch Fleet Agent.
