@@ -19,6 +19,9 @@ alerting:
       failure-threshold: 2
       success-threshold: 2
 
+ui:
+  default-sort-by: group
+
 metrics: true
 
 x-https-common: &https-common
