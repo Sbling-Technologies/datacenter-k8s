@@ -1,10 +1,6 @@
 cluster:
   name: sbling-prod
 
-bpf:
-  hostLegacyRouting: false
-
-tunnelPort: 8473
 ipam:
   operator:
     clusterPoolIPv4PodCIDRList:
