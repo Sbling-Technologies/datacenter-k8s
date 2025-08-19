@@ -58,10 +58,6 @@ endpoints:
     <<: *https-common
     url: https://homepage.services.sbling.net/
 
-  - name: Kibana
-    <<: *https-common
-    url: https://kibana.services.sbling.net/
-
   - name: Keycloak
     <<: *https-common
     url: https://keycloak.services.sbling.net/

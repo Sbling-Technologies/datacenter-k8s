@@ -22,5 +22,4 @@ configMapGenerator:
     files:
       - config/config.yaml
       - config/dns.yaml
-      - config/elasticsearch.yaml
       - config/mail.yaml
