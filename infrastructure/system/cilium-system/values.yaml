@@ -1,6 +1,10 @@
 cluster:
   name: sbling-prod
 
+kubeProxyReplacement: true
+k8sServiceHost: kube.services.sbling.net
+k8sServicePort: 6443
+
 ipam:
   operator:
     clusterPoolIPv4PodCIDRList:

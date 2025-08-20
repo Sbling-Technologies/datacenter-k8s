@@ -32,11 +32,9 @@ kubeScheduler:
     - 172.31.50.49
     - 172.31.50.50
 
+# NOTE: Replaced by Cilium
 kubeProxy:
-  endpoints:
-    - 172.31.50.48
-    - 172.31.50.49
-    - 172.31.50.50
+  enabled: false
 
 prometheus:
   prometheusSpec:
