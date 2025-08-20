@@ -61,11 +61,16 @@ spec:
       app: harbor
       component: core
   egress:
-    - toFQDNs:
-        - matchName: keycloak.services.sbling.net
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: traefik-system
+            app.kubernetes.io/name: traefik
       toPorts:
         - ports:
-            - port: "443"
+            - port: "8443"
+              protocol: TCP
+          serverNames:
+            - keycloak.services.sbling.net
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
