@@ -39,7 +39,9 @@ kubeProxy:
 prometheus:
   prometheusSpec:
     replicas: 2
-    retentionSize: 30GiB
+    enableFeatures:
+      - exemplar-storage
+    retentionSize: 27GiB
     storageSpec:
       volumeClaimTemplate:
         spec:

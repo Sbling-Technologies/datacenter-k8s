@@ -1,6 +1,7 @@
 cluster:
   name: sbling-prod
 
+rollOutCiliumPods: true
 kubeProxyReplacement: true
 k8sServiceHost: kube.services.sbling.net
 k8sServicePort: 6443
@@ -19,6 +20,7 @@ hubble:
     enabled: true
 
   metrics:
+    enableOpenMetrics: true
     enabled:
       - dns
       - drop
