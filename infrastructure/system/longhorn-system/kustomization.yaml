@@ -15,5 +15,6 @@ resources:
   - base/monitoring
   - base/ingress.yaml
   - base/middleware-oidc-auth.yaml
+  - base/recurring-jobs.yaml
   - base/secrets.yaml
   - base/storage-classes.yaml
