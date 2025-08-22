@@ -1,14 +1,11 @@
 global:
   sendAnonymousUsage: false
 
-additionalArguments:
-  - "--providers.kubernetescrd"
-
 experimental:
   plugins:
     traefikoidc:
       moduleName: github.com/lukaszraczylo/traefikoidc
-      version: v0.5.34
+      version: v0.6.1
 
 deployment:
   replicas: 2
