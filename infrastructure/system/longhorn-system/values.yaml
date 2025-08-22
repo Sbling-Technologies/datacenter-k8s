@@ -8,3 +8,4 @@ persistence:
 
 defaultSettings:
   concurrentAutomaticEngineUpgradePerNodeLimit: "3"
+  nodeDrainPolicy: allow-if-replica-is-stopped
