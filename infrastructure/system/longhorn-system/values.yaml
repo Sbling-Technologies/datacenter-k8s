@@ -5,3 +5,6 @@ preUpgradeChecker:
 persistence:
   defaultClassReplicaCount: 2
   reclaimPolicy: Retain
+
+defaultSettings:
+  concurrentAutomaticEngineUpgradePerNodeLimit: "3"
