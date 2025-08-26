@@ -13,7 +13,6 @@ spec:
     - longhorn-system
     - monitoring-external
     - monitoring-system
-    - prod-elasticsearch
     - prod-gatus
     - prod-harbor
     - prod-homepage
@@ -21,6 +20,7 @@ spec:
     - prod-kibana
     - prod-telegram-bots
     - prod-wallabag
+    - prod-unitn-tg-bot
     - traefik-system
   kubernetes:
     role: kubesecret-reader
