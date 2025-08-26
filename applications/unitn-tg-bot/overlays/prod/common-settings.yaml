@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: common-settings
+data:
+  DB_PATH: /db/database.sqlite3
+
+  KAFKA_SERVER: kafka.prod-unitn-tg-bot.svc.cluster.local:9092
+
+  CANTEEN_SVC_URL: http://canteen-svc.prod-unitn-tg-bot.svc.cluster.local:5000
+  EXAMS_SVC_URL: http://exams-svc.prod-unitn-tg-bot.svc.cluster.local:5000
+  LECTURES_SVC_URL: http://lectures-svc.prod-unitn-tg-bot.svc.cluster.local:5000
+  MAPS_SVC_URL: http://maps-svc.prod-unitn-tg-bot.svc.cluster.local:5000
+  ROOMS_SVC_URL: http://rooms-svc.prod-unitn-tg-bot.svc.cluster.local:5000
+  TT_SVC_URL: http://tt-svc.prod-unitn-tg-bot.svc.cluster.local:5000

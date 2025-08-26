@@ -32,7 +32,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 80
+      port: 5000
       targetPort: 5000
   selector:
     io.kompose.service: rooms-svc

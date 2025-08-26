@@ -16,11 +16,11 @@ spec:
     spec:
       containers:
         - env:
-            - name: KAFKA_SERVER
-              value: kafka:9092
             - name: KAFKA_TOPIC
               value: notifications
           envFrom:
+            - configMapRef:
+                name: common-settings
             - secretRef:
                 name: unitntgbot-secrets
           image: ghcr.io/guss-alberto/unitntgbot-notification_dispatcher:v0.1.0

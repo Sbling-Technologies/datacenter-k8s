@@ -16,23 +16,11 @@ spec:
     spec:
       containers:
         - env:
-            - name: DB_PATH
-              value: /db/database.sqlite3
-            - name: CANTEEN_SVC_URL
-              value: http://canteen-svc
-            - name: EXAMS_SVC_URL
-              value: http://exams-svc
-            - name: LECTURES_SVC_URL
-              value: http://lectures-svc
-            - name: MAPS_SVC_URL
-              value: http://maps-svc
-            - name: ROOMS_SVC_URL
-              value: http://rooms-svc
-            - name: TT_SVC_URL
-              value: http://tt-svc
             - name: TZ
               value: Europe/Rome
           envFrom:
+            - configMapRef:
+                name: common-settings
             - secretRef:
                 name: unitntgbot-secrets
           image: ghcr.io/guss-alberto/unitntgbot-bot_frontend:v0.1.0

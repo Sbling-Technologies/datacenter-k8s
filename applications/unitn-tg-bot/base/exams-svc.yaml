@@ -17,12 +17,11 @@ spec:
     spec:
       containers:
         - env:
-            - name: DB_PATH
-              value: /db/database.sqlite3
-            - name: KAFKA_SERVER
-              value: kafka:9092
             - name: KAFKA_TOPIC
               value: notifications
+          envFrom:
+            - configMapRef:
+                name: common-settings
           name: exams-svc
           image: ghcr.io/guss-alberto/unitntgbot-exams:v0.1.0
           ports:
@@ -53,7 +52,7 @@ metadata:
 spec:
   ports:
     - name: http
-      port: 80
+      port: 5000
       targetPort: 5000
   selector:
     io.kompose.service: exams-svc
