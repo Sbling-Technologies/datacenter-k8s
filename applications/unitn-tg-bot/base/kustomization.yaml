@@ -4,7 +4,6 @@ kind: Kustomization
 resources:
   - canteen-svc.yaml
   - exams-svc.yaml
-  - kafka.yaml
   - lectures-svc.yaml
   - maps-svc.yaml
   - network-policy.yaml
@@ -14,3 +13,11 @@ resources:
   - telegram-bot.yaml
   - tt-svc.yaml
   - updater.yaml
+
+helmCharts:
+  - repo: https://charts.bitnami.com/bitnami
+    name: kafka
+    releaseName: kafka
+    version: 32.4.3
+    valuesFile: kafka-values.yaml
+    namespace: prod-unitn-tg-bot
