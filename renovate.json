@@ -32,14 +32,11 @@
   ],
   "packageRules": [
     {
-      "matchPackageNames": [
-        "docker.elastic.co/elastic-agent/elastic-agent",
-        "docker.elastic.co/kibana/kibana"
-      ],
-      "groupName": "Elastic stack (kibana + agent)",
+      "matchPackageNames": ["ghcr.io/guss-alberto/unitntgbot-*"],
+      "groupName": "unitntgbot",
       "separateMajorMinor": false,
       "separateMinorPatch": false,
-      "reviewers": ["LuigiMiazzo17"]
+      "reviewers": ["ardubev16"]
     }
   ]
 }
