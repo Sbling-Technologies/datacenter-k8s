@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    io.kompose.service: updater
+  name: updater
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: updater
+  template:
+    metadata:
+      labels:
+        io.kompose.service: updater
+    spec:
+      containers:
+        - env:
+            - name: CANTEEN_SVC_URL
+              value: http://canteen-svc
+            - name: EXAMS_SVC_URL
+              value: http://exams-svc
+            - name: LECTURES_SVC_URL
+              value: http://lectures-svc
+          image: ghcr.io/guss-alberto/unitntgbot-updater:v0.1.0
+          name: updater
+      restartPolicy: Always

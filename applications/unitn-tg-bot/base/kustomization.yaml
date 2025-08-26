@@ -1,0 +1,16 @@
+apiVersion: kustomize.config.k8s.io/v1beta1
+kind: Kustomization
+
+resources:
+  - canteen-svc.yaml
+  - exams-svc.yaml
+  - kafka.yaml
+  - lectures-svc.yaml
+  - maps-svc.yaml
+  - network-policy.yaml
+  - notification-dispatcher.yaml
+  - rooms-svc.yaml
+  - secrets.yaml
+  - telegram-bot.yaml
+  - tt-svc.yaml
+  - updater.yaml

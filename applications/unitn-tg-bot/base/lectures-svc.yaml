@@ -1,0 +1,64 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    io.kompose.service: lectures-svc
+  name: lectures-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: lectures-svc
+  serviceName: lectures-svc
+  template:
+    metadata:
+      labels:
+        io.kompose.service: lectures-svc
+    spec:
+      containers:
+        - env:
+            - name: DB_PATH
+              value: /db/database.sqlite3
+            - name: EXAMS_SVC_URL
+              value: http://exams-svc
+            - name: TT_SVC_URL
+              value: http://tt-svc
+            - name: KAFKA_SERVER
+              value: kafka:9092
+            - name: KAFKA_TOPIC
+              value: notifications
+          image: ghcr.io/guss-alberto/unitntgbot-lectures:v0.1.0
+          name: lectures-svc
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /db
+              name: lectures-data
+      restartPolicy: Always
+  volumeClaimTemplates:
+    - metadata:
+        labels:
+          io.kompose.service: lectures-data
+        name: lectures-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: lectures-svc
+  name: lectures-svc
+spec:
+  clusterIP: None
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+  selector:
+    io.kompose.service: lectures-svc

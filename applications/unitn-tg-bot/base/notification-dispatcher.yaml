@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    io.kompose.service: notification-dispatcher
+  name: notification-dispatcher
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: notification-dispatcher
+  template:
+    metadata:
+      labels:
+        io.kompose.service: notification-dispatcher
+    spec:
+      containers:
+        - env:
+            - name: KAFKA_SERVER
+              value: kafka:9092
+            - name: KAFKA_TOPIC
+              value: notifications
+          envFrom:
+            - secretRef:
+                name: unitntgbot-secrets
+          image: ghcr.io/guss-alberto/unitntgbot-notification_dispatcher:v0.1.0
+          name: notification-dispatcher
+      restartPolicy: Always

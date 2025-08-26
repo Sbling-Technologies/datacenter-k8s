@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    io.kompose.service: canteen-svc
+  name: canteen-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: canteen-svc
+  serviceName: canteen-svc
+  template:
+    metadata:
+      labels:
+        io.kompose.service: canteen-svc
+    spec:
+      containers:
+        - env:
+            - name: DB_PATH
+              value: /db/database.sqlite3
+            - name: KAFKA_SERVER
+              value: kafka:9092
+            - name: KAFKA_TOPIC
+              value: notifications
+          image: ghcr.io/guss-alberto/unitntgbot-canteen:v0.1.0
+          name: canteen-svc
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+          volumeMounts:
+            - mountPath: /db
+              name: canteen-data
+      restartPolicy: Always
+  volumeClaimTemplates:
+    - metadata:
+        labels:
+          io.kompose.service: canteen-data
+        name: canteen-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: canteen-svc
+  name: canteen-svc
+spec:
+  clusterIP: None
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+  selector:
+    io.kompose.service: canteen-svc

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    io.kompose.service: tt-svc
+  name: tt-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: tt-svc
+  serviceName: tt-svc
+  template:
+    metadata:
+      labels:
+        io.kompose.service: tt-svc
+    spec:
+      containers:
+        - image: ghcr.io/guss-alberto/unitntgbot-tt:v0.1.0
+          name: tt-svc
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: tt-svc
+  name: tt-svc
+spec:
+  clusterIP: None
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+  selector:
+    io.kompose.service: tt-svc

@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    io.kompose.service: rooms-svc
+  name: rooms-svc
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: rooms-svc
+  serviceName: rooms-svc
+  template:
+    metadata:
+      labels:
+        io.kompose.service: rooms-svc
+    spec:
+      containers:
+        - image: ghcr.io/guss-alberto/unitntgbot-rooms:v0.1.0
+          name: rooms-svc
+          ports:
+            - containerPort: 5000
+              protocol: TCP
+      restartPolicy: Always
+---
+apiVersion: v1
+kind: Service
+metadata:
+  labels:
+    io.kompose.service: rooms-svc
+  name: rooms-svc
+spec:
+  clusterIP: None
+  ports:
+    - name: http
+      port: 80
+      targetPort: 5000
+  selector:
+    io.kompose.service: rooms-svc

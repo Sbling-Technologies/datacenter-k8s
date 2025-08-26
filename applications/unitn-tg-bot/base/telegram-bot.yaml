@@ -1,0 +1,54 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  labels:
+    io.kompose.service: telegram-bot
+  name: telegram-bot
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      io.kompose.service: telegram-bot
+  template:
+    metadata:
+      labels:
+        io.kompose.service: telegram-bot
+    spec:
+      containers:
+        - env:
+            - name: DB_PATH
+              value: /db/database.sqlite3
+            - name: CANTEEN_SVC_URL
+              value: http://canteen-svc
+            - name: EXAMS_SVC_URL
+              value: http://exams-svc
+            - name: LECTURES_SVC_URL
+              value: http://lectures-svc
+            - name: MAPS_SVC_URL
+              value: http://maps-svc
+            - name: ROOMS_SVC_URL
+              value: http://rooms-svc
+            - name: TT_SVC_URL
+              value: http://tt-svc
+            - name: TZ
+              value: Europe/Rome
+          envFrom:
+            - secretRef:
+                name: unitntgbot-secrets
+          image: ghcr.io/guss-alberto/unitntgbot-bot_frontend:v0.1.0
+          name: telegram-bot
+          volumeMounts:
+            - mountPath: /db
+              name: bot-data
+      restartPolicy: Always
+  volumeClaimTemplates:
+    - metadata:
+        labels:
+          io.kompose.service: bot-data
+        name: bot-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 100Mi
