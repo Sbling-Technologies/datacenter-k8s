@@ -51,7 +51,6 @@ metadata:
     io.kompose.service: canteen-svc
   name: canteen-svc
 spec:
-  clusterIP: None
   ports:
     - name: http
       port: 80

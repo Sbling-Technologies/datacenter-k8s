@@ -74,7 +74,6 @@ metadata:
     io.kompose.service: kafka
   name: kafka
 spec:
-  clusterIP: None
   ports:
     - name: kafka
       port: 9092

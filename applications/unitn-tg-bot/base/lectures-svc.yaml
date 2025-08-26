@@ -55,7 +55,6 @@ metadata:
     io.kompose.service: lectures-svc
   name: lectures-svc
 spec:
-  clusterIP: None
   ports:
     - name: http
       port: 80

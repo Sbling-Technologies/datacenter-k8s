@@ -23,8 +23,8 @@ spec:
               value: kafka:9092
             - name: KAFKA_TOPIC
               value: notifications
-          image: exams-svc
-          name: ghcr.io/guss-alberto/unitntgbot-exams:v0.1.0
+          name: exams-svc
+          image: ghcr.io/guss-alberto/unitntgbot-exams:v0.1.0
           ports:
             - containerPort: 5000
               protocol: TCP
@@ -51,7 +51,6 @@ metadata:
     io.kompose.service: exams-svc
   name: exams-svc
 spec:
-  clusterIP: None
   ports:
     - name: http
       port: 80

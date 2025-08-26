@@ -30,7 +30,6 @@ metadata:
     io.kompose.service: rooms-svc
   name: rooms-svc
 spec:
-  clusterIP: None
   ports:
     - name: http
       port: 80

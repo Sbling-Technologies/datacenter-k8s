@@ -30,7 +30,6 @@ metadata:
     io.kompose.service: maps-svc
   name: maps-svc
 spec:
-  clusterIP: None
   ports:
     - name: http
       port: 80
