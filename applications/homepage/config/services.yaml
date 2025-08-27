@@ -26,27 +26,6 @@
         href: &n8n_url https://n8n.services.sbling.net
         siteMonitor: *n8n_url
 
-- Monitoring:
-    - Grafana Old:
-        description: Old instance on docker-main
-        icon: grafana
-        href: &grafana_url https://grafana-old.services.sbling.net
-        siteMonitor: *grafana_url
-        widget:
-          type: grafana
-          url: *grafana_url
-          username: "{{HOMEPAGE_VAR_GRAFANA_USER}}"
-          password: "{{HOMEPAGE_VAR_GRAFANA_PSWD}}"
-
-    - Prometheus Old:
-        description: Old instance on docker-main
-        icon: prometheus
-        href: &prometheus_url https://prometheus.services.sbling.net
-        siteMonitor: *prometheus_url
-        widget:
-          type: prometheus
-          url: *prometheus_url
-
 - Management:
     - Proxmox:
         description: VM manager
