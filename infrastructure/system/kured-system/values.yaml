@@ -1,0 +1,24 @@
+configuration:
+  prometheusUrl: http://kube-prometheus-stack-prometheus.monitoring-system.svc.cluster.local:9090
+  alertFilterRegexp: ^(Watchdog|RebootRequired)$
+
+  rebootDays: [tu, we, sa, su]
+  timeZone: Europe/Rome
+  startTime: 2:00
+  endTime: 7:00
+  notifyUrl: telegram://${TELEGRAM_BOT_TOKEN}@telegram?chats=${TELEGRAM_CHAT_ID}
+
+extraEnvVars:
+  - name: TELEGRAM_BOT_TOKEN
+    valueFrom:
+      secretKeyRef:
+        name: inchident-bot-secret
+        key: token
+  - name: TELEGRAM_CHAT_ID
+    valueFrom:
+      secretKeyRef:
+        name: inchident-bot-secret
+        key: chat_id
+
+metrics:
+  create: true

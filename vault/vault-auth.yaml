@@ -10,6 +10,7 @@ spec:
   allowedNamespaces:
     - argocd
     - kube-system
+    - kured-system
     - longhorn-system
     - monitoring-external
     - monitoring-system
