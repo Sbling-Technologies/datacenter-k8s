@@ -45,6 +45,7 @@ metadata:
 spec:
   staticConfigs:
     - targets:
+        - gh-ansible-runner.vms.sbling.net:8080
         - gh-ansible-runner.vms.sbling.net:9100
 ---
 apiVersion: monitoring.coreos.com/v1alpha1
@@ -54,13 +55,5 @@ metadata:
 spec:
   staticConfigs:
     - targets:
+        - hcp-tf-agent.vms.sbling.net:8080
         - hcp-tf-agent.vms.sbling.net:9100
----
-apiVersion: monitoring.coreos.com/v1alpha1
-kind: ScrapeConfig
-metadata:
-  name: truenas
-spec:
-  staticConfigs:
-    - targets:
-        - truenas.vms.sbling.net:9100
