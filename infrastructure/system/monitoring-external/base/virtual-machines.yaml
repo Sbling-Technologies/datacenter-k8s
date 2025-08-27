@@ -1,0 +1,66 @@
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: ddi-vm-external
+spec:
+  staticConfigs:
+    - targets:
+        - ddi.vms.sbling.net:8080
+        - ddi.vms.sbling.net:9100
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: docker-main-vm-external
+spec:
+  staticConfigs:
+    - targets:
+        - docker-main.vms.sbling.net:8080
+        - docker-main.vms.sbling.net:9100
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: mail-vm-external
+spec:
+  staticConfigs:
+    - targets:
+        - mail.vms.sbling.net:8080
+        - mail.vms.sbling.net:9100
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: pi1-vm-external
+spec:
+  staticConfigs:
+    - targets:
+        - pi1.vms.sbling.net:8080
+        - pi1.vms.sbling.net:9100
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: gh-ansible-runner-vm-external
+spec:
+  staticConfigs:
+    - targets:
+        - gh-ansible-runner.vms.sbling.net:9100
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: hcp-tf-agent-vm-external
+spec:
+  staticConfigs:
+    - targets:
+        - hcp-tf-agent.vms.sbling.net:9100
+---
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: truenas
+spec:
+  staticConfigs:
+    - targets:
+        - truenas.vms.sbling.net:9100
