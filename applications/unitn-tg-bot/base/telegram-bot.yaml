@@ -23,7 +23,7 @@ spec:
                 name: common-settings
             - secretRef:
                 name: unitntgbot-secrets
-          image: ghcr.io/guss-alberto/unitntgbot-bot_frontend:v0.1.0
+          image: ghcr.io/guss-alberto/unitntgbot-bot_frontend:v0.1.1
           name: telegram-bot
           volumeMounts:
             - mountPath: /db
