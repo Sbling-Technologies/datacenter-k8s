@@ -5,4 +5,4 @@ namespace: monitoring-external
 
 resources:
   - base/unifi
-  - base/virtual-machines.yaml
+  - base/linux-machines.yaml
