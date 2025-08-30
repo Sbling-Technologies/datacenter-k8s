@@ -41,7 +41,7 @@ prometheus:
     replicas: 2
     enableFeatures:
       - exemplar-storage
-    retentionSize: 27GiB
+    retentionSize: 25GiB
     storageSpec:
       volumeClaimTemplate:
         spec:
