@@ -8,13 +8,17 @@ data:
   kustomize.buildOptions: --enable-helm
 
   admin.enabled: "false"
-  # https://argo-cd.readthedocs.io/en/stable/operator-manual/user-management/keycloak/#keycloak-and-argocd-with-pkce
-  oidc.config: |
-    name: Keycloak
-    issuer: https://keycloak.services.sbling.net/realms/sbling
-    clientID: argocd
-    enablePKCEAuthentication: true
-    requestedScopes: ["openid", "profile", "email", "groups"]
+  dex.config: |
+    connectors:
+      - type: oidc
+        id: oidc
+        name: Keycloak
+        config:
+          issuer: https://keycloak.services.sbling.net/realms/sbling
+          clientID: argocd
+          clientSecret: $argocd-oidc-secret:dex.oidc.clientSecret
+          insecureEnableGroups: true
+          scopes: ["openid", "profile", "email", "groups"]
 
   resource.exclusions: |
     ### Network resources created by the Kubernetes control plane and excluded to reduce the number of watched events and UI clutter

@@ -6,6 +6,7 @@ namespace: argocd
 
 resources:
   - base/monitoring
+  - base/argocd-oidc-secret.yaml
   - base/ingress.yaml
   - base/namespace.yaml
   - base/secrets.yaml
