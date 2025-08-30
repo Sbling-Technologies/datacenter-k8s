@@ -17,4 +17,18 @@ spec:
     matchLabels:
       dashboards: "grafana"
   folderRef: infrastructure
-  url: https://grafana.com/api/dashboards/1860/revisions/41/download
+  url: https://grafana.com/api/dashboards/1860/revisions/latest/download
+---
+apiVersion: grafana.integreatly.org/v1beta1
+kind: GrafanaDashboard
+metadata:
+  name: y0nei-cadvisor
+spec:
+  datasources:
+    - datasourceName: prometheus
+      inputName: DS_PROMETHEUS
+  instanceSelector:
+    matchLabels:
+      dashboards: "grafana"
+  folderRef: infrastructure
+  url: https://grafana.com/api/dashboards/19724/revisions/latest/download
