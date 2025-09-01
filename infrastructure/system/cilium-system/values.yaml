@@ -13,6 +13,12 @@ ipam:
     clusterPoolIPv4PodCIDRList:
       - 10.44.0.0/16
 
+gatewayAPI:
+  enabled: true
+loadBalancer:
+  l7:
+    backend: envoy
+
 hubble:
   relay:
     enabled: true
