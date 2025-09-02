@@ -22,7 +22,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: common-settings
-          image: ghcr.io/guss-alberto/unitntgbot-lectures:v0.1.1
+          image: ghcr.io/guss-alberto/unitntgbot-lectures:v0.1.2
           name: lectures-svc
           ports:
             - containerPort: 5000
