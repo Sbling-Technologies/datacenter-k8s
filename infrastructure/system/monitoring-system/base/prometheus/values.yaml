@@ -41,7 +41,7 @@ prometheus:
     replicas: 2
     enableFeatures:
       - exemplar-storage
-    retentionSize: 25GiB
+    retentionSize: 40GiB
     storageSpec:
       volumeClaimTemplate:
         spec:
@@ -49,7 +49,7 @@ prometheus:
           accessModes: ["ReadWriteOnce"]
           resources:
             requests:
-              storage: 30Gi
+              storage: 50Gi
 
     ruleSelectorNilUsesHelmValues: false
     serviceMonitorSelectorNilUsesHelmValues: false
