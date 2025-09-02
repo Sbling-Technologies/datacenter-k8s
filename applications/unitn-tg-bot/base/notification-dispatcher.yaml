@@ -23,6 +23,6 @@ spec:
                 name: common-settings
             - secretRef:
                 name: unitntgbot-secrets
-          image: ghcr.io/guss-alberto/unitntgbot-notification_dispatcher:v0.1.1
+          image: ghcr.io/guss-alberto/unitntgbot-notification_dispatcher:v0.1.2
           name: notification-dispatcher
       restartPolicy: Always
