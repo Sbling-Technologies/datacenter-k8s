@@ -13,6 +13,10 @@ ipam:
     clusterPoolIPv4PodCIDRList:
       - 10.44.0.0/16
 
+ingressController:
+  enabled: true
+  defaultSecretNamespace: cert-manager
+  defaultSecretName: services-sbling-net-prod-cert
 gatewayAPI:
   enabled: true
 loadBalancer:

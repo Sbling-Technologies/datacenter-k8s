@@ -15,3 +15,16 @@ spec:
             apiTokenSecretRef:
               name: cloudflare-api-token-secret
               key: api-token
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: services-sbling-net-prod-cert
+spec:
+  commonName: "*.services.sbling.net"
+  secretName: services-sbling-net-prod-cert
+  dnsNames:
+    - "*.services.sbling.net"
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod
