@@ -9,6 +9,7 @@ spec:
   mount: kubernetes
   allowedNamespaces:
     - argocd
+    - external-dns
     - kube-system
     - kured-system
     - longhorn-system
@@ -20,8 +21,8 @@ spec:
     - prod-keycloak
     - prod-kibana
     - prod-telegram-bots
-    - prod-wallabag
     - prod-unitn-tg-bot
+    - prod-wallabag
     - traefik-system
   kubernetes:
     role: kubesecret-reader

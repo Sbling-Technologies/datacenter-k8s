@@ -1,0 +1,39 @@
+logLevel: &logLevel debug
+provider:
+  name: webhook
+  webhook:
+    image:
+      repository: ghcr.io/kashalls/external-dns-unifi-webhook
+      tag: placeholder
+    env:
+      - name: UNIFI_HOST
+        value: https://sblenghito.mgmt.sbling.net
+      - name: UNIFI_EXTERNAL_CONTROLLER
+        value: "false"
+      - name: UNIFI_API_KEY
+        valueFrom:
+          secretKeyRef:
+            name: external-dns-unifi-secret
+            key: api-key
+      - name: LOG_LEVEL
+        value: *logLevel
+    livenessProbe:
+      httpGet:
+        path: /healthz
+        port: http-webhook
+      initialDelaySeconds: 10
+      timeoutSeconds: 5
+    readinessProbe:
+      httpGet:
+        path: /readyz
+        port: http-webhook
+      initialDelaySeconds: 10
+      timeoutSeconds: 5
+extraArgs:
+  - --ignore-ingress-tls-spec
+  - --txt-wildcard-replacement=xxx
+policy: sync
+sources: ["ingress"]
+txtOwnerId: default
+txtPrefix: k8s.
+domainFilters: ["services.sbling.net"]
