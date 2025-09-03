@@ -69,9 +69,9 @@ spec:
         gethomepage.dev/icon: grafana
         gethomepage.dev/pod-selector: ""
     spec:
-      ingressClassName: traefik
+      ingressClassName: cilium
       rules:
-        - host: grafana.services.sbling.net
+        - host: &host grafana.services.sbling.net
           http:
             paths:
               - backend:
@@ -83,5 +83,4 @@ spec:
                 pathType: Prefix
       tls:
         - hosts:
-            - grafana.services.sbling.net
-          secretName: grafana-services-sbling-net-prod-cert
+            - *host
