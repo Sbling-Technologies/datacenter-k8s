@@ -10,39 +10,18 @@ metadata:
     gethomepage.dev/icon: argo-cd
     gethomepage.dev/pod-selector: ""
 spec:
-  ingressClassName: traefik
+  ingressClassName: cilium
   rules:
-    - host: argocd.services.sbling.net
+    - host: &host argocd.services.sbling.net
       http:
         paths:
           - backend:
               service:
                 name: argocd-server
                 port:
-                  number: 443
+                  name: http
             path: /
             pathType: Prefix
   tls:
     - hosts:
-        - argocd.services.sbling.net
-      secretName: argocd-services-sbling-net-prod-cert
----
-apiVersion: traefik.io/v1alpha1
-kind: ServersTransport
-metadata:
-  name: no-verify-tls
-spec:
-  insecureSkipVerify: true
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: argocd-cert
-spec:
-  commonName: argocd.services.sbling.net
-  secretName: argocd-services-sbling-net-prod-cert
-  dnsNames:
-    - argocd.services.sbling.net
-  issuerRef:
-    kind: ClusterIssuer
-    name: cert-issuer-prod
+        - *host

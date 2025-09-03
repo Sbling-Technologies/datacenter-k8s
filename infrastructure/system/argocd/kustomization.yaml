@@ -20,4 +20,3 @@ patches:
     target:
       kind: NetworkPolicy
       name: argocd-redis-ha-proxy-network-policy
-  - path: overlays/production/service-argocd-server.yaml
