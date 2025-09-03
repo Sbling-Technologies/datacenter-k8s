@@ -10,9 +10,9 @@ metadata:
     gethomepage.dev/icon: wallabag
     gethomepage.dev/pod-selector: ""
 spec:
-  ingressClassName: traefik
+  ingressClassName: cilium
   rules:
-    - host: wallabag.services.sbling.net
+    - host: &host wallabag.services.sbling.net
       http:
         paths:
           - backend:
@@ -24,18 +24,4 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - wallabag.services.sbling.net
-      secretName: wallabag-services-sbling-net-prod-cert
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: wallabag-cert
-spec:
-  commonName: wallabag.services.sbling.net
-  secretName: wallabag-services-sbling-net-prod-cert
-  dnsNames:
-    - wallabag.services.sbling.net
-  issuerRef:
-    kind: ClusterIssuer
-    name: cert-issuer-prod
+        - *host
