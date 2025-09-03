@@ -20,38 +20,6 @@ ports:
         scheme: https
   websecure:
     asDefault: true
-  elasticsearch:
-    port: 9200
-    exposedPort: 9200
-    expose:
-      default: true
-    protocol: TCP
-    tls:
-      enabled: true
-  fleet-server:
-    port: 8220
-    exposedPort: 8220
-    expose:
-      default: true
-    protocol: TCP
-    tls:
-      enabled: true
-  syslog-tcp:
-    port: 514
-    exposedPort: 514
-    expose:
-      default: true
-    protocol: TCP
-    tls:
-      enabled: false
-  syslog-udp:
-    port: 514
-    exposedPort: 514
-    expose:
-      default: true
-    protocol: UDP
-    tls:
-      enabled: false
   webext:
     port: 9080
     exposedPort: 9080
