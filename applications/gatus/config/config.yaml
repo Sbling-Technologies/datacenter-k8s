@@ -46,10 +46,6 @@ endpoints:
     <<: *https-common
     url: https://truenas.services.sbling.net/
 
-  - name: Traefik
-    <<: *https-common
-    url: https://traefik.services.sbling.net/
-
   - name: Bitwarden
     <<: *https-common
     url: https://bitwarden.services.sbling.net/
