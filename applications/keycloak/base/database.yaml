@@ -14,14 +14,14 @@ spec:
       database: keycloak
       owner: keycloak
       secret:
-        name: keycloak-user
+        name: db-credentials
   # bootstrap:
   #   pg_basebackup:
   #     source: keycloak-keycloak
   #     database: keycloak
   #     owner: keycloak
   #     secret:
-  #       name: keycloak-user
+  #       name: db-credentials
   #
   # externalClusters:
   #   - name: keycloak-keycloak
