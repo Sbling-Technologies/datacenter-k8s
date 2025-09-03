@@ -10,9 +10,9 @@ metadata:
     gethomepage.dev/icon: gatus
     gethomepage.dev/pod-selector: ""
 spec:
-  ingressClassName: traefik
+  ingressClassName: cilium
   rules:
-    - host: gatus.services.sbling.net
+    - host: &host gatus.services.sbling.net
       http:
         paths:
           - backend:
@@ -24,18 +24,4 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - gatus.services.sbling.net
-      secretName: gatus-services-sbling-net-prod-cert
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: gatus-cert
-spec:
-  commonName: gatus.services.sbling.net
-  secretName: gatus-services-sbling-net-prod-cert
-  dnsNames:
-    - gatus.services.sbling.net
-  issuerRef:
-    kind: ClusterIssuer
-    name: cert-issuer-prod
+        - *host
