@@ -10,9 +10,9 @@ metadata:
     gethomepage.dev/icon: keycloak
     gethomepage.dev/pod-selector: ""
 spec:
-  ingressClassName: cilium
+  ingressClassName: traefik
   rules:
-    - host: &host keycloak.services.sbling.net
+    - host: keycloak.services.sbling.net
       http:
         paths:
           - backend:
@@ -24,4 +24,18 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - *host
+        - keycloak.services.sbling.net
+      secretName: keycloak-services-sbling-net-prod-cert
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: keycloak-cert
+spec:
+  commonName: keycloak.services.sbling.net
+  secretName: keycloak-services-sbling-net-prod-cert
+  dnsNames:
+    - keycloak.services.sbling.net
+  issuerRef:
+    kind: ClusterIssuer
+    name: cert-issuer-prod
