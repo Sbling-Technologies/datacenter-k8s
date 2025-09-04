@@ -36,7 +36,8 @@
       "groupName": "unitntgbot",
       "separateMajorMinor": false,
       "separateMinorPatch": false,
-      "reviewers": ["ardubev16"]
+      "reviewers": ["ardubev16"],
+      "automerge": true
     }
   ]
 }
