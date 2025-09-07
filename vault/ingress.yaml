@@ -11,9 +11,9 @@ metadata:
     gethomepage.dev/icon: hashicorp-vault
     gethomepage.dev/pod-selector: ""
 spec:
-  ingressClassName: traefik
+  ingressClassName: cilium
   rules:
-    - host: vault.services.sbling.net
+    - host: &host vault.services.sbling.net
       http:
         paths:
           - backend:
@@ -25,19 +25,4 @@ spec:
             pathType: Prefix
   tls:
     - hosts:
-        - vault.services.sbling.net
-      secretName: vault-services-sbling-net-prod-cert
----
-apiVersion: cert-manager.io/v1
-kind: Certificate
-metadata:
-  name: vault-cert
-  namespace: vault
-spec:
-  commonName: vault.services.sbling.net
-  secretName: vault-services-sbling-net-prod-cert
-  dnsNames:
-    - vault.services.sbling.net
-  issuerRef:
-    kind: ClusterIssuer
-    name: cert-issuer-prod
+        - *host
