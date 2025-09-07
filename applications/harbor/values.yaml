@@ -1,5 +1,6 @@
 expose:
   ingress:
+    className: cilium
     hosts:
       core: harbor.services.sbling.net
     annotations:
@@ -10,9 +11,7 @@ expose:
       gethomepage.dev/icon: harbor
       gethomepage.dev/pod-selector: ""
   tls:
-    certSource: secret
-    secret:
-      secretName: harbor-services-sbling-net-prod-cert
+    certSource: none
 
 externalURL: https://harbor.services.sbling.net
 
