@@ -12,7 +12,7 @@ service:
 ingress:
   enabled: true
   spec:
-    ingressClassName: traefik
+    ingressClassName: cilium
 
 annotations:
   service:

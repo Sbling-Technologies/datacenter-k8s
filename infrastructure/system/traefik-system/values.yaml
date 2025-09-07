@@ -61,7 +61,6 @@ ingressRoute:
 
 ingressClass:
   enabled: true
-  isDefaultClass: true
   name: traefik
 
 metrics:
