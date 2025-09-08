@@ -1,39 +1,41 @@
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
 metadata:
   name: default-deny-cross-namespace
 spec:
-  podSelector: {}
-  policyTypes:
-    - Ingress
-    - Egress
+  description: >-
+    Default deny all cross-namespace traffic. Allows all intra-namespace traffic.
+    Allows all traffic to kube-dns.
+  endpointSelector: {}
   ingress:
-    - from:
-        - podSelector: {}
+    - fromEndpoints:
+        - {}
   egress:
-    - to:
-        - podSelector: {}
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toEndpoints:
+        - {}
 ---
-apiVersion: networking.k8s.io/v1
-kind: NetworkPolicy
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
 metadata:
-  name: allow-to-kube-dns
+  name: allow-from-ingress
 spec:
-  podSelector: {}
-  policyTypes:
-    - Egress
-  egress:
-    - to:
-        - namespaceSelector:
-            matchLabels:
-              kubernetes.io/metadata.name: kube-system
-          podSelector:
-            matchLabels:
-              k8s-app: kube-dns
-      ports:
-        - protocol: UDP
-          port: 53
+  endpointSelector: {}
+  ingress:
+    - fromEntities:
+        - ingress
 ---
+# TODO: Remove once external ingress is migrated to Cilium
 apiVersion: networking.k8s.io/v1
 kind: NetworkPolicy
 metadata:
@@ -63,14 +65,12 @@ spec:
   egress:
     - toEndpoints:
         - matchLabels:
-            io.kubernetes.pod.namespace: traefik-system
-            app.kubernetes.io/name: traefik
+            io.kubernetes.pod.namespace: prod-keycloak
+            app.kubernetes.io/name: keycloak
       toPorts:
         - ports:
-            - port: "8443"
+            - port: "443"
               protocol: TCP
-          serverNames:
-            - keycloak.services.sbling.net
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
