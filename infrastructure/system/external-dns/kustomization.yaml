@@ -8,14 +8,10 @@ helmCharts:
   - repo: https://kubernetes-sigs.github.io/external-dns/
     name: external-dns
     releaseName: external-dns
-    version: 1.18.0
+    version: 1.19.0
     valuesFile: values.yaml
     namespace: external-dns
 
 images:
   - name: ghcr.io/kashalls/external-dns-unifi-webhook
     newTag: v0.6.2
-    # TODO: remove once helmCharts.version >= 1.19.0
-    # https://github.com/kubernetes-sigs/external-dns/issues/5635
-  - name: registry.k8s.io/external-dns/external-dns
-    newTag: v0.19.0
