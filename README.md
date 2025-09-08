@@ -16,19 +16,22 @@ services.
 
 - **ArgoCD**: Deployed in a high-availability configuration for managing the GitOps
   workflow.
-- **Longhorn**: Provides distributed block storage for stateful applications.
-- **Cilium**: A CNI plugin that provides advanced networking features, including
-  network policies and service mesh capabilities.
-- **Traefik**: Serves as the ingress controller, with OIDC authentication and Grafana
-  dashboards integrated.
-- **MetalLB**: Handles load balancing for services in the bare-metal environment.
 - **Cert-Manager**: For automated TLS certificate management, configured with both
   production and staging issuers.
+- **Cilium**: A CNI plugin that provides advanced networking features, including
+  network policies and service mesh capabilities. Currently also used as:
+  - Kube-proxy replacement.
+  - Ingress controller.
+- **External DNS**: Manages DNS records dynamically based on Kubernetes resources.
+- **Kured**: Kubernetes Reboot Daemon for automated node reboots after kernel updates.
+- **Longhorn**: Provides distributed block storage for stateful applications.
+- **MetalLB**: Handles load balancing for services in the bare-metal environment.
 - **Monitoring**: A comprehensive monitoring and logging stack is deployed, including:
   - **Grafana**: for visualization and dashboards.
   - **Prometheus**: For metrics collection.
   - **Loki**: For log aggregation.
   - **Alloy**: For collecting and processing logs.
+- **Traefik**: Serves as the ingress controller, with OIDC authentication integration.
 - **CloudNativePG Operator**: Manages PostgreSQL databases within the cluster.
 - **Keycloak Operator**: Manages Keycloak instances for identity and access management.
 
