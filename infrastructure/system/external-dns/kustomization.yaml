@@ -15,7 +15,3 @@ helmCharts:
 images:
   - name: ghcr.io/kashalls/external-dns-unifi-webhook
     newTag: v0.6.2
-    # TODO: remove once helmCharts.version >= 1.19.0
-    # https://github.com/kubernetes-sigs/external-dns/issues/5635
-  - name: registry.k8s.io/external-dns/external-dns
-    newTag: v0.19.0
