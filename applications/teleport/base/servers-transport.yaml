@@ -1,7 +1,0 @@
-apiVersion: traefik.io/v1alpha1
-kind: ServersTransport
-metadata:
-  name: server-name
-spec:
-  # https://community.traefik.io/t/possible-solution-for-cannot-validate-certificate-because-it-doesnt-contain-any-ip-sans/10914
-  serverName: teleport.services.sbling.net

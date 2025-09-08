@@ -15,8 +15,6 @@ ingress:
     ingressClassName: cilium
 
 annotations:
-  service:
-    traefik.ingress.kubernetes.io/service.serverstransport: prod-teleport-server-name@kubernetescrd
   ingress:
     gethomepage.dev/enabled: "true"
     gethomepage.dev/name: Teleport
