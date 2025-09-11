@@ -18,7 +18,5 @@ metadata:
   name: ingress-pool
 spec:
   blocks:
-    # TODO: change to this once MelalLB drained and removed
-    # - start: 172.31.50.128
-    - start: 172.31.50.140
+    - start: 172.31.50.128
       stop: 172.31.50.254
