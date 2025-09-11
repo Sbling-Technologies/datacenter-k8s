@@ -1,0 +1,24 @@
+apiVersion: cilium.io/v2alpha1
+kind: CiliumL2AnnouncementPolicy
+metadata:
+  name: l2policy-default
+spec:
+  loadBalancerIPs: true
+  interfaces:
+    - eth0
+  # TODO: Add once we have dedicated control plane nodes
+  # nodeSelector:
+  #   matchExpressions:
+  #     - key: node-role.kubernetes.io/control-plane
+  #       operator: DoesNotExist
+---
+apiVersion: cilium.io/v2
+kind: CiliumLoadBalancerIPPool
+metadata:
+  name: ingress-pool
+spec:
+  blocks:
+    # TODO: change to this once MelalLB drained and removed
+    # - start: 172.31.50.128
+    - start: 172.31.50.140
+      stop: 172.31.50.254

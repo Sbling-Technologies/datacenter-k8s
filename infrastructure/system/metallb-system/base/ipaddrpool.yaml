@@ -5,3 +5,4 @@ metadata:
 spec:
   addresses:
     - 172.31.50.128-172.31.50.254
+  autoAssign: false

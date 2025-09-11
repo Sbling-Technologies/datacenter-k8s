@@ -11,4 +11,5 @@ helmCharts:
     namespace: kube-system
 
 resources:
+  - base/l2-announcements.yaml
   - monitoring/dashboards.yaml
