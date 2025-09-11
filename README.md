@@ -22,10 +22,10 @@ services.
   network policies and service mesh capabilities. Currently also used as:
   - Kube-proxy replacement.
   - Ingress controller.
+  - Layer 2 announcements (ARP/NDP) for Ingress.
 - **External DNS**: Manages DNS records dynamically based on Kubernetes resources.
 - **Kured**: Kubernetes Reboot Daemon for automated node reboots after kernel updates.
 - **Longhorn**: Provides distributed block storage for stateful applications.
-- **MetalLB**: Handles load balancing for services in the bare-metal environment.
 - **Monitoring**: A comprehensive monitoring and logging stack is deployed, including:
   - **Grafana**: for visualization and dashboards.
   - **Prometheus**: For metrics collection.
