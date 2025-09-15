@@ -18,6 +18,6 @@ spec:
         - envFrom:
             - configMapRef:
                 name: common-settings
-          image: ghcr.io/guss-alberto/unitntgbot-updater:v0.1.3
+          image: ghcr.io/guss-alberto/unitntgbot-updater:v0.1.4
           name: updater
       restartPolicy: Always
