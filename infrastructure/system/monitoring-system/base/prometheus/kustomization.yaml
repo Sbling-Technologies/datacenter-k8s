@@ -6,7 +6,7 @@ helmCharts:
     name: kube-prometheus-stack
     releaseName: kube-prometheus-stack
     includeCRDs: true
-    version: 77.8.0
+    version: 77.9.1
     valuesFile: values.yaml
     namespace: monitoring-system
 
