@@ -3,7 +3,7 @@ configuration:
   alertFilterRegexp: ^(Watchdog|InfoInhibitor|RebootRequired)$
   alertFiringOnly: true
 
-  rebootDays: [wed, thu, fri, sat, sun]
+  rebootDays: [wed, thu, sat, sun]
   timeZone: Europe/Rome
   startTime: 2:00
   endTime: 7:00
