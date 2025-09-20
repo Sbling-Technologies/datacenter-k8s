@@ -7,7 +7,7 @@ helmCharts:
   - repo: https://helm.goharbor.io
     name: harbor
     releaseName: harbor
-    version: 1.17.2
+    version: 1.18.0
     valuesFile: values.yaml
 
 resources:
