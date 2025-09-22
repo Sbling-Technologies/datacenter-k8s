@@ -12,3 +12,4 @@ helmCharts:
 
 resources:
   - grafana-datasource.yaml
+  - secrets.yaml

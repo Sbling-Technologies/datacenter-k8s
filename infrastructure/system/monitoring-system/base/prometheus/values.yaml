@@ -56,3 +56,21 @@ prometheus:
     podMonitorSelectorNilUsesHelmValues: false
     probeSelectorNilUsesHelmValues: false
     scrapeConfigSelectorNilUsesHelmValues: false
+
+alertmanager:
+  alertmanagerSpec:
+    secrets:
+      - inchident-bot-secret
+
+  config:
+    route:
+      receiver: inchident-telegram-receiver
+      routes:
+        - receiver: inchident-telegram-receiver
+          matchers:
+            - alertname = "Watchdog"
+    receivers:
+      - name: inchident-telegram-receiver
+        telegram_configs:
+          - bot_token_file: /etc/alertmanager/secrets/inchident-bot-secret/token
+            chat_id: -1001844822513
