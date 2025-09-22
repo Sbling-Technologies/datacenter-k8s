@@ -61,12 +61,16 @@ alertmanager:
   alertmanagerSpec:
     secrets:
       - inchident-bot-secret
+      - healthcheck-io-webhook
 
   config:
     route:
       receiver: inchident-telegram-receiver
       routes:
-        - receiver: inchident-telegram-receiver
+        - receiver: healthcheck-io-webhook
+          group_interval: 1m
+          repeat_interval: 50s
+          group_wait: 0s
           matchers:
             - alertname = "Watchdog"
     receivers:
@@ -74,3 +78,6 @@ alertmanager:
         telegram_configs:
           - bot_token_file: /etc/alertmanager/secrets/inchident-bot-secret/token
             chat_id: -1001844822513
+      - name: healthcheck-io-webhook
+        webhook_configs:
+          - url_file: /etc/alertmanager/secrets/healthcheck-io-webhook/url
