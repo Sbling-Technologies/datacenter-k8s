@@ -23,7 +23,7 @@ loki:
   limits_config:
     allow_structured_metadata: true
     volume_enabled: true
-    retention_period: 240h
+    retention_period: 168h # 7 days
 
 deploymentMode: SimpleScalable
 
