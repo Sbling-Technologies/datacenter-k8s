@@ -12,4 +12,5 @@ helmCharts:
     namespace: prod-icinga
 
 resources:
+  - namespace.yaml
   - secrets.yaml
