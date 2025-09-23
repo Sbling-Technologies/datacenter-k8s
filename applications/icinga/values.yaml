@@ -20,6 +20,9 @@ icingaweb2:
     enabled: true
     hosts:
       - host: &host icingaweb2.services.sbling.net
+        paths:
+          - path: /
+            pathType: Prefix
     tls:
       - hosts:
           - *host
