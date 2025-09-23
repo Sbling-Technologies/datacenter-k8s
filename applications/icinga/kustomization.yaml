@@ -5,10 +5,11 @@ namespace: prod-icinga
 
 helmCharts:
   - repo: https://icinga.github.io/helm-charts
-    name: icinga
+    name: icinga-stack
     releaseName: icinga
     version: 0.6.0
     valuesFile: values.yaml
+    namespace: prod-icinga
 
 resources:
   - secrets.yaml

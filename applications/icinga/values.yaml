@@ -45,36 +45,39 @@ global:
   api:
     port: 5665
     users:
+      credSecret: icinga-api-users
       director:
         password:
-          value: icinga-api-users
           secretKey: director-password
 
       icingaweb:
         password:
-          value: icinga-api-users
           secretKey: icingaweb-password
 
   databases:
     director:
+      credSecret: icinga-database-users
+      username:
+        value: director
       password:
-        value: icinga-database-users
         secretKey: director-password
       persistence:
         enabled: true
 
     icingadb:
-      database: icingadb
+      credSecret: icinga-database-users
+      username:
+        value: icingadb
       password:
-        value: icinga-database-users
         secretKey: icingadb-password
       persistence:
         enabled: true
 
     icingaweb2:
-      database: icingaweb2db
+      credSecret: icinga-database-users
+      username:
+        value: icingaweb
       password:
-        value: icinga-database-users
         secretKey: icingaweb-password
       persistence:
         enabled: true
