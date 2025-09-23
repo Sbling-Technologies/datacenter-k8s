@@ -1,6 +1,6 @@
 configuration:
   prometheusUrl: http://kube-prometheus-stack-prometheus.monitoring-system.svc.cluster.local:9090
-  alertFilterRegexp: ^(Watchdog|InfoInhibitor|RebootRequired)$
+  alertFilterRegexp: ^(Watchdog|InfoInhibitor|RebootRequired|ArgoApplicationUnstable)$
   alertFiringOnly: true
 
   rebootDays: [wed, thu, sat, sun]
