@@ -10,6 +10,13 @@ icinga2:
 icingaweb2:
   ingress:
     enabled: true
+    annotations:
+      gethomepage.dev/enabled: "true"
+      gethomepage.dev/name: Icinga
+      gethomepage.dev/description: Icinga is a resilient, open source monitoring and metric solution system.
+      gethomepage.dev/group: Monitoring
+      gethomepage.dev/icon: icinga-light
+      gethomepage.dev/pod-selector: ""
     hosts:
       - host: &host icingaweb2.services.sbling.net
         paths:
