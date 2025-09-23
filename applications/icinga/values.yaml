@@ -1,0 +1,83 @@
+icinga2:
+  config:
+    ticket_salt:
+      credSecret: icinga-ticket-salt
+      secretKey: ticket-salt
+    disable_confd: true
+
+  persistence:
+    enabled: true
+
+  serviceAccount:
+    create: true
+
+icingadb:
+  serviceAccount:
+    create: true
+
+icingaweb2:
+  ingress:
+    enabled: true
+    hosts:
+      - host: &host icingaweb2.services.sbling.net
+    tls:
+      - hosts:
+          - *host
+
+  auth:
+    type: db
+    admin_user: icingaadmin
+    admin_password:
+      credSecret: icingaweb-admin-user
+      secretKey: password
+
+  modules:
+    kubernetes:
+      enabled: false
+
+  serviceAccount:
+    create: true
+
+icinga-kubernetes:
+  enabled: false
+
+global:
+  api:
+    port: 5665
+    users:
+      director:
+        password:
+          value: icinga-api-users
+          secretKey: director-password
+
+      icingaweb:
+        password:
+          value: icinga-api-users
+          secretKey: icingaweb-password
+
+  databases:
+    director:
+      password:
+        value: icinga-database-users
+        secretKey: director-password
+      persistence:
+        enabled: true
+
+    icingadb:
+      database: icingadb
+      password:
+        value: icinga-database-users
+        secretKey: icingadb-password
+      persistence:
+        enabled: true
+
+    icingaweb2:
+      database: icingaweb2db
+      password:
+        value: icinga-database-users
+        secretKey: icingaweb-password
+      persistence:
+        enabled: true
+
+    kubernetes:
+      enabled: false
