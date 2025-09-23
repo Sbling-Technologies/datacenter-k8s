@@ -3,17 +3,9 @@ icinga2:
     ticket_salt:
       credSecret: icinga-ticket-salt
       secretKey: ticket-salt
-    disable_confd: true
 
   persistence:
     enabled: true
-
-  serviceAccount:
-    create: true
-
-icingadb:
-  serviceAccount:
-    create: true
 
 icingaweb2:
   ingress:
@@ -38,15 +30,11 @@ icingaweb2:
     kubernetes:
       enabled: false
 
-  serviceAccount:
-    create: true
-
 icinga-kubernetes:
   enabled: false
 
 global:
   api:
-    port: 5665
     users:
       credSecret: icinga-api-users
       director:
