@@ -4,17 +4,6 @@ icinga2:
       credSecret: icinga-ticket-salt
       secretKey: ticket-salt
 
-  ingress:
-    enabled: true
-    annotations:
-      ingress.cilium.io/tls-passthrough: enabled
-    hosts:
-      - host: icinga-master.services.sbling.net
-        paths:
-          - path: /
-            pathType: Prefix
-    tls: []
-
   persistence:
     enabled: true
 

@@ -1,0 +1,23 @@
+apiVersion: gateway.networking.k8s.io/v1beta1
+kind: Gateway
+metadata:
+  name: icinga-gateway
+spec:
+  gatewayClassName: cilium
+  listeners:
+    - name: icinga-tcp-listener
+      protocol: TLS
+      port: 5665
+---
+apiVersion: gateway.networking.k8s.io/v1alpha2
+kind: TLSRoute
+metadata:
+  name: icinga-api-tls-route
+spec:
+  parentRefs:
+    - name: icinga-gateway
+  rules:
+    - backendRefs:
+        - name: icinga-icinga2
+          port: 5665
+          weight: 1
