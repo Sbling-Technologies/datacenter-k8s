@@ -15,9 +15,9 @@ apiVersion: gateway.networking.k8s.io/v1alpha2
 kind: TLSRoute
 metadata:
   name: icinga-api-tls-route
+  annotations:
+    external-dns.alpha.kubernetes.io/hostname: icinga-master.services.sbling.net
 spec:
-  hostnames:
-    - icinga-master.services.sbling.net
   parentRefs:
     - name: icinga-gateway
   rules:

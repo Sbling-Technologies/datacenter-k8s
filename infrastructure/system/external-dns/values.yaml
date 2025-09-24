@@ -33,7 +33,13 @@ extraArgs:
   - --ignore-ingress-tls-spec
   - --txt-wildcard-replacement=xxx
 policy: sync
-sources: ["ingress"]
+sources:
+  - ingress
+  - gateway-httproute
+  - gateway-grpcroute
+  - gateway-tlsroute
+  - gateway-tcproute
+  - gateway-udproute
 txtOwnerId: default
 txtPrefix: k8s.
 domainFilters: ["services.sbling.net"]
