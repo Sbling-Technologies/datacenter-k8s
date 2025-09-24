@@ -25,10 +25,6 @@ ingressController:
   default: true
   defaultSecretNamespace: cert-manager
   defaultSecretName: services-sbling-net-prod-cert
-  # TODO: remove once this is released: https://github.com/cilium/cilium/commit/3dcb8d94586c2e2cf2fd60236ba4a833a1603709
-  service:
-    insecureNodePort: 30135
-    secureNodePort: 32296
 gatewayAPI:
   enabled: true
 loadBalancer:
