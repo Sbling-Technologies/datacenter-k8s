@@ -78,6 +78,47 @@ alertmanager:
         telegram_configs:
           - bot_token_file: /etc/alertmanager/secrets/inchident-bot-secret/token
             chat_id: -1001844822513
+            message: '{{ template "telegram.message" . }}'
       - name: healthcheck-io-webhook
         webhook_configs:
           - url_file: /etc/alertmanager/secrets/healthcheck-io-webhook/url
+
+  templateFiles:
+    telegram_template.tmpl: |-
+      {{- /* Telegram message to use: {{ template "telegram.message" . }} */ -}}
+      {{ define "__alerts_list" -}}
+      {{ range . }}
+      {{if ne (index .Labels "alertname") "" -}}
+      {{ if eq .Status "firing" }}🔴{{ else }}🟢{{ end }}
+          {{- if ne (index .Labels "severity") "" -}}
+              <u><b>{{ index .Labels "severity" }}</b></u> {{ end -}}
+      <b>{{ index .Labels "alertname" }}</b>
+      🕙 {{ .StartsAt.Format "15:04:05 🗓️ 2006-01-02" }}{{ end }}
+
+      <b>Description:</b> {{ if len .Annotations.description }}{{ trimSpace .Annotations.description }}{{ else }}N/A{{ end }}
+      <b>Summary:</b> {{ if len .Annotations.summary }}{{ trimSpace .Annotations.summary }}{{ else }}N/A{{ end }}
+      <b>Runbook:</b> {{ if len .Annotations.runbook }}{{ trimSpace .Annotations.runbook }}{{ else }}N/A{{ end }}
+
+      {{ if len .Labels -}}
+      <b>Labels:</b>
+      <pre>
+      {{- range .Labels.SortedPairs -}}
+      - {{ .Name }}: {{ .Value }}
+      {{ end -}}
+      </pre>
+      {{ end }}
+      {{- if len .GeneratorURL }}<a href="{{ .GeneratorURL }}">source</a>{{ end }}
+      ---
+      {{- end -}} {{- /* range */ -}}
+      {{- end -}} {{- /* define __alerts_list */ -}}
+
+      {{ define "telegram.message" }}
+      {{ if gt (len .Alerts.Firing) 0 }}
+      🚨 <b>ALARM</b> (#{{ .Alerts.Firing | len }})
+      {{- template "__alerts_list" .Alerts.Firing }}{{ end -}}
+      {{ if gt (len .Alerts.Resolved) 0 }}
+      ✅ <b>RESOLVED</b> (#{{ .Alerts.Resolved | len }})
+      {{- template "__alerts_list" .Alerts.Resolved }}{{ end }}
+
+      <a href="{{ .ExternalURL }}">📲 Grafana</a>
+      {{- end -}}
