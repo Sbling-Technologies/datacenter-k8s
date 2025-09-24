@@ -20,22 +20,6 @@ ports:
         scheme: https
   websecure:
     asDefault: true
-  webext:
-    port: 9080
-    exposedPort: 9080
-    expose:
-      default: true
-    protocol: TCP
-    tls:
-      enabled: false
-  websecureext:
-    port: 9443
-    exposedPort: 9443
-    expose:
-      default: true
-    protocol: TCP
-    tls:
-      enabled: true
 
 service:
   annotations:
