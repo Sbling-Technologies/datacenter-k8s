@@ -8,10 +8,28 @@ spec:
       rules:
         - alert: ArgoApplicationOutOfSync
           annotations:
-            summary: "'{{ $labels.name }}' Application has synchronization issues"
-            impact: Application is out of sync with the desired state defined in Git repository.
-            description: The ArgoCD application '{{ $labels.name }}' is currently out of sync. Please investigate and take necessary actions to synchronize the application.
+            summary: "'{{ $labels.name }}' Application is out of sync"
+            impact: Application is not synchronized with the desired state, which may lead to inconsistencies.
+            description: The ArgoCD application '{{ $labels.name }}' is having synchronization issues and is currently out of sync.
           expr: argocd_app_info{sync_status="OutOfSync"} == 1
+          for: 5m
+          labels:
+            severity: warning
+        - alert: ArgoApplicationDegraded
+          annotations:
+            summary: "'{{ $labels.name }}' Application is degraded"
+            impact: Application is in a degraded state, which may affect its functionality.
+            description: The ArgoCD application '{{ $labels.name }}' has a 'Degraded' health status.
+          expr: argocd_app_info{health_status="Degraded"} == 1
+          for: 5m
+          labels:
+            severity: warning
+        - alert: ArgoApplicationUnknownStatus
+          annotations:
+            summary: "'{{ $labels.name }}' Application has unknown sync status"
+            impact: Application's sync status is unknown, which may indicate issues with ArgoCD or the application itself.
+            description: The ArgoCD application '{{ $labels.name }}' has an 'Unknown' sync status.
+          expr: argocd_app_info{sync_status="Unknown"} == 1
           for: 5m
           labels:
             severity: warning
@@ -19,7 +37,7 @@ spec:
           annotations:
             summary: "'{{ $labels.name }}' Application is unstable"
             impact: Application is frequently changing state, which may indicate instability or misconfiguration.
-            description: The ArgoCD application '{{ $labels.name }}' has been in a 'Progressing' health status while being 'Synced' more than 8 times in the last 24 hours. Please investigate the application's stability and configuration.
+            description: The ArgoCD application '{{ $labels.name }}' has been in a 'Progressing' health status while being 'Synced' more than 8 times in the last 24 hours.
           expr: count_over_time(count_over_time(argocd_app_info{health_status="Progressing", sync_status="Synced"}[5m])[24h:5m]) > 8
           for: 0s
           labels:
