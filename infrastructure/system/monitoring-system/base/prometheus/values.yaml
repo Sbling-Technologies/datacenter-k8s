@@ -95,9 +95,9 @@ alertmanager:
       <b>{{ index .Labels "alertname" }}</b>
       🕙 {{ .StartsAt.Format "15:04:05 🗓️ 2006-01-02" }}{{ end }}
 
-      <b>Description:</b> {{ if len .Annotations.description }}{{ trimSpace .Annotations.description }}{{ else }}N/A{{ end }}
       <b>Summary:</b> {{ if len .Annotations.summary }}{{ trimSpace .Annotations.summary }}{{ else }}N/A{{ end }}
-      <b>Runbook:</b> {{ if len .Annotations.runbook }}{{ trimSpace .Annotations.runbook }}{{ else }}N/A{{ end }}
+      <b>Description:</b> {{ if len .Annotations.description }}{{ trimSpace .Annotations.description }}{{ else }}N/A{{ end }}
+      <b>Impact:</b> {{ if len .Annotations.impact }}{{ trimSpace .Annotations.impact }}{{ else }}N/A{{ end }}
 
       {{ if len .Labels -}}
       <b>Labels:</b>
