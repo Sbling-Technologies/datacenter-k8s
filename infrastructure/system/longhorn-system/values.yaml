@@ -11,3 +11,5 @@ defaultSettings:
   nodeDrainPolicy: allow-if-replica-is-stopped
   detachManuallyAttachedVolumesWhenCordoned: true
   replicaAutoBalance: best-effort
+  storageReservedPercentageForDefaultDisk: "0"
+  storageOverProvisioningPercentage: "150"
