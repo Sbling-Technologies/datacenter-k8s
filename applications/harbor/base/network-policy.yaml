@@ -40,19 +40,25 @@ kind: CiliumNetworkPolicy
 metadata:
   name: allow-to-keycloak
 spec:
-  endpointSelector:
-    matchLabels:
-      app: harbor
-      component: core
+  endpointSelector: {}
+    # matchLabels:
+    #   app: harbor
+    #   component: core
   egress:
-    - toEndpoints:
-        - matchLabels:
-            io.kubernetes.pod.namespace: prod-keycloak
-            app.kubernetes.io/name: keycloak
-      toPorts:
-        - ports:
-            - port: "443"
-              protocol: TCP
+    - toCIDR:
+        - 172.31.50.145/32
+      # toServices:
+      #   - k8sService:
+      #       namespace: prod-keycloak
+      #       serviceName: cilium-ingress-keycloak
+      # toEntities:
+      #   - world
+      # toFQDNs:
+      #   - matchName: keycloak.services.sbling.net
+      # toPorts:
+      #   - ports:
+      #       - port: "443"
+      #         protocol: TCP
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
