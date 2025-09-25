@@ -5,10 +5,10 @@ helmCharts:
   - repo: https://charts.external-secrets.io
     name: external-secrets
     releaseName: external-secrets
-    version: 0.20.1
+    version: 0.19.2
     valuesFile: values.yaml
     namespace: external-secrets
 
 resources:
   - base/bitwarden-certificates.yaml
-  # - base/secret-store.yaml
+  - base/secret-store.yaml
