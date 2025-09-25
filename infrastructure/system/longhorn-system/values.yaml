@@ -4,7 +4,6 @@ preUpgradeChecker:
 
 persistence:
   reclaimPolicy: Retain
-  migratable: true
 
 defaultSettings:
   concurrentAutomaticEngineUpgradePerNodeLimit: "3"
