@@ -4,8 +4,10 @@ preUpgradeChecker:
 
 persistence:
   reclaimPolicy: Retain
+  migratable: true
 
 defaultSettings:
   concurrentAutomaticEngineUpgradePerNodeLimit: "3"
   nodeDrainPolicy: allow-if-replica-is-stopped
   detachManuallyAttachedVolumesWhenCordoned: true
+  replicaAutoBalance: best-effort

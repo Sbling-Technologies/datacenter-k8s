@@ -8,6 +8,7 @@ reclaimPolicy: Retain
 parameters:
   numberOfReplicas: "1"
   dataLocality: "best-effort"
+  migratable: "true"
 ---
 kind: StorageClass
 apiVersion: storage.k8s.io/v1
@@ -18,3 +19,4 @@ allowVolumeExpansion: true
 parameters:
   numberOfReplicas: "1"
   dataLocality: "best-effort"
+  migratable: "true"
