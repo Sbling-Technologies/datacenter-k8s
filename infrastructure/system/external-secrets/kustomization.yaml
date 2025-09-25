@@ -11,4 +11,4 @@ helmCharts:
 
 resources:
   - base/bitwarden-certificates.yaml
-  # - base/secret-store.yaml
+  - base/secret-store.yaml
