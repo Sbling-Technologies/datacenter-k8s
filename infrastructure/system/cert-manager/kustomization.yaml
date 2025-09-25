@@ -9,18 +9,12 @@ helmCharts:
     releaseName: cert-manager
     version: v1.18.2
     namespace: cert-manager
-    valuesInline:
-      crds:
-        enabled: true
-      podDnsPolicy: None
-      podDnsConfig:
-        nameservers:
-          - 1.1.1.1
-          - 9.9.9.9
-      # see: https://github.com/cert-manager/cert-manager/issues/6716
-      global:
-        leaderElection:
-          namespace: cert-manager
+    valuesFile: values-cert-manager.yaml
+  - repo: https://charts.jetstack.io
+    name: trust-manager
+    releaseName: trust-manager
+    version: v0.19.0
+    namespace: cert-manager
 
 resources:
   - base/cluster-cert-issuer-prod.yaml
