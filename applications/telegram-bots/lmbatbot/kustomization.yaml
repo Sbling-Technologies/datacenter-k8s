@@ -8,5 +8,5 @@ labels:
 
 resources:
   - deployment.yaml
-  - env-secrets.yaml
   - pvc.yaml
+  - secrets.yaml

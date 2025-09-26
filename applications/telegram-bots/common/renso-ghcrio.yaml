@@ -1,12 +1,30 @@
-apiVersion: secrets.hashicorp.com/v1beta1
-kind: VaultStaticSecret
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
 metadata:
   name: renso-ghcrio
 spec:
-  destination:
-    create: true
-    name: renso-ghcrio
-    type: "kubernetes.io/dockerconfigjson"
-  mount: kubesecrets
-  path: docker-registry/renso-ghcrio
-  type: kv-v2
+  secretStoreRef:
+    name: bitwarden-secretsmanager
+    kind: ClusterSecretStore
+  target:
+    template:
+      type: kubernetes.io/dockerconfigjson
+      data:
+        .dockerconfigjson: |-
+          {
+            "auths": {
+              "{{ .registry }}": {
+                "auth": "{{ printf "%s:%s" .username .password | b64enc }}"
+              }
+            }
+          }
+  data:
+    - secretKey: registry
+      remoteRef:
+        key: docker-registry/renso-ghcrio/registry
+    - secretKey: username
+      remoteRef:
+        key: docker-registry/renso-ghcrio/username
+    - secretKey: password
+      remoteRef:
+        key: docker-registry/renso-ghcrio/password

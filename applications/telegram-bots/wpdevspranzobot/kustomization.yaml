@@ -8,4 +8,4 @@ labels:
 
 resources:
   - deployment.yaml
-  - env-secrets.yaml
+  - secrets.yaml
