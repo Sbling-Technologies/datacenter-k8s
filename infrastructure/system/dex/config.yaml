@@ -1,0 +1,10 @@
+# Set it to a valid URL
+issuer: https://dex.services.sbling.net
+
+# See https://dexidp.io/docs/storage/ for more options
+storage:
+  type: memory
+
+# Enable at least one connector
+# See https://dexidp.io/docs/connectors/ for more options
+enablePasswordDB: true

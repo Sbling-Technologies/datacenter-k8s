@@ -1,0 +1,18 @@
+configSecret:
+  create: false
+  name: dex-config
+
+ingress:
+  enabled: true
+  hosts:
+    - host: &host dex.services.sbling.net
+      paths:
+        - path: /
+          pathType: Prefix
+
+  tls:
+    - hosts:
+        - *host
+
+serviceMonitor:
+  enabled: true
