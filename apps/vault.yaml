@@ -22,7 +22,7 @@ spec:
       ref: datacenter
     - chart: vault-secrets-operator
       repoURL: https://helm.releases.hashicorp.com
-      targetRevision: 0.10.0
+      targetRevision: 1.0.1
       helm:
         releaseName: vault-secrets-operator
   ignoreDifferences:
