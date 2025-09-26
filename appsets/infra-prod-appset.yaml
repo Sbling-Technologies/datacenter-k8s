@@ -17,6 +17,8 @@ spec:
   template:
     metadata:
       name: "infra-{{.path.basenameNormalized}}"
+      annotations:
+        argocd.argoproj.io/compare-options: ServerSideDiff=true
     spec:
       project: default
       destination:
