@@ -9,14 +9,10 @@ helmCharts:
     releaseName: cert-manager
     version: v1.18.2
     namespace: cert-manager
-    valuesFile: values-cert-manager.yaml
-  - repo: https://charts.jetstack.io
-    name: trust-manager
-    releaseName: trust-manager
-    version: v0.19.0
-    namespace: cert-manager
+    valuesFile: values.yaml
 
 resources:
   - base/cluster-cert-issuer-prod.yaml
   - base/cluster-cert-issuer-staging.yaml
   - base/namespace.yaml
+  - base/secrets.yaml
