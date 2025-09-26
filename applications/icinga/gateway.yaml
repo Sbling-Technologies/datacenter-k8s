@@ -4,6 +4,9 @@ metadata:
   name: icinga-gateway
 spec:
   gatewayClassName: cilium
+  addresses:
+    - type: IPAddress
+      value: 172.31.50.146
   listeners:
     - name: icinga-tcp-listener
       protocol: TLS
@@ -16,7 +19,7 @@ kind: TLSRoute
 metadata:
   name: icinga-api-tls-route
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: icinga-master.services.sbling.net
+    external-dns.alpha.kubernetes.io/hostname: icinga2-master.services.sbling.net
 spec:
   parentRefs:
     - name: icinga-gateway
