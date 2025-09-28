@@ -5,6 +5,54 @@ issuer: https://dex.services.sbling.net
 storage:
   type: memory
 
-# Enable at least one connector
-# See https://dexidp.io/docs/connectors/ for more options
-enablePasswordDB: true
+connectors:
+  - type: github
+    id: github
+    name: GitHub
+    config:
+      clientID: $GITHUB_CLIENT_ID
+      clientSecret: $GITHUB_CLIENT_SECRET
+      redirectURI: http://127.0.0.1:5556/dex/callback
+
+      # List of org and team names.
+      #  - If specified, a user MUST be a member of at least ONE of these orgs
+      #    and teams (if set) to authenticate with dex.
+      #  - Dex queries the following organizations for group information if the
+      #    "groups" scope is requested. Group claims are formatted as "(org):(team)".
+      #    For example if a user is part of the "engineering" team of the "coreos" org,
+      #    the group claim would include "coreos:engineering".
+      #  - If teams are specified, dex only returns group claims for those teams.
+      orgs:
+        - name: Sbling-Technologies
+          teams:
+            - kubernetes-admins
+
+      # Flag which indicates that all the user's orgs and teams should be loaded.
+      # Only works if neither 'org' nor 'orgs' are specified in the config.
+      loadAllGroups: false
+
+      # How the team names are formatted.
+      #  - Options: 'name' (default), 'slug', 'both'.
+      #  - Examples:
+      #    - 'name': 'acme:Site Reliability Engineers'
+      #    - 'slug': 'acme:site-reliability-engineers'
+      #    - 'both': 'acme:Site Reliability Engineers', 'acme:site-reliability-engineers'
+      teamNameField: slug
+
+      # Flag which will switch from using the internal GitHub id to the users handle (@mention) as the user id.
+      # It is possible for a user to change their own username, but it is very rare for them to do so
+      useLoginAsID: false
+
+      # A preferred email domain to use when returning the user's email.
+      #  - If the user has a PUBLIC email, it is ALWAYS returned in the email claim,
+      #    so this field would have NO effect (this may change in the future).
+      #  - By default, if the user does NOT have a public email, their primary email is returned.
+      #  - When 'preferredEmailDomain' is set, the first email matching this domain is returned,
+      #    we fall back to the primary email if no match is found.
+      #  - To allow multiple subdomains, you may specify a wildcard like "*.example.com"
+      #    which will match "aaaa.example.com" and "bbbb.example.com", but NOT "example.com".
+      #  - To return the user's no-reply email, set this field to "users.noreply.github.com",
+      #    this is a mostly static email that GitHub assigns to the user. These emails
+      #    are formatted like 'ID+USERNAME@users.noreply.github.com' for newer accounts
+      #    and 'USERNAME@users.noreply.github.com' for older accounts.
+      preferredEmailDomain: sbling.net

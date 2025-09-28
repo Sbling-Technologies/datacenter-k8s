@@ -2,6 +2,10 @@ configSecret:
   create: false
   name: dex-config
 
+envFrom:
+  - secretRef:
+      name: dex-secrets
+
 ingress:
   enabled: true
   hosts:

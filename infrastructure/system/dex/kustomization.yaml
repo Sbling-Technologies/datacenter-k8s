@@ -9,6 +9,9 @@ helmCharts:
     valuesFile: values.yaml
     namespace: dex
 
+resources:
+  - base/secrets.yaml
+
 secretGenerator:
   - name: dex-config
     options:
