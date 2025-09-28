@@ -57,9 +57,3 @@ of manifests for a Kubernetes cluster. Here's a breakdown of the directory struc
 
 - `misc`: This directory is for miscellaneous Kubernetes manifests and files that
   aren't deployed with ArgoCD.
-
-- `apps`: _(Will be removed in favor of `applications` directory)_ This directory
-  contains the ArgoCD Application definitions that are deployed by the `app-of-apps.yaml`.
-
-- `vault`: _(Will be moved to `infrastructure` directory for consistency)_ This directory
-  contains the configuration for HashiCorp Vault, which is used for secrets management.
