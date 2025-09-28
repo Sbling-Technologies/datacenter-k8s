@@ -19,6 +19,11 @@ staticClients:
       - https://argocd.services.sbling.net/api/dex/callback
     name: ArgoCD
     secretEnv: ARGOCD_CLIENT_SECRET
+  - id: gatus
+    redirectURIs:
+      - https://gatus.services.sbling.net/authorization-code/callback
+    name: Gatus
+    secretEnv: GATUS_CLIENT_SECRET
 
 connectors:
   - type: github
