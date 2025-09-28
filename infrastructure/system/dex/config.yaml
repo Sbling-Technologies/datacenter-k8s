@@ -29,6 +29,11 @@ staticClients:
       - https://traefik-k8s.services.sbling.net/oauth2/callback
     name: Traefik Dashboard
     public: true
+  - id: longhorn
+    redirectURIs:
+      - https://longhorn.services.sbling.net/oauth2/callback
+    name: Longhorn Dashboard
+    public: true
 
 connectors:
   - type: github
