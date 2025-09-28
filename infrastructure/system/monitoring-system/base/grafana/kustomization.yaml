@@ -6,7 +6,6 @@ namespace: monitoring-system
 resources:
   - https://github.com/grafana/grafana-operator/releases/download/v5.19.4/kustomize-cluster_scoped.yaml
   - grafana.yaml
-  - secrets.yaml
 
 patches:
   - patch: |-
