@@ -23,7 +23,11 @@ services.
   - Kube-proxy replacement.
   - Ingress controller.
   - Layer 2 announcements (ARP/NDP) for Ingress.
+- **Dex**: An OpenID Connect (OIDC) identity provider that integrates with GitHub
+  for authentication.
 - **External DNS**: Manages DNS records dynamically based on Kubernetes resources.
+- **External Secrets**: Integrates with external secret management systems to securely
+  manage sensitive information.
 - **Kured**: Kubernetes Reboot Daemon for automated node reboots after kernel updates.
 - **Longhorn**: Provides distributed block storage for stateful applications.
 - **Monitoring**: A comprehensive monitoring and logging stack is deployed, including:
@@ -33,7 +37,6 @@ services.
   - **Alloy**: For collecting and processing logs.
 - **Traefik**: Serves as the ingress controller, with OIDC authentication integration.
 - **CloudNativePG Operator**: Manages PostgreSQL databases within the cluster.
-- **Keycloak Operator**: Manages Keycloak instances for identity and access management.
 
 ## Repository Structure
 
