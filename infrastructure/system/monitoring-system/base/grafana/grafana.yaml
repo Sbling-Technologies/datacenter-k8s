@@ -28,9 +28,7 @@ spec:
       token_url: https://dex.services.sbling.net/token
       api_url: https://dex.services.sbling.net/userinfo
       role_attribute_path: >-
-        contains(resource_access."grafana-oauth".roles[*], 'admin') && 'Admin' ||
-        contains(resource_access."grafana-oauth".roles[*], 'editor') && 'Editor' ||
-        'Viewer'
+        contains(groups[*], 'kubernetes-admins') && 'Admin' || 'Viewer'
 
   deployment:
     spec:

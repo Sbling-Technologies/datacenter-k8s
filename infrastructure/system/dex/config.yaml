@@ -5,6 +5,9 @@ issuer: https://dex.services.sbling.net
 storage:
   type: memory
 
+oauth2:
+  skipApprovalScreen: true
+
 staticClients:
   - id: grafana-oauth
     redirectURIs:
