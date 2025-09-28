@@ -24,6 +24,11 @@ staticClients:
       - https://gatus.services.sbling.net/authorization-code/callback
     name: Gatus
     secretEnv: GATUS_CLIENT_SECRET
+  - id: traefik
+    redirectURIs:
+      - https://traefik-k8s.services.sbling.net/oauth2/callback
+    name: Traefik Dashboard
+    public: true
 
 connectors:
   - type: github

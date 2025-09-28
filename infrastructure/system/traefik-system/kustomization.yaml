@@ -15,4 +15,3 @@ resources:
   - base/certificate.yaml
   - base/grafana-dashboards.yaml
   - base/middleware-oidc-auth.yaml
-  - base/secrets.yaml

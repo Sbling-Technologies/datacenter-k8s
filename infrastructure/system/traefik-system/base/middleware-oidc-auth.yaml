@@ -5,18 +5,15 @@ metadata:
 spec:
   plugin:
     traefikoidc:
-      providerURL: https://keycloak.services.sbling.net/realms/sbling
+      providerURL: https://dex.services.sbling.net
       clientID: traefik
-      clientSecret: urn:k8s:secret:oidc-secret:clientSecret
-      sessionEncryptionKey: urn:k8s:secret:oidc-secret:encryptionSecret
+      enablePKCE: true
       callbackURL: /oauth2/callback
-      logoutURL: /oauth2/logout
       logLevel: error
-      forceHTTPS: true
       scopes:
         - openid
         - email
         - profile
         - groups
       allowedRolesAndGroups:
-        - admin
+        - Sbling-Technologies:kubernetes-admins
