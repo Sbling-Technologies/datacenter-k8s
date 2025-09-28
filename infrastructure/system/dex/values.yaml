@@ -6,6 +6,9 @@ envFrom:
   - secretRef:
       name: dex-secrets
 
+deploymentAnnotations:
+  reloader.stakater.com/auto: "true"
+
 ingress:
   enabled: true
   hosts:
