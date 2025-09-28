@@ -46,10 +46,6 @@ endpoints:
     <<: *https-common
     url: https://truenas.services.sbling.net/
 
-  - name: Bitwarden
-    <<: *https-common
-    url: https://bitwarden.services.sbling.net/
-
   - name: Homepage
     <<: *https-common
     url: https://homepage.services.sbling.net/

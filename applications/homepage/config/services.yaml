@@ -15,9 +15,9 @@
         siteMonitor: *mailcow_url
 
     - Bitwarden:
-        description: Password manager
+        description: Secrets and Passwords manager
         icon: bitwarden
-        href: &bitwarden_url https://bitwarden.services.sbling.net
+        href: &bitwarden_url https://vault.bitwarden.eu
         siteMonitor: *bitwarden_url
 
     - n8n:
