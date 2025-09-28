@@ -7,14 +7,14 @@ data:
 
   kustomize.buildOptions: --enable-helm
 
-  # admin.enabled: "false"
+  admin.enabled: "false"
   dex.config: |
     connectors:
       - type: oidc
         id: oidc
-        name: Keycloak
+        name: Dex
         config:
-          issuer: https://keycloak.services.sbling.net/realms/sbling
+          issuer: https://dex.services.sbling.net
           clientID: argocd
           clientSecret: $argocd-oidc-secret:dex.oidc.clientSecret
           insecureEnableGroups: true

@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: argocd-rbac-cm
+data:
+  policy.csv: |
+    g, Sbling-Technologies:kubernetes-admins, role:admin
+  scopes: "[groups]"

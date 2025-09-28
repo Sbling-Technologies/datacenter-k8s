@@ -14,6 +14,7 @@ resources:
 patches:
   - path: overlays/production/argocd-cm.yaml
   - path: overlays/production/argocd-cmd-params-cm.yaml
+  - path: overlays/production/argocd-rbac-cm.yaml
   - path: overlays/production/argocd-redis-ha-haproxy-deploy.yaml
   - path: overlays/production/haproxy-metrics-network-policy.yaml
     target:

@@ -14,6 +14,11 @@ staticClients:
       - https://grafana.services.sbling.net/login/generic_oauth
     name: Grafana
     secretEnv: GRAFANA_CLIENT_SECRET
+  - id: argocd
+    redirectURIs:
+      - https://argocd.services.sbling.net/api/dex/callback
+    name: ArgoCD
+    secretEnv: ARGOCD_CLIENT_SECRET
 
 connectors:
   - type: github
