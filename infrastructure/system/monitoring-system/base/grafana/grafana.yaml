@@ -24,9 +24,9 @@ spec:
       email_attribute_path: email
       login_attribute_path: username
       name_attribute_path: full_name
-      auth_url: https://keycloak.services.sbling.net/realms/sbling/protocol/openid-connect/auth
-      token_url: https://keycloak.services.sbling.net/realms/sbling/protocol/openid-connect/token
-      api_url: https://keycloak.services.sbling.net/realms/sbling/protocol/openid-connect/userinfo
+      auth_url: https://dex.services.sbling.net/auth
+      token_url: https://dex.services.sbling.net/token
+      api_url: https://dex.services.sbling.net/userinfo
       role_attribute_path: >-
         contains(resource_access."grafana-oauth".roles[*], 'admin') && 'Admin' ||
         contains(resource_access."grafana-oauth".roles[*], 'editor') && 'Editor' ||

@@ -5,13 +5,20 @@ issuer: https://dex.services.sbling.net
 storage:
   type: memory
 
+staticClients:
+  - id: grafana-oauth
+    redirectURIs:
+      - https://grafana.services.sbling.net/login/generic_oauth
+    name: Grafana
+    secret: $GRAFANA_CLIENT_SECRET
+
 connectors:
   - type: github
     id: github
     name: GitHub
     config:
-      clientID: $GITHUB_CLIENT_ID
-      clientSecret: $GITHUB_CLIENT_SECRET
+      clientID: $GITHUB_CONNECTOR_CLIENT_ID
+      clientSecret: $GITHUB_CONNECTOR_CLIENT_SECRET
       redirectURI: http://127.0.0.1:5556/dex/callback
 
       # List of org and team names.
