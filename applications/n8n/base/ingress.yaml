@@ -25,3 +25,17 @@ spec:
   tls:
     - hosts:
         - *host
+---
+# NOTE: For some reason if we use the same SVC for both Ingress and HTTPRoute,
+# it responds with 503, "no healthy upstream"
+apiVersion: v1
+kind: Service
+metadata:
+  name: n8n
+spec:
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80
+  selector:
+    app.kubernetes.io/name: n8n

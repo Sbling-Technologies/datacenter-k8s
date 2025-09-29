@@ -51,15 +51,15 @@ spec:
             - name: N8N_PROTOCOL
               value: http
             - name: N8N_PORT
-              value: "5678"
+              value: "80"
             - name: N8N_PROXY_HOPS
               value: "1"
             - name: WEBHOOK_URL
-              value: https://n8n.services.sbling.net/
+              value: https://n8n.sbling.net
           image: ghcr.io/n8n-io/n8n:1.114.0
           name: n8n
           ports:
-            - containerPort: 5678
+            - containerPort: 80
           resources:
             requests:
               memory: "250Mi"
