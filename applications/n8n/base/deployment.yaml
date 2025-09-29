@@ -55,7 +55,7 @@ spec:
             - name: N8N_PROXY_HOPS
               value: "1"
             - name: WEBHOOK_URL
-              value: https://n8n.services.sbling.net/
+              value: https://webhooks.sbling.net/n8n
           image: ghcr.io/n8n-io/n8n:1.114.0
           name: n8n
           ports:

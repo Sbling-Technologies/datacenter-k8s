@@ -4,6 +4,7 @@ kind: Kustomization
 resources:
   - database.yaml
   - deployment.yaml
+  - httproute-external.yaml
   - ingress.yaml
   - namespace.yaml
   - secrets.yaml
