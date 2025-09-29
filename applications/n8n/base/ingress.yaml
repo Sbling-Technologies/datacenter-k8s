@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: n8n
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: n8n
+    gethomepage.dev/description: Workflow automation platform
+    gethomepage.dev/group: Services
+    gethomepage.dev/icon: n8n
+    gethomepage.dev/pod-selector: ""
+spec:
+  ingressClassName: cilium
+  rules:
+    - host: &host n8n.services.sbling.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: n8n
+                port:
+                  name: http
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - *host
