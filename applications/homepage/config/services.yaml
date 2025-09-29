@@ -20,12 +20,6 @@
         href: &bitwarden_url https://vault.bitwarden.eu
         siteMonitor: *bitwarden_url
 
-    - n8n:
-        description: Easily automate tasks across different services
-        icon: n8n
-        href: &n8n_url https://n8n.services.sbling.net
-        siteMonitor: *n8n_url
-
 - Management:
     - Proxmox:
         description: VM manager
