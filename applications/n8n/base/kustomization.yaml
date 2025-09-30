@@ -7,5 +7,6 @@ resources:
   - httproute-external.yaml
   - ingress.yaml
   - namespace.yaml
+  - network-policy.yaml
   - secrets.yaml
   - volume.yaml
