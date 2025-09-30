@@ -3,6 +3,8 @@ kind: Deployment
 metadata:
   labels:
     app.kubernetes.io/name: n8n
+  annotations:
+    reloader.stakater.com/auto: "true"
   name: n8n
 spec:
   replicas: 1
@@ -52,10 +54,9 @@ spec:
               value: http
             - name: N8N_PORT
               value: "80"
-            - name: N8N_PROXY_HOPS
-              value: "1"
-            - name: WEBHOOK_URL
-              value: https://n8n.sbling.net
+          envFrom:
+            - configMapRef:
+                name: n8n-config
           image: ghcr.io/n8n-io/n8n:1.114.0
           name: n8n
           ports:
