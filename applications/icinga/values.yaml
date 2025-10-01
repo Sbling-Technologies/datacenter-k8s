@@ -37,6 +37,9 @@ icingaweb2:
     kubernetes:
       enabled: false
 
+    x509:
+      enabled: true
+
 icinga-kubernetes:
   enabled: false
 
@@ -77,6 +80,16 @@ global:
         value: icingaweb
       password:
         secretKey: icingaweb-password
+      persistence:
+        enabled: true
+
+    x509:
+      credSecret: icinga-database-users
+      username:
+        value: x509
+      password:
+        secretKey: x509-password
+      enabled: true
       persistence:
         enabled: true
 
