@@ -5,7 +5,7 @@ resources:
   - config-cm.yaml
   - database.yaml
   - deployment.yaml
-  - httproute-external.yaml
+  - external-webhook.yaml
   - ingress.yaml
   - namespace.yaml
   - network-policy.yaml
