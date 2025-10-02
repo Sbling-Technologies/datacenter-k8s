@@ -4,7 +4,7 @@ metadata:
   name: n8n-config
 data:
   N8N_PROXY_HOPS: "1"
-  WEBHOOK_URL: https://n8n.sbling.net
+  WEBHOOK_URL: https://webhooks.sbling.net/n8n
   N8N_EDITOR_BASE_URL: https://n8n.services.sbling.net
 
   # see: https://docs.n8n.io/hosting/configuration/configuration-examples/isolation/

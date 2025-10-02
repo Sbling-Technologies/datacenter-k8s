@@ -4,21 +4,44 @@ metadata:
   name: n8n-external-webhooks
 spec:
   hostnames:
-    - n8n.sbling.net
+    - webhooks.sbling.net
   parentRefs:
     - name: external-gateway
       namespace: cilium-system
   rules:
+    # TODO: Currently return 500 for matches without webhook data, it would be better if it was 404
+    - matches:
+        - path:
+            type: RegularExpression
+            value: ^/n8n/(webhook|webhook-test)/?$
+
     - backendRefs:
         - name: n8n-webhook
           port: 80
       matches:
         - path:
             type: PathPrefix
-            value: /webhook
+            value: /n8n/webhook
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /webhook
+
+    - backendRefs:
+        - name: n8n-webhook
+          port: 80
+      matches:
         - path:
             type: PathPrefix
-            value: /webhook-test
+            value: /n8n/webhook-test
+      filters:
+        - type: URLRewrite
+          urlRewrite:
+            path:
+              type: ReplacePrefixMatch
+              replacePrefixMatch: /webhook-test
 ---
 # NOTE: For some reason if we use the same SVC for both Ingress and HTTPRoute,
 # it responds with 503, "no healthy upstream"
