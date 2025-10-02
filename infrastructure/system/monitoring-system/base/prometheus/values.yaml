@@ -59,6 +59,7 @@ prometheus:
 
 alertmanager:
   alertmanagerSpec:
+    replicas: 2
     secrets:
       - inchident-bot-secret
       - healthcheck-io-webhook
