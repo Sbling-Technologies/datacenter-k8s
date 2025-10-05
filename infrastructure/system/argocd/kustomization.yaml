@@ -6,7 +6,7 @@ namespace: argocd
 
 resources:
   - base/monitoring
-  # - base/external-webhook.yaml
+  - base/external-webhook.yaml
   - base/ingress.yaml
   - base/namespace.yaml
   - base/network-policy.yaml
