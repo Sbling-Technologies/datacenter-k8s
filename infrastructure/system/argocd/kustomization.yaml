@@ -6,8 +6,10 @@ namespace: argocd
 
 resources:
   - base/monitoring
+  # - base/external-webhook.yaml
   - base/ingress.yaml
   - base/namespace.yaml
+  - base/network-policy.yaml
   - base/secrets.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/v3.1.8/manifests/ha/install-with-hydrator.yaml
 
@@ -16,6 +18,7 @@ patches:
   - path: overlays/production/argocd-cmd-params-cm.yaml
   - path: overlays/production/argocd-rbac-cm.yaml
   - path: overlays/production/argocd-redis-ha-haproxy-deploy.yaml
+  - path: overlays/production/argocd-secret.yaml
   - path: overlays/production/haproxy-metrics-network-policy.yaml
     target:
       kind: NetworkPolicy

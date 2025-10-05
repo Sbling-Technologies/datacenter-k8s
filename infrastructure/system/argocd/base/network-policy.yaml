@@ -1,0 +1,84 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: default-deny-cross-namespace
+spec:
+  description: >-
+    Deny all cross-namespace traffic.
+    Allow all intra-namespace traffic.
+    Allow outbound traffic to kube-dns.
+  endpointSelector: {}
+  ingress:
+    - fromEndpoints:
+        - {}
+  egress:
+    - toEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: kube-system
+            k8s-app: kube-dns
+      toPorts:
+        - ports:
+            - port: "53"
+              protocol: UDP
+          rules:
+            dns:
+              - matchPattern: "*"
+    - toEndpoints:
+        - {}
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-from-ingress
+spec:
+  description: Allow inbound traffic from ingress controller
+  endpointSelector: {}
+  ingress:
+    - fromEntities:
+        - ingress
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-monitoring
+spec:
+  description: Allow inbound traffic from monitoring system (Prometheus)
+  endpointSelector: {}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: monitoring-system
+            app.kubernetes.io/name: prometheus
+---
+# NOTE: Probably to Github FQDN would be enough
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-to-internet
+spec:
+  description: Allow outbound traffic to the internet (HTTP/S)
+  endpointSelector: {}
+  egress:
+    - toCIDRSet:
+        - cidr: 0.0.0.0/0
+          except:
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+      toPorts:
+        - ports:
+            - port: "22"
+        - ports:
+            - port: "80"
+        - ports:
+            - port: "443"
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-apiserver
+spec:
+  endpointSelector: {}
+  egress:
+    - toEntities:
+        - kube-apiserver
