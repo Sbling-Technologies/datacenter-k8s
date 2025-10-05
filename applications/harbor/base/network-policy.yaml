@@ -4,8 +4,9 @@ metadata:
   name: default-deny-cross-namespace
 spec:
   description: >-
-    Default deny all cross-namespace traffic. Allows all intra-namespace traffic.
-    Allows all traffic to kube-dns.
+    Deny all cross-namespace traffic.
+    Allow all intra-namespace traffic.
+    Allow outbound traffic to kube-dns.
   endpointSelector: {}
   ingress:
     - fromEndpoints:
@@ -30,6 +31,7 @@ kind: CiliumNetworkPolicy
 metadata:
   name: allow-from-ingress
 spec:
+  description: Allow inbound traffic from ingress controller
   endpointSelector: {}
   ingress:
     - fromEntities:
@@ -38,33 +40,22 @@ spec:
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-to-keycloak
+  name: allow-to-dex
 spec:
   endpointSelector: {}
-    # matchLabels:
-    #   app: harbor
-    #   component: core
   egress:
-    - toCIDR:
-        - 172.31.50.145/32
-      # toServices:
-      #   - k8sService:
-      #       namespace: prod-keycloak
-      #       serviceName: cilium-ingress-keycloak
-      # toEntities:
-      #   - world
-      # toFQDNs:
-      #   - matchName: keycloak.services.sbling.net
-      # toPorts:
-      #   - ports:
-      #       - port: "443"
-      #         protocol: TCP
+    # NOTE: Cilium does some optimizations so this is the only way this works
+    - toEndpoints:
+        - matchLabels:
+            k8s:app.kubernetes.io/name: dex
+            k8s:io.kubernetes.pod.namespace: dex
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
   name: allow-monitoring
 spec:
+  description: Allow inbound traffic from monitoring system (Prometheus)
   endpointSelector: {}
   ingress:
     - fromEndpoints:

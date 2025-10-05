@@ -34,6 +34,11 @@ staticClients:
       - https://longhorn.services.sbling.net/oauth2/callback
     name: Longhorn Dashboard
     public: true
+  - id: harbor
+    redirectURIs:
+      - https://harbor.services.sbling.net/c/oidc/callback
+    name: Harbor
+    secretEnv: HARBOR_CLIENT_SECRET
 
 connectors:
   - type: github
