@@ -14,4 +14,4 @@ helmCharts:
 
 images:
   - name: ghcr.io/kashalls/external-dns-unifi-webhook
-    newTag: v0.6.2
+    newTag: v0.7.0
