@@ -82,3 +82,16 @@ spec:
   egress:
     - toEntities:
         - kube-apiserver
+---
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-to-dex
+spec:
+  endpointSelector: {}
+  egress:
+    # NOTE: Cilium does some optimizations so this is the only way this works
+    - toEndpoints:
+        - matchLabels:
+            k8s:app.kubernetes.io/name: dex
+            k8s:io.kubernetes.pod.namespace: dex
