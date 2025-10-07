@@ -66,6 +66,7 @@ alertmanager:
 
   config:
     route:
+      receiver: "null"
       # receiver: inchident-telegram-receiver
       routes:
         - receiver: healthcheck-io-webhook
@@ -75,6 +76,7 @@ alertmanager:
           matchers:
             - alertname = "Watchdog"
     receivers:
+      - name: "null"
       - name: inchident-telegram-receiver
         telegram_configs:
           - bot_token_file: /etc/alertmanager/secrets/inchident-bot-secret/token
