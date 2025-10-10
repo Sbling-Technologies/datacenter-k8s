@@ -6,6 +6,6 @@ helmCharts:
     name: k8s-monitoring
     releaseName: alloy
     includeCRDs: true
-    version: 3.5.2
+    version: 3.5.3
     valuesFile: values.yaml
     namespace: monitoring-logging
