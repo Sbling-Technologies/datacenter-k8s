@@ -2,12 +2,6 @@
 # Main tab #
 # -------- #
 - Services:
-    - ChangeDetection.io:
-        description: Web Site Change Detection, Restock monitoring and notifications
-        icon: changedetection
-        href: &changedetection_url https://changedetection.services.sbling.net
-        siteMonitor: *changedetection_url
-
     - Mailcow:
         description: Selfhosted mail server
         icon: mailcow
