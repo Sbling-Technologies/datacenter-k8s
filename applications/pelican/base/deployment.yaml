@@ -1,0 +1,88 @@
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: pelican-panel
+  labels:
+    app: pelican-panel
+spec:
+  selector:
+    matchLabels:
+      app: pelican-panel
+  replicas: 1
+  template:
+    metadata:
+      labels:
+        app: pelican-panel
+    spec:
+      securityContext:
+        # NOTE: uid=82(www-data) gid=82(www-data) groups=82(www-data)
+        fsGroup: 82
+      containers:
+        - name: pelican-panel
+          image: ghcr.io/pelican-dev/panel:v1.0.0-beta21
+          ports:
+            - containerPort: 80
+              name: http
+          env:
+            - name: XDG_DATA_HOME
+              value: /pelican-data
+            - name: DB_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: username
+            - name: DB_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: db-credentials
+                  key: password
+          envFrom:
+            - configMapRef:
+                name: pelican-panel-env
+            - secretRef:
+                name: mail-credentials-env
+          volumeMounts:
+            - name: logs
+              mountPath: /app/storage/logs
+            - name: pelican-data
+              mountPath: /pelican-data
+            - name: configfiles
+              mountPath: /etc/caddy/Caddyfile
+              subPath: Caddyfile
+              readOnly: true
+        # - name: pterodactyl_exporter
+        #   image: loens2/pterodactyl_exporter:latest
+        #   ports:
+        #     - containerPort: 9531
+        #       name: metrics
+        #   volumeMounts:
+        #     - name: configfiles
+        #       mountPath: /opt/pterodactyl_exporter/config/config.yml
+        #       subPath: exporter_config.yaml
+      volumes:
+        - name: logs
+          emptyDir:
+        - name: configfiles
+          configMap:
+            name: pelican-panel-configfiles
+  volumeClaimTemplates:
+    - metadata:
+        name: pelican-data
+      spec:
+        accessModes:
+          - ReadWriteOnce
+        resources:
+          requests:
+            storage: 1Gi
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: pelican-panel
+spec:
+  selector:
+    app: pelican-panel
+  type: ClusterIP
+  ports:
+    - name: http
+      port: 80

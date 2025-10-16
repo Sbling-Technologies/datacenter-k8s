@@ -1,0 +1,27 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pelican-panel
+  annotations:
+    gethomepage.dev/enabled: "true"
+    gethomepage.dev/name: Pelican Panel
+    gethomepage.dev/description: Pelican Panel is an open-source, web-based application designed for easy management of game servers.
+    gethomepage.dev/group: Services
+    gethomepage.dev/icon: pelican-panel
+    gethomepage.dev/pod-selector: ""
+spec:
+  ingressClassName: cilium
+  rules:
+    - host: &host pelican.services.sbling.net
+      http:
+        paths:
+          - backend:
+              service:
+                name: pelican-panel
+                port:
+                  number: 80
+            path: /
+            pathType: Prefix
+  tls:
+    - hosts:
+        - *host
