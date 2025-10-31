@@ -10,7 +10,7 @@ spec:
     spec:
       automountServiceAccountToken: false
       containers:
-        - image: twinproduction/gatus:v5.29.0
+        - image: twinproduction/gatus:v5.30.0
           imagePullPolicy: IfNotPresent
           livenessProbe:
             httpGet:
