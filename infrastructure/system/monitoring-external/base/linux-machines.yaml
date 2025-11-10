@@ -12,17 +12,6 @@ spec:
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: docker-main-vm-external
-spec:
-  jobName: node-virt
-  staticConfigs:
-    - targets:
-        - docker-main.vms.sbling.net:8080
-        - docker-main.vms.sbling.net:9100
----
-apiVersion: monitoring.coreos.com/v1alpha1
-kind: ScrapeConfig
-metadata:
   name: mail-vm-external
 spec:
   jobName: node-virt
