@@ -12,6 +12,10 @@ spec:
           env:
             - name: TZ
               value: Europe/Rome
+            - name: HOLIDAYS_COUNTRY
+              value: IT
+            - name: HOLIDAYS_SUBDIV
+              value: BZ
             - name: DB_HOST
               value: carpoolerbot-db-rw
             - name: DB_NAME
