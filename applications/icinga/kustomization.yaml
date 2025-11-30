@@ -7,7 +7,7 @@ helmCharts:
   - repo: https://icinga.github.io/helm-charts
     name: icinga-stack
     releaseName: icinga
-    version: 0.6.0
+    version: 0.7.0
     valuesFile: values.yaml
     namespace: prod-icinga
 
