@@ -25,6 +25,13 @@ loki:
     volume_enabled: true
     retention_period: 168h # 7 days
 
+  # FIXME: Workaround until https://github.com/grafana/loki/issues/19694 is fixed.
+  storage:
+    bucketNames:
+      chunks: chunks
+      ruler: ruler
+      admin: admin
+
 deploymentMode: SimpleScalable
 
 backend:
