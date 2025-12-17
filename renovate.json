@@ -44,6 +44,19 @@
       "separateMinorPatch": false,
       "reviewers": ["ardubev16"],
       "automerge": true
+    },
+    {
+      "matchFileNames": ["applications/icinga/**"],
+      "groupName": "icinga2",
+      "reviewers": ["LuigiMiazzo17"],
+      "separateMajorMinor": false,
+      "separateMinorPatch": false
+    },
+    {
+      "matchFileNames": ["infrastructure/**"],
+      "groupName": "infrastructure non-major",
+      "separateMajorMinor": true,
+      "separateMinorPatch": false
     }
   ]
 }
