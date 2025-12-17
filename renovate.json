@@ -32,6 +32,18 @@
   ],
   "packageRules": [
     {
+      "matchFileNames": ["infrastructure/**"],
+      "groupName": "infrastructure non-major",
+      "matchUpdateTypes": ["patch", "minor"]
+    },
+    {
+      "matchFileNames": ["applications/icinga/**"],
+      "groupName": "icinga2",
+      "reviewers": ["LuigiMiazzo17"],
+      "separateMajorMinor": false,
+      "separateMinorPatch": false
+    },
+    {
       "matchPackageNames": ["kubernetes-sigs/*"],
       "groupName": "kubernetes-sigs",
       "separateMajorMinor": false,
