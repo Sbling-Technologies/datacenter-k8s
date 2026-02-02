@@ -30,7 +30,7 @@ loki:
     common:
       storage:
         s3:
-          endpoint: http://loki-minio.monitoring-logging.svc:9000
+          endpoint: http://loki-minio.platform-monitoring-loki.svc.cluster.local:9000
 
 deploymentMode: SimpleScalable
 
