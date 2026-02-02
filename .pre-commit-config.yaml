@@ -1,6 +1,6 @@
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: v6.0.0
+    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # frozen: v6.0.0
     hooks:
       - id: check-added-large-files
       - id: check-executables-have-shebangs
@@ -17,22 +17,22 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/codespell-project/codespell
-    rev: v2.4.1
+    rev: 63c8f8312b7559622c0d82815639671ae42132ac # frozen: v2.4.1
     hooks:
       - id: codespell
 
   - repo: https://github.com/rhysd/actionlint
-    rev: v1.7.7
+    rev: 0933c147c9d6587653d45fdcb4c497c57a65f9af # frozen: v1.7.10
     hooks:
       - id: actionlint
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 41.74.2
+    rev: 8ab1f9d6f4538f2df5791acc0a778d3aef42b8e8 # frozen: 43.2.0
     hooks:
       - id: renovate-config-validator
         args: [--strict]
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: v8.28.0
+    rev: 2ca41cc1372d1e939a6a879f18cdc19fc1cac1ce # frozen: v8.30.0
     hooks:
       - id: gitleaks
