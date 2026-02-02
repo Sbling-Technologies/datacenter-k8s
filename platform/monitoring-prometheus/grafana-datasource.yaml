@@ -2,32 +2,32 @@ apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   name: prometheus
-  namespace: monitoring-system
 spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
+  allowCrossNamespaceImport: true
   datasource:
     name: prometheus
     type: prometheus
     access: proxy
-    url: http://prometheus-operated.monitoring-system.svc.cluster.local:9090
+    url: http://prometheus-operated.platform-monitoring-prometheus.svc.cluster.local:9090
     isDefault: true
 ---
 apiVersion: grafana.integreatly.org/v1beta1
 kind: GrafanaDatasource
 metadata:
   name: prometheus-alertmanager
-  namespace: monitoring-system
 spec:
   instanceSelector:
     matchLabels:
       dashboards: grafana
+  allowCrossNamespaceImport: true
   datasource:
     name: alertmanager
     type: alertmanager
     access: proxy
-    url: http://kube-prometheus-stack-alertmanager.monitoring-system.svc.cluster.local:9093
+    url: http://kube-prometheus-stack-alertmanager.platform-monitoring-prometheus.svc.cluster.local:9093
     jsonData:
       implementation: prometheus
       handleGrafanaManagedAlerts: true

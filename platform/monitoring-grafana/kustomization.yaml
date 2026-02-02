@@ -1,10 +1,11 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: monitoring-system
+namespace: platform-monitoring-grafana
 
 resources:
   - https://github.com/grafana/grafana-operator/releases/download/v5.21.4/kustomize-cluster_scoped.yaml
+  - dashboards
   - grafana.yaml
 
 patches:

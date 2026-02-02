@@ -8,7 +8,7 @@ helmCharts:
     includeCRDs: true
     version: 81.4.2
     valuesFile: values.yaml
-    namespace: monitoring-system
+    namespace: platform-monitoring-prometheus
 
 resources:
   - grafana-datasource.yaml
