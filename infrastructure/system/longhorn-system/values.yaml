@@ -12,3 +12,10 @@ defaultSettings:
   replicaAutoBalance: best-effort
   storageReservedPercentageForDefaultDisk: "0"
   storageOverProvisioningPercentage: "150"
+
+image:
+  longhorn:
+    instanceManager:
+      # Hotfix for memory leak regression as documented on https://github.com/longhorn/longhorn/releases/tag/v1.11.0
+      # TODO: Remove once https://github.com/longhorn/longhorn/issues/12573 is released
+      tag: v1.11.0-hotfix-1
