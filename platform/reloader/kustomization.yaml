@@ -6,4 +6,4 @@ helmCharts:
     name: reloader
     releaseName: reloader
     version: 2.2.7
-    namespace: reloader
+    namespace: platform-reloader
