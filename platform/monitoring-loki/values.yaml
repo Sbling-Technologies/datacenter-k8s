@@ -1,3 +1,6 @@
+# NOTE: For future reference this does not really bootstrap because the minio Job runs PostSync.
+# To workaround this issue follow the instructions at https://github.com/grafana/loki/issues/9634
+
 loki:
   auth_enabled: false
   schemaConfig:
@@ -24,13 +27,6 @@ loki:
     allow_structured_metadata: true
     volume_enabled: true
     retention_period: 168h # 7 days
-
-  # FIXME: Workaround until https://github.com/grafana/loki/issues/19908 is fixed
-  structuredConfig:
-    common:
-      storage:
-        s3:
-          endpoint: http://loki-minio.platform-monitoring-loki.svc.cluster.local:9000
 
 deploymentMode: SimpleScalable
 
