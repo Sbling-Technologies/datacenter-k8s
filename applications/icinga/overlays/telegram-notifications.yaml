@@ -1,0 +1,17 @@
+- op: add
+  path: /spec/template/spec/containers/0/volumeMounts/-
+  value:
+    name: telegram-notifications
+    mountPath: /usr/lib/nagios/plugins/telegram_notify.sh
+    subPath: telegram_notify.sh
+    readOnly: true
+
+- op: add
+  path: /spec/template/spec/volumes/-
+  value:
+    name: telegram-notifications
+    configMap:
+      name: telegram-notification-script
+      items:
+        - key: telegram_notify.sh
+      defaultMode: 0755

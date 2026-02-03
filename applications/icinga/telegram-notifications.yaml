@@ -1,0 +1,32 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: telegram-notification-script
+data:
+  telegram_notify.sh: |
+    #!/usr/bin/env bash
+
+    # Simple Telegram notification script for Icinga2
+
+    while [[ "$#" -gt 0 ]]; do
+      case "$1" in
+        --bottoken) BOT_TOKEN="$2"; shift 2 ;;
+        --chatid)   CHAT_ID="$2"; shift 2 ;;
+        --subject)  SUBJECT="$2"; shift 2 ;;
+        --message)  MESSAGE="$2"; shift 2 ;;
+        *) echo "Unknown parameter: $1" >&2; shift ;;
+      esac
+    done
+
+    if [[ -z "$BOT_TOKEN" || -z "$CHAT_ID" || -z "$MESSAGE" ]]; then
+      echo "Missing required parameters" >&2
+      exit 1
+    fi
+
+    TEXT="*${SUBJECT}*
+    ${MESSAGE}"
+
+    curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+      -d chat_id="$CHAT_ID" \
+      -d text="$TEXT" \
+      -d parse_mode="Markdown" >/dev/null 2>&1
