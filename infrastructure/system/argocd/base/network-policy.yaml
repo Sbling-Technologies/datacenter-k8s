@@ -47,7 +47,7 @@ spec:
   ingress:
     - fromEndpoints:
         - matchLabels:
-            io.kubernetes.pod.namespace: monitoring-system
+            io.kubernetes.pod.namespace: platform-monitoring-prometheus
             app.kubernetes.io/name: prometheus
 ---
 # NOTE: Probably to Github FQDN would be enough
