@@ -10,5 +10,5 @@ helmCharts:
     namespace: platform-kured
 
 resources:
-  - base/prometheus-rule.yaml
-  - base/secrets.yaml
+  - prometheus-rule.yaml
+  - secrets.yaml
