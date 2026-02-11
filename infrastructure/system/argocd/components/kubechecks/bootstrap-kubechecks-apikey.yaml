@@ -1,0 +1,33 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: bootstrap-kubechecks-apikey
+  annotations:
+    argocd.argoproj.io/hook: PostSync
+    argocd.argoproj.io/hook-delete-policy: HookSucceeded
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+        - name: bootstrap-kubechecks-apikey
+          image: alpine/kubectl:1.35.0
+          command: ["/bin/sh", "/scripts/bootstrap.sh"]
+          volumeMounts:
+            - name: script
+              mountPath: /scripts
+              readOnly: true
+          env:
+            - name: NAMESPACE
+              valueFrom:
+                fieldRef:
+                  fieldPath: metadata.namespace
+            - name: SECRET_NAME
+              value: kubechecks-apikey
+            - name: ARGOCD_SERVER
+              value: https://argocd-server.argocd.svc.cluster.local
+
+      volumes:
+        - name: script
+          configMap:
+            name: argocd-bootstrap-script
