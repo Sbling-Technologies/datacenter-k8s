@@ -12,7 +12,7 @@ metadata:
 spec:
   ingressClassName: cilium
   rules:
-    - host: &host pelican.services.sbling.net
+    - host: &host games.services.sbling.net
       http:
         paths:
           - backend:

@@ -32,7 +32,7 @@ kind: ConfigMap
 metadata:
   name: pelican-panel-env
 data:
-  APP_URL: https://pelican.services.sbling.net
+  APP_URL: https://games.services.sbling.net
   # APP_ENV: production
   APP_INSTALLED: "true"
 
