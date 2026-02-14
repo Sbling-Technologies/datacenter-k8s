@@ -2,6 +2,8 @@ apiVersion: apps/v1
 kind: StatefulSet
 metadata:
   name: pelican-panel
+  annotations:
+    reloader.stakater.com/auto: "true"
   labels:
     app: pelican-panel
 spec:
