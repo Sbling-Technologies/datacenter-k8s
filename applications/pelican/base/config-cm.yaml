@@ -45,6 +45,7 @@ data:
   DB_CONNECTION: pgsql
   DB_HOST: pelican-panel-db-rw
   DB_DATABASE: panel
+  DB_PORT: "5432"
 
   # === mail ===
   MAIL_MAILER: smtp
