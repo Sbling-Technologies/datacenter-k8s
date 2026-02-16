@@ -12,6 +12,4 @@
     name: telegram-notifications
     configMap:
       name: telegram-notification-script
-      items:
-        - key: telegram_notify.sh
       defaultMode: 0755
