@@ -23,6 +23,3 @@ patches:
     target:
       kind: NetworkPolicy
       name: argocd-redis-ha-proxy-network-policy
-
-components:
-  - components/kubechecks
