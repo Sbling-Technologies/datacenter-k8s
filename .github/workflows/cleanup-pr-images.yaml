@@ -1,0 +1,48 @@
+name: Cleanup PR Images
+
+on:
+  pull_request:
+    types:
+      - closed
+
+jobs:
+  cleanup:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Delete PR images from GHCR
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          PR_NUMBER: ${{ github.event.pull_request.number }}
+          OWNER: ${{ github.repository_owner }}
+          REPO: ${{ github.event.repository.name }}
+        run: |
+          TAG="pr-${PR_NUMBER}"
+
+          # The packages API differs between user and org accounts
+          ACCOUNT_TYPE=$(gh api "/users/${OWNER}" --jq '.type')
+          if [ "$ACCOUNT_TYPE" = "Organization" ]; then
+            API_BASE="/orgs/${OWNER}/packages/container"
+          else
+            API_BASE="/user/packages/container"
+          fi
+
+          for IMAGE_DIR in images/*/; do
+            IMAGE=$(basename "$IMAGE_DIR")
+            # Nested package names must be percent-encoded (datacenter-k8s%2Fpelican)
+            PACKAGE=$(python3 -c "import urllib.parse, sys; print(urllib.parse.quote(sys.argv[1], safe=''))" "${REPO}/${IMAGE}")
+
+            VERSION_ID=$(gh api "${API_BASE}/${PACKAGE}/versions" \
+              --jq ".[] | select(.metadata.container.tags[] == \"${TAG}\") | .id")
+
+            if [ -n "$VERSION_ID" ]; then
+              gh api --method DELETE "${API_BASE}/${PACKAGE}/versions/${VERSION_ID}"
+              echo "Deleted ghcr.io/${OWNER}/${REPO}/${IMAGE}:${TAG}"
+            else
+              echo "No version tagged ${TAG} found for ${IMAGE}, skipping"
+            fi
+          done
