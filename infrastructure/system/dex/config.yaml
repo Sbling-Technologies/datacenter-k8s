@@ -39,6 +39,11 @@ staticClients:
       - https://harbor.services.sbling.net/c/oidc/callback
     name: Harbor
     secretEnv: HARBOR_CLIENT_SECRET
+  - id: pelican
+    redirectURIs:
+      - https://games.services.sbling.net/auth/oauth/callback/dex
+    name: Pelican
+    secretEnv: PELICAN_CLIENT_SECRET
 
 connectors:
   - type: github
