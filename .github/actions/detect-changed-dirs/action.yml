@@ -26,6 +26,8 @@ runs:
       env:
         INPUT_SCAN_DIRS: ${{ inputs.scan-dirs }}
       run: |
+        mapfile -t SCAN_DIRS <<< "$INPUT_SCAN_DIRS"
+
         if [ "${{ github.event_name }}" = "pull_request" ]; then
           BASE="${{ github.event.pull_request.base.sha }}"
         else
@@ -38,8 +40,6 @@ runs:
         else
           CHANGED_FILES=$(git diff --name-only "$BASE" "${{ github.sha }}")
         fi
-
-        mapfile -t SCAN_DIRS <<< "$INPUT_SCAN_DIRS"
 
         DIRS=()
         for scan_dir in "${SCAN_DIRS[@]}"; do
