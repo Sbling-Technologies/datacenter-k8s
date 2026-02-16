@@ -19,7 +19,7 @@ jobs:
       matrix: ${{ steps.changed.outputs.matrix }}
       has_changes: ${{ steps.changed.outputs.has_changes }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
@@ -82,7 +82,7 @@ jobs:
       matrix: ${{ fromJson(needs.detect-apps.outputs.matrix) }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
 
       - name: Install kustomize
         uses: imranismail/setup-kustomize@v2
