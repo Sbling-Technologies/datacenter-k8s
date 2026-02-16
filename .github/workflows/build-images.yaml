@@ -3,7 +3,7 @@ name: Build OCI Images
 on:
   pull_request:
     paths: &paths
-      - .github/workflows/create-images.yaml
+      - .github/workflows/build-images.yaml
       - "images/**"
   push:
     paths: *paths
@@ -11,57 +11,38 @@ on:
       - master
 
 jobs:
-  detect:
+  detect-images:
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.changed.outputs.matrix }}
       has_changes: ${{ steps.changed.outputs.has_changes }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
       - name: Detect changed images
         id: changed
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE="${{ github.event.pull_request.base.sha }}"
-          else
-            BASE="${{ github.event.before }}"
-          fi
-
-          # On the very first push the "before" SHA is all zeros — build everything
-          if [ "$BASE" = "0000000000000000000000000000000000000000" ] || [ -z "$BASE" ]; then
-            CHANGED=$(find images -mindepth 1 -maxdepth 1 -type d -printf '%f\n' | sort --unique)
-          else
-            CHANGED=$(git diff --name-only "$BASE" "${{ github.sha }}" -- images/ \
-              | grep --regexp='^images/' \
-              | cut --delimiter=/ --fields=2 \
-              | sort --unique)
-          fi
-
-          IMAGES=$(echo "$CHANGED" | jq --raw-input --slurp --compact-output 'split("\n") | map(select(length > 0))')
-          echo "matrix={\"image\":$IMAGES}" >> "$GITHUB_OUTPUT"
-
-          COUNT=$(echo "$IMAGES" | jq 'length')
-          if [ "$COUNT" -gt 0 ]; then
-            echo "has_changes=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_changes=false" >> "$GITHUB_OUTPUT"
-          fi
+        uses: ./.github/actions/detect-changed-dirs
+        with:
+          scan-dirs: images
 
   build:
-    needs: detect
-    if: needs.detect.outputs.has_changes == 'true'
+    needs: detect-images
+    if: needs.detect-images.outputs.has_changes == 'true'
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.detect.outputs.matrix) }}
+      matrix: ${{ fromJson(needs.detect-images.outputs.matrix) }}
       fail-fast: false
     permissions:
       contents: read
       packages: write
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
+
+      - name: Get image name
+        id: image-name
+        run: echo "value=$(basename '${{ matrix.directory }}')" >> "$GITHUB_OUTPUT"
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v3
@@ -77,7 +58,7 @@ jobs:
         id: meta
         uses: docker/metadata-action@v5
         with:
-          images: ghcr.io/${{ github.repository }}/${{ matrix.image }}
+          images: ghcr.io/${{ github.repository }}/${{ steps.image-name.outputs.value }}
           tags: |
             type=raw,value=latest,enable={{is_default_branch}}
             type=raw,value={{date 'YYYYMMDDTHHmmss'}},enable={{is_default_branch}}
@@ -86,9 +67,9 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v6
         with:
-          context: images/${{ matrix.image }}
+          context: ${{ matrix.directory }}
           push: true
           tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          cache-from: type=gha,scope=${{ matrix.image }}
-          cache-to: type=gha,scope=${{ matrix.image }},mode=max
+          cache-from: type=gha,scope=${{ steps.image-name.outputs.value }}
+          cache-to: type=gha,scope=${{ steps.image-name.outputs.value }},mode=max

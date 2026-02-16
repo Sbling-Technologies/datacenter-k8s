@@ -1,0 +1,75 @@
+name: Detect changed directories
+description: |
+  Outputs a job matrix of subdirectories that changed under the given scan paths.
+  Requires the repository to be checked out with fetch-depth: 0 beforehand.
+  The matrix is formatted as a JSON object with a single key `directory` whose value is a list of changed subdirectories, e.g. {"directory":["images/pelican"]}.
+
+inputs:
+  scan-dirs:
+    description: Newline-separated list of parent directories to scan
+    required: true
+
+outputs:
+  matrix:
+    description: JSON matrix object, e.g. {"directory":["images/pelican"]}
+    value: ${{ steps.detect.outputs.matrix }}
+  has_changes:
+    description: "'true' if at least one directory changed, 'false' otherwise"
+    value: ${{ steps.detect.outputs.has_changes }}
+
+runs:
+  using: composite
+  steps:
+    - name: Detect changed directories
+      id: detect
+      shell: bash
+      env:
+        INPUT_SCAN_DIRS: ${{ inputs.scan-dirs }}
+      run: |
+        if [ "${{ github.event_name }}" = "pull_request" ]; then
+          BASE="${{ github.event.pull_request.base.sha }}"
+        else
+          BASE="${{ github.event.before }}"
+        fi
+
+        if [ "$BASE" = "0000000000000000000000000000000000000000" ] || [ -z "$BASE" ]; then
+          # First push — include all subdirectories under every scan dir
+          CHANGED_FILES=$(find "${SCAN_DIRS[@]}" -type f)
+        else
+          CHANGED_FILES=$(git diff --name-only "$BASE" "${{ github.sha }}")
+        fi
+
+        mapfile -t SCAN_DIRS <<< "$INPUT_SCAN_DIRS"
+
+        DIRS=()
+        for scan_dir in "${SCAN_DIRS[@]}"; do
+          # Fields to keep = number of path components in scan_dir + 1 (the subdir name)
+          SLASHES=$(tr --complement --delete '/' <<<"$scan_dir" | wc --chars)
+          FIELDS=$(( SLASHES + 2 ))
+          while IFS= read -r dir; do
+            [ -n "$dir" ] && [ -d "$dir" ] && DIRS+=("$dir")
+          done < <(echo "$CHANGED_FILES" \
+            | grep --regexp="^${scan_dir}/" \
+            | cut --delimiter=/ --fields="1-${FIELDS}" \
+            | sort --unique)
+        done
+
+        if [ ${#DIRS[@]} -gt 0 ]; then
+          UNIQUE_DIRS=$(printf '%s\n' "${DIRS[@]}" | sort --unique)
+        else
+          UNIQUE_DIRS=""
+        fi
+
+        MATRIX=$(echo "$UNIQUE_DIRS" | jq \
+          --raw-input \
+          --slurp \
+          --compact-output \
+          'split("\n") | map(select(length > 0))')
+        echo "matrix={\"directory\":$MATRIX}" >> "$GITHUB_OUTPUT"
+
+        COUNT=$(echo "$MATRIX" | jq 'length')
+        if [ "$COUNT" -gt 0 ]; then
+          echo "has_changes=true" >> "$GITHUB_OUTPUT"
+        else
+          echo "has_changes=false" >> "$GITHUB_OUTPUT"
+        fi

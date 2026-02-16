@@ -1,4 +1,4 @@
-name: linting
+name: Lint files
 
 on:
   pull_request:
@@ -25,54 +25,13 @@ jobs:
 
       - name: Detect changed apps
         id: changed
-        run: |
-          if [ "${{ github.event_name }}" = "pull_request" ]; then
-            BASE="${{ github.event.pull_request.base.sha }}"
-          else
-            BASE="${{ github.event.before }}"
-          fi
-
-          if [ "$BASE" = "0000000000000000000000000000000000000000" ] || [ -z "$BASE" ]; then
-            CHANGED_FILES=$(find applications infrastructure/operators infrastructure/system platform -type f)
-          else
-            CHANGED_FILES=$(git diff --name-only "$BASE" "${{ github.sha }}")
-          fi
-
-          SCAN_DIRS=(
-            "applications"
-            "infrastructure/operators"
-            "infrastructure/system"
-            "platform"
-          )
-
-          APPS=()
-          for scan_dir in "${SCAN_DIRS[@]}"; do
-            # Number of fields to keep = path components in scan_dir + 1 (the app name)
-            SLASHES=$(echo "$scan_dir" | grep --only-matching '/' | wc --lines)
-            FIELDS=$(( SLASHES + 2 ))
-            while IFS= read -r app; do
-              [ -n "$app" ] && [ -d "$app" ] && APPS+=("$app")
-            done < <(echo "$CHANGED_FILES" \
-              | grep --regexp="^${scan_dir}/" \
-              | cut --delimiter=/ --fields="1-${FIELDS}" \
-              | sort --unique)
-          done
-
-          if [ ${#APPS[@]} -gt 0 ]; then
-            UNIQUE_APPS=$(printf '%s\n' "${APPS[@]}" | sort --unique)
-          else
-            UNIQUE_APPS=""
-          fi
-
-          MATRIX=$(echo "$UNIQUE_APPS" | jq --raw-input --slurp --compact-output 'split("\n") | map(select(length > 0))')
-          echo "matrix={\"app\":$MATRIX}" >> "$GITHUB_OUTPUT"
-
-          COUNT=$(echo "$MATRIX" | jq 'length')
-          if [ "$COUNT" -gt 0 ]; then
-            echo "has_changes=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "has_changes=false" >> "$GITHUB_OUTPUT"
-          fi
+        uses: ./.github/actions/detect-changed-dirs
+        with:
+          scan-dirs: |
+            applications
+            infrastructure/operators
+            infrastructure/system
+            platform
 
   kubeconform:
     needs: detect-apps
@@ -98,10 +57,10 @@ jobs:
             "https://github.com/yannh/kubeconform/releases/download/v${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz"
           tar --extract --file=/tmp/kubeconform.tar.gz --directory=/usr/local/bin kubeconform
 
-      - name: Validate ${{ matrix.app }}
+      - name: Validate ${{ matrix.directory }}
         run: |
           set -euo pipefail
-          kustomize build --enable-helm "${{ matrix.app }}" | kubeconform \
+          kustomize build --enable-helm "${{ matrix.directory }}" | kubeconform \
             --strict \
             --schema-location default \
             --schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
