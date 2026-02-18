@@ -19,4 +19,4 @@ metadata:
 spec:
   blocks:
     - start: 172.31.50.128
-      stop: 172.31.50.254
+      stop: 172.31.50.253
