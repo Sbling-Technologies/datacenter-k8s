@@ -42,4 +42,6 @@ sources:
   - gateway-udproute
 txtOwnerId: default
 txtPrefix: k8s.
-domainFilters: ["services.sbling.net"]
+domainFilters:
+  - dmz.sbling.net
+  - services.sbling.net
