@@ -7,7 +7,7 @@ helmCharts:
   - repo: https://traefik.github.io/charts
     name: traefik
     releaseName: traefik
-    version: 39.0.0
+    version: 39.0.2
     valuesFile: values.yaml
     namespace: traefik-system
 
