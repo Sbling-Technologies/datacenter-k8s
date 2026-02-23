@@ -37,6 +37,11 @@
       "matchUpdateTypes": ["patch", "minor"]
     },
     {
+      "matchFileNames": ["platform/**"],
+      "groupName": "platform non-major",
+      "matchUpdateTypes": ["patch", "minor"]
+    },
+    {
       "matchFileNames": ["applications/icinga/**"],
       "groupName": "icinga2",
       "reviewers": ["LuigiMiazzo17"],
