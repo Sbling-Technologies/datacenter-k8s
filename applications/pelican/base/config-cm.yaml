@@ -49,7 +49,7 @@ data:
 
   # === mail ===
   MAIL_MAILER: smtp
-  MAIL_ENCRYPTION: tls
+  MAIL_SCHEME: smtp
   MAIL_HOST: mail.sbling.net
   MAIL_PORT: "587"
   MAIL_FROM_ADDRESS: noreply@sbling.net
