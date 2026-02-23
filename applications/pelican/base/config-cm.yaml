@@ -32,9 +32,9 @@ kind: ConfigMap
 metadata:
   name: pelican-panel-env
 data:
-  APP_URL: https://games.services.sbling.net
-  # APP_ENV: production
+  APP_URL: https://games.dmz.sbling.net
   APP_INSTALLED: "true"
+  BEHIND_PROXY: "true"
 
   # === drivers ===
   CACHE_STORE: file
