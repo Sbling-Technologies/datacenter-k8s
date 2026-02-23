@@ -56,6 +56,11 @@
       "separateMinorPatch": false,
       "reviewers": ["ardubev16"],
       "automerge": true
+    },
+    {
+      "matchPackageNames": ["ghcr.io/pelican-dev/*"],
+      "versioning": "loose",
+      "ignoreUnstable": false
     }
   ]
 }
