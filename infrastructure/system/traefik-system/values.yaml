@@ -50,9 +50,9 @@ ingressClass:
 
 metrics:
   prometheus:
+    disableAPICheck: true
     service:
       enabled: true
-    disableAPICheck: false
     headerLabels:
       user_id: X-User-Id
       tenant: X-Tenant
