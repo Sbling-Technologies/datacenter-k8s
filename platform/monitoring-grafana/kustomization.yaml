@@ -4,7 +4,7 @@ kind: Kustomization
 namespace: platform-monitoring-grafana
 
 resources:
-  - https://github.com/grafana/grafana-operator/releases/download/v5.21.4/kustomize-cluster_scoped.yaml
+  - https://github.com/grafana/grafana-operator/releases/download/v5.22.0/kustomize-cluster_scoped.yaml
   - dashboards
   - grafana.yaml
 
