@@ -43,6 +43,8 @@ spec:
                 name: pelican-panel-env
             - secretRef:
                 name: mail-credentials-env
+            - secretRef:
+                name: secrets-env
           volumeMounts:
             - name: logs
               mountPath: /app/storage/logs

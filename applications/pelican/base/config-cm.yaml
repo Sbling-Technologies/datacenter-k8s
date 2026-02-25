@@ -35,6 +35,7 @@ data:
   APP_URL: https://games.dmz.sbling.net
   APP_INSTALLED: "true"
   BEHIND_PROXY: "true"
+  TRUSTED_PROXIES: "127.0.0.1"
 
   # === drivers ===
   CACHE_STORE: file
