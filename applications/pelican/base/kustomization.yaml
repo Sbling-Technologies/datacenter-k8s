@@ -6,6 +6,5 @@ resources:
   - database.yaml
   - deployment.yaml
   - httproute-dmz.yaml
-  - ingress.yaml
   - namespace.yaml
   - secrets.yaml

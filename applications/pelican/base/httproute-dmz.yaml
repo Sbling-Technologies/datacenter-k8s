@@ -17,12 +17,10 @@ spec:
             type: PathPrefix
             value: /
 ---
-# NOTE: For some reason if we use the same SVC for both Ingress and HTTPRoute,
-# it responds with 503, "no healthy upstream"
 apiVersion: v1
 kind: Service
 metadata:
-  name: pelican-panel-route
+  name: pelican-panel
 spec:
   selector:
     app: pelican-panel
