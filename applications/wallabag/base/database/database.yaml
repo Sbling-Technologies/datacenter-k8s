@@ -19,3 +19,19 @@ spec:
   storage:
     storageClass: longhorn-single-replica-retain
     size: 5Gi
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: wallabag-db-user
+spec:
+  secretStoreRef:
+    name: bitwarden-secretsmanager
+    kind: ClusterSecretStore
+  data:
+    - secretKey: username
+      remoteRef:
+        key: wallabag/db-credentials/username
+    - secretKey: password
+      remoteRef:
+        key: wallabag/db-credentials/password
