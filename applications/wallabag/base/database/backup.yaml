@@ -1,0 +1,38 @@
+apiVersion: postgresql.cnpg.io/v1
+kind: ScheduledBackup
+metadata:
+  name: daily-backup
+spec:
+  cluster:
+    name: wallabag-db
+  method: plugin
+  pluginConfiguration:
+    name: barman-cloud.cloudnative-pg.io
+  immediate: true
+  # See: https://cloudnative-pg.io/docs/devel/backup/#cron-schedule
+  schedule: "0 0 0 * * *" # Daily at 00:00
+---
+apiVersion: barmancloud.cnpg.io/v1
+kind: ObjectStore
+metadata:
+  name: google-store
+spec:
+  configuration:
+    destinationPath: "gs://cnpg-backups-prod.gcp.sbling.net/wallabag-db"
+    googleCredentials:
+      applicationCredentials:
+        name: backup-creds
+        key: gcsCredentials
+---
+apiVersion: external-secrets.io/v1
+kind: ExternalSecret
+metadata:
+  name: backup-creds
+spec:
+  secretStoreRef:
+    name: bitwarden-secretsmanager
+    kind: ClusterSecretStore
+  data:
+    - secretKey: gcsCredentials
+      remoteRef:
+        key: cnpg/backups/gcp-key
