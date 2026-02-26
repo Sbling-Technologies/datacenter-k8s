@@ -17,6 +17,7 @@ kind: ObjectStore
 metadata:
   name: google-store
 spec:
+  retentionPolicy: "14d"
   configuration:
     destinationPath: "gs://cnpg-backups-prod.gcp.sbling.net/wallabag-db"
     googleCredentials:
