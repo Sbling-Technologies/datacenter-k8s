@@ -16,29 +16,60 @@ jobs:
   detect-apps:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.changed.outputs.matrix }}
-      has_changes: ${{ steps.changed.outputs.has_changes }}
+      matrix: ${{ steps.merged.outputs.all_changed_files }}
+      any_changed: ${{ steps.merged.outputs.any_changed }}
     steps:
       - uses: actions/checkout@v6
         with:
           fetch-depth: 0
 
-      - name: Detect changed apps
-        id: changed
-        uses: ./.github/actions/detect-changed-dirs
+      - uses: tj-actions/changed-files@v47
+        id: depth2
         with:
-          scan-dirs: |
-            applications
-            infrastructure/operators
-            infrastructure/system
-            platform
+          files: |
+            applications/**
+            platform/**
+          dir_names: "true"
+          dir_names_max_depth: "2"
+          matrix: "true"
+
+      - uses: tj-actions/changed-files@v47
+        id: depth3
+        with:
+          files: |
+            infrastructure/operators/**
+            infrastructure/system/**
+          dir_names: "true"
+          dir_names_max_depth: "3"
+          matrix: "true"
+
+      - name: Merge changed dirs
+        id: merged
+        env:
+          D2: ${{ steps.depth2.outputs.all_changed_files }}
+          D3: ${{ steps.depth3.outputs.all_changed_files }}
+        run: |
+          MERGED=$(jq \
+            --null-input \
+            --compact-output \
+            --argjson d2 "$D2" \
+            --argjson d3 "$D3" \
+            '$d2 + $d3 | unique'
+          )
+          echo "all_changed_files=$MERGED" >> "$GITHUB_OUTPUT"
+          if [ "$(echo "$MERGED" | jq 'length')" -gt 0 ]; then
+            echo "any_changed=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "any_changed=false" >> "$GITHUB_OUTPUT"
+          fi
 
   kubeconform:
     needs: detect-apps
-    if: needs.detect-apps.outputs.has_changes == 'true'
+    if: needs.detect-apps.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.detect-apps.outputs.matrix) }}
+      matrix:
+        directory: ${{ fromJson(needs.detect-apps.outputs.matrix) }}
       fail-fast: false
     steps:
       - uses: actions/checkout@v6
