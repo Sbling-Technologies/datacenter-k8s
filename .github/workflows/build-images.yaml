@@ -14,8 +14,8 @@ jobs:
   detect-images:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.changed.outputs.matrix }}
-      has_changes: ${{ steps.changed.outputs.has_changes }}
+      matrix: ${{ steps.changed.outputs.all_changed_files }}
+      any_changed: ${{ steps.changed.outputs.any_changed }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -23,16 +23,20 @@ jobs:
 
       - name: Detect changed images
         id: changed
-        uses: ./.github/actions/detect-changed-dirs
+        uses: tj-actions/changed-files@v47
         with:
-          scan-dirs: images
+          files: "images/**"
+          dir_names: "true"
+          dir_names_max_depth: "2"
+          matrix: "true"
 
   build:
     needs: detect-images
-    if: needs.detect-images.outputs.has_changes == 'true'
+    if: needs.detect-images.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
     strategy:
-      matrix: ${{ fromJson(needs.detect-images.outputs.matrix) }}
+      matrix:
+        directory: ${{ fromJson(needs.detect-images.outputs.matrix) }}
       fail-fast: false
     permissions:
       contents: read
