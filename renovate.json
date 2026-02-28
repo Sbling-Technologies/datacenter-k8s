@@ -1,15 +1,12 @@
 {
   "$schema": "https://docs.renovatebot.com/renovate-schema.json",
   "extends": [
-    "config:recommended",
-    "group:recommended",
+    "config:best-practices",
     "group:allNonMajor",
     "security:openssf-scorecard",
     ":disableDependencyDashboard"
   ],
-  "pre-commit": {
-    "enabled": true
-  },
+  "pre-commit": { "enabled": true },
   "reviewers": ["ardubev16", "LuigiMiazzo17"],
   "argocd": {
     "managerFilePatterns": ["/^apps/.+\\.yaml$/", "/^app-of-apps.yaml$/"]
