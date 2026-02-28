@@ -57,7 +57,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: n8n-config
-          image: ghcr.io/n8n-io/n8n:2.9.2@sha256:52bc65540cbfb6f8b5320bafaf28bcc018ae08124bb0a7cbf5ca7f044b54d698
+          image: ghcr.io/n8n-io/n8n:2.10.2@sha256:cfa50544c4cc172506834da1ec9bb5171db55958c8d1918205df0bda237a56f4
           name: n8n
           ports:
             - containerPort: 80
