@@ -9,9 +9,9 @@ jobs:
   prek:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v6
-      - uses: actions/setup-python@v6
-      - uses: j178/prek-action@v1
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405 # v6
+      - uses: j178/prek-action@0bb87d7f00b0c99306c8bcb8b8beba1eb581c037 # v1
 
   detect-apps:
     runs-on: ubuntu-latest
@@ -19,11 +19,11 @@ jobs:
       matrix: ${{ steps.merged.outputs.all_changed_files }}
       any_changed: ${{ steps.merged.outputs.any_changed }}
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
         with:
           fetch-depth: 0
 
-      - uses: tj-actions/changed-files@v47
+      - uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         id: depth2
         with:
           files: |
@@ -33,7 +33,7 @@ jobs:
           dir_names_max_depth: "2"
           matrix: "true"
 
-      - uses: tj-actions/changed-files@v47
+      - uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         id: depth3
         with:
           files: |
@@ -72,10 +72,10 @@ jobs:
         directory: ${{ fromJson(needs.detect-apps.outputs.matrix) }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@v6
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
       - name: Install kustomize
-        uses: imranismail/setup-kustomize@v2
+        uses: imranismail/setup-kustomize@2ba527d4d055ab63514ba50a99456fc35684947f # v2
 
       - name: Install kubeconform
         env:
