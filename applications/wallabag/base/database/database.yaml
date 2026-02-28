@@ -10,11 +10,15 @@ spec:
     enablePodMonitor: true
 
   bootstrap:
-    initdb:
-      database: wallabag
-      owner: wallabag
-      secret:
-        name: wallabag-db-user
+    recovery:
+      source: backup
+
+  externalClusters:
+    - name: backup
+      plugin:
+        name: barman-cloud.cloudnative-pg.io
+        parameters:
+          barmanObjectName: google-store
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
