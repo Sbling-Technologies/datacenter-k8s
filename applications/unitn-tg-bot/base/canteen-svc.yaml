@@ -22,7 +22,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: common-settings
-          image: ghcr.io/guss-alberto/unitntgbot-canteen:v0.1.4
+          image: ghcr.io/guss-alberto/unitntgbot-canteen:v0.1.4@sha256:5f7a6f6c1b99641253c0aee83bebdbcbad4ad61ae23d95f7bcf38020f9485d99
           name: canteen-svc
           ports:
             - containerPort: 5000

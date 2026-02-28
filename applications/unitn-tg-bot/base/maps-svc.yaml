@@ -16,7 +16,7 @@ spec:
         io.kompose.service: maps-svc
     spec:
       containers:
-        - image: ghcr.io/guss-alberto/unitntgbot-maps:v0.1.4
+        - image: ghcr.io/guss-alberto/unitntgbot-maps:v0.1.4@sha256:84c05b44d26e2f8391c0d5e6a6eedba4789810e57bff21d17d4bcf7ac78d035d
           name: maps-svc
           ports:
             - containerPort: 5000
