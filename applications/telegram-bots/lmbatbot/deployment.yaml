@@ -12,7 +12,7 @@ spec:
             claimName: lmbatbot-data
       containers:
         - name: lmbatbot
-          image: ghcr.io/ardubev16/lmbatbot:v0.1.5
+          image: ghcr.io/ardubev16/lmbatbot:v0.1.5@sha256:3d8f1bc345ac66be2c04e75e52b94df404ae1c717e09c33070b0050ce5a54ab4
           volumeMounts:
             - mountPath: /data
               name: lmbatbot-data

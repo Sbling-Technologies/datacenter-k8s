@@ -12,7 +12,7 @@ spec:
             claimName: punbot-data
       containers:
         - name: punbot
-          image: ghcr.io/ardubev16/punbot:v0.1.0
+          image: ghcr.io/ardubev16/punbot:v0.1.0@sha256:977e3feb25eac9171647822c3c9a0de4cf24d4b64a80eb607d1e985d1d7f02b3
           volumeMounts:
             - mountPath: /data
               name: punbot-data

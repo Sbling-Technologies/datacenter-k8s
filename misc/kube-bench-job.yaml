@@ -26,7 +26,7 @@ spec:
           effect: NoSchedule
       containers:
         - name: kube-bench
-          image: docker.io/aquasec/kube-bench:latest
+          image: docker.io/aquasec/kube-bench:latest@sha256:7a8fa32dce215f5920e0c9d7ae10a8e1e188993675f3ef5c4b4cbae3d342c168
           command: ["kube-bench", "run", "--benchmark", "k3s-cis-1.7"]
           volumeMounts:
             - name: var-lib-cni
