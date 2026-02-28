@@ -16,7 +16,7 @@ spec:
         io.kompose.service: rooms-svc
     spec:
       containers:
-        - image: ghcr.io/guss-alberto/unitntgbot-rooms:v0.1.4
+        - image: ghcr.io/guss-alberto/unitntgbot-rooms:v0.1.4@sha256:5bf1ece07f0c0cbff1626c004a3cec01174cc97e39c5ba0b80e6ffc62112f2ba
           name: rooms-svc
           ports:
             - containerPort: 5000

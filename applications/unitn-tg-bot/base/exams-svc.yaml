@@ -23,7 +23,7 @@ spec:
             - configMapRef:
                 name: common-settings
           name: exams-svc
-          image: ghcr.io/guss-alberto/unitntgbot-exams:v0.1.4
+          image: ghcr.io/guss-alberto/unitntgbot-exams:v0.1.4@sha256:bf94f0aaedc0ed206487a6852a5f9cc9b2260add09543572cbd42a3ac357f2bb
           ports:
             - containerPort: 5000
               protocol: TCP

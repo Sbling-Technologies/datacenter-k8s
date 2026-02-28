@@ -16,7 +16,7 @@ spec:
         io.kompose.service: tt-svc
     spec:
       containers:
-        - image: ghcr.io/guss-alberto/unitntgbot-tt:v0.1.4
+        - image: ghcr.io/guss-alberto/unitntgbot-tt:v0.1.4@sha256:52fa4fd85e6971a871364a3a419a0984820129d8fe9d7cf08363fde8550162c9
           name: tt-svc
           ports:
             - containerPort: 5000
