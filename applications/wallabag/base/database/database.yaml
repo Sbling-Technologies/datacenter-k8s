@@ -22,12 +22,14 @@ spec:
         isWALArchiver: true
         parameters:
           barmanObjectName: google-store
+          serverName: wallabag-db-1
 
   plugins:
     - name: barman-cloud.cloudnative-pg.io
       isWALArchiver: true
       parameters:
         barmanObjectName: google-store
+        serverName: wallabag-db
 
   storage:
     storageClass: longhorn-single-replica
