@@ -11,6 +11,8 @@ spec:
 
   bootstrap:
     recovery:
+      database: wallabag
+      owner: wallabag
       source: backup
 
   externalClusters:
