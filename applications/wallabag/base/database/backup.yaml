@@ -10,7 +10,7 @@ spec:
     name: barman-cloud.cloudnative-pg.io
   immediate: true
   # See: https://cloudnative-pg.io/docs/devel/backup/#cron-schedule
-  schedule: "0 0 0 * * *" # Daily at 00:00
+  schedule: "0 0 */12 * * *" # Every 12 hours
 ---
 apiVersion: barmancloud.cnpg.io/v1
 kind: ObjectStore
