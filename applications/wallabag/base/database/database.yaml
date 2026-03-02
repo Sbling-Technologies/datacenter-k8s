@@ -30,7 +30,7 @@ spec:
         barmanObjectName: google-store
 
   storage:
-    storageClass: longhorn-single-replica-retain
+    storageClass: longhorn-single-replica
     size: 5Gi
 ---
 apiVersion: external-secrets.io/v1
