@@ -8,3 +8,11 @@ controller:
 listeners:
   client:
     protocol: PLAINTEXT
+
+  controller:
+    protocol: PLAINTEXT
+
+  interbroker:
+    protocol: PLAINTEXT
+
+existingKraftSecret: kafka-kraft
