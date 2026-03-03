@@ -3,9 +3,8 @@ configuration:
   alertFilterRegexp: ^(Watchdog|InfoInhibitor|RebootRequired|ArgoApplicationUnstable)$
   alertFiringOnly: true
 
-  rebootDays: [wed, thu, sat, sun]
   timeZone: Europe/Rome
-  startTime: 2:00
+  startTime: 1:00
   endTime: 7:00
 
 extraEnvVars:
