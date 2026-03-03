@@ -12,6 +12,18 @@ jobs:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
       - uses: j178/prek-action@0bb87d7f00b0c99306c8bcb8b8beba1eb581c037 # v1
 
+  kustomize-files:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+
+      # https://just.systems/man/en/github-actions.html
+      - uses: extractions/setup-just@v3
+      - uses: astral-sh/setup-uv@5a095e7a2014a4212f075830d4f7277575a9d098 # v7
+
+      - name: Check that all files are referenced in kustomization.yaml
+        run: just kref
+
   detect-apps:
     runs-on: ubuntu-latest
     outputs:
