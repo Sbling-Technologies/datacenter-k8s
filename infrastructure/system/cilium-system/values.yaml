@@ -32,6 +32,14 @@ loadBalancer:
     backend: envoy
 
 hubble:
+  tls:
+    auto:
+      method: certmanager
+      certManagerIssuerRef:
+        group: cert-manager.io
+        kind: Issuer
+        name: hubble-ca-issuer
+
   relay:
     enabled: true
   ui:

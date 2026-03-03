@@ -4,4 +4,5 @@ kind: Kustomization
 resources:
   - dmz-gateway.yaml
   - external-gateway.yaml
+  - issuer.yaml
   - l2-announcements.yaml
