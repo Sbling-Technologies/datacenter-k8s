@@ -4,8 +4,8 @@ configuration:
   alertFiringOnly: true
 
   timeZone: Europe/Rome
-  startTime: 1:00
-  endTime: 7:00
+  startTime: 15:00
+  endTime: 18:00
 
 extraEnvVars:
   - name: KURED_NOTIFY_URL
