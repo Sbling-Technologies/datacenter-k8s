@@ -1,0 +1,9 @@
+# NOTE: These are only the ids of the cluster and controllers, they are not actually secrets.
+# This assumes that the controller only has 1 replica.
+apiVersion: v1
+kind: Secret
+metadata:
+  name: kafka-kraft # gitleaks:allow
+data:
+  cluster-id: UllDZXQyd0dxVjVITTdXekJVRFFoeA==
+  controller-0-id: ZWg4T2VwaU1EMlFJMzJKYTIxWE9hMA==

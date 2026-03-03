@@ -2,6 +2,7 @@ apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
 resources:
+  - kafka
   - canteen-svc.yaml
   - exams-svc.yaml
   - lectures-svc.yaml
@@ -13,11 +14,3 @@ resources:
   - telegram-bot.yaml
   - tt-svc.yaml
   - updater.yaml
-
-helmCharts:
-  - repo: https://charts.bitnami.com/bitnami
-    name: kafka
-    releaseName: kafka
-    version: 32.4.3
-    valuesFile: kafka-values.yaml
-    namespace: prod-unitn-tg-bot
