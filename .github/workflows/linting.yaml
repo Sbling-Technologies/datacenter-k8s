@@ -73,8 +73,8 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Install kustomize
-        uses: imranismail/setup-kustomize@2ba527d4d055ab63514ba50a99456fc35684947f # v2
+      # https://just.systems/man/en/github-actions.html
+      - uses: extractions/setup-just@v3
 
       - name: Install kubeconform
         env:
@@ -88,15 +88,9 @@ jobs:
           tar --extract --file=/tmp/kubeconform.tar.gz --directory=/usr/local/bin kubeconform
 
       - name: Validate ${{ matrix.directory }}
-        run: |
-          set -euo pipefail
-          kustomize build --enable-helm "${{ matrix.directory }}" | kubeconform \
-            --strict \
-            --schema-location default \
-            --schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
-            --schema-location 'https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}/{{.ResourceKind}}.json'
+        run: just kubeconform "${{ matrix.directory }}"
 
-  application-stability:
+  idempotency:
     needs: detect-apps
     if: needs.detect-apps.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
@@ -107,13 +101,8 @@ jobs:
     steps:
       - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
 
-      - name: Install kustomize
-        uses: imranismail/setup-kustomize@2ba527d4d055ab63514ba50a99456fc35684947f # v2
+      # https://just.systems/man/en/github-actions.html
+      - uses: extractions/setup-just@v3
 
-      - name: Check app stability for ${{ matrix.directory }}
-        run: |
-          set -euo pipefail
-          first_run=$(kustomize build --enable-helm "${{ matrix.directory }}")
-          second_run=$(kustomize build --enable-helm "${{ matrix.directory }}")
-
-          diff --unified=0 <(echo "$first_run") <(echo "$second_run")
+      - name: Check idempotency of ${{ matrix.directory }}
+        run: just idempotent "${{ matrix.directory }}"
