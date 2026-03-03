@@ -14,8 +14,6 @@ kubeconform path:
     --schema-location '{{ _crds_schema_location }}' \
     --schema-location '{{ _k8s_schema_location }}'
 
-    echo "Validation successful for {{ path }}"
-
 idempotent path:
     #!/usr/bin/env bash
     set -euo pipefail
@@ -24,4 +22,5 @@ idempotent path:
     second_run=$(kustomize build --enable-helm "{{ path }}")
     diff --unified=0 <(echo "$first_run") <(echo "$second_run")
 
-    echo "Idempotency check passed for {{ path }}"
+kref:
+    ./scripts/check_kustomization_reference.py
