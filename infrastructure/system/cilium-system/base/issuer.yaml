@@ -2,5 +2,31 @@ apiVersion: cert-manager.io/v1
 kind: Issuer
 metadata:
   name: hubble-ca-issuer
+  namespace: kube-system
 spec:
   selfSigned: {}
+---
+apiVersion: cert-manager.io/v1
+kind: Certificate
+metadata:
+  name: hubble-ca-cert
+  namespace: kube-system
+spec:
+  isCA: true
+  secretName: hubble-ca-cert
+  commonName: "*.cilium.io"
+  dnsNames:
+    - "*.cilium.io"
+  issuerRef:
+    name: hubble-ca-issuer
+    kind: Issuer
+    group: cert-manager.io
+---
+apiVersion: cert-manager.io/v1
+kind: Issuer
+metadata:
+  name: hubble-certificate-issuer
+  namespace: kube-system
+spec:
+  ca:
+    secretName: hubble-ca-cert

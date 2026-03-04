@@ -38,7 +38,7 @@ hubble:
       certManagerIssuerRef:
         group: cert-manager.io
         kind: Issuer
-        name: hubble-ca-issuer
+        name: hubble-certificate-issuer
 
   relay:
     enabled: true
