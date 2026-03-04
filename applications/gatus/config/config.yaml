@@ -49,7 +49,3 @@ endpoints:
   - name: Homepage
     <<: *https-common
     url: https://homepage.services.sbling.net/
-
-  - name: Harbor
-    <<: *https-common
-    url: https://harbor.services.sbling.net/
