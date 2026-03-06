@@ -17,7 +17,7 @@ repos:
       - id: trailing-whitespace
 
   - repo: https://github.com/codespell-project/codespell
-    rev: 63c8f8312b7559622c0d82815639671ae42132ac # frozen: v2.4.1
+    rev: 2ccb47ff45ad361a21071a7eedda4c37e6ae8c5a # frozen: v2.4.2
     hooks:
       - id: codespell
 
@@ -27,7 +27,7 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: afa3737352c779377771262f6fbaaf5b4e9fd0fd  # frozen: 43.46.6
+    rev: 01fd9598c0e3bee57aef38616484cf7a2134f256  # frozen: 43.58.0
     hooks:
       - id: renovate-config-validator
         args: [--strict]
