@@ -32,6 +32,13 @@
   ],
   "packageRules": [
     {
+      "groupName": "Actions & Checks",
+      "matchManagers": ["github-actions", "pre-commit"],
+      "separateMajorMinor": false,
+      "separateMinorPatch": false,
+      "automerge": true
+    },
+    {
       "matchFileNames": ["infrastructure/**"],
       "groupName": "infrastructure non-major",
       "matchUpdateTypes": ["patch", "minor"]
