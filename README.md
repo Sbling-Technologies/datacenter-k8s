@@ -7,12 +7,16 @@ ArgoCD) and maintained by:
   [GitHub](https://github.com/ardubev16).
 - Luigi Miazzo: [LinkedIn](https://www.linkedin.com/in/luigi-miazzo), [GitHub](https://github.com/LuigiMiazzo17).
 
+We also gave a talk about our HomeLab and HomeLabbing at [Speck & Tech](https://speckand.tech/),
+a local tech community in Trento. If you want, you can checkout the [slides](https://www.slideshare.net/slideshow/embed_code/key/wuXR5cDN3c0ZSz)
+(they are in italian).
+
 ## Infrastructure Services
 
 The Kubernetes cluster uses the following infrastructure services. These are reported
 here as they shouldn't change much however, since the main focus of this HomeLab
-is to learn new stuff, this list can get out of sync with respect to the actual implemented
-services.
+is to learn new stuff, this list can get out of sync with respect to the actual
+implemented services.
 
 - **ArgoCD**: Deployed in a high-availability configuration for managing the GitOps
   workflow.
@@ -50,9 +54,9 @@ of manifests for a Kubernetes cluster. Here's a breakdown of the directory struc
   for deploying both infrastructure components and applications.
 
 - `infrastructure`: This directory holds the Kubernetes manifests for the core infrastructure
-  of the cluster. This includes operators, monitoring, logging, networking, and other
-  system-level services. The manifests are organized by component and use Kustomize
-  for configuration management.
+  of the cluster. This includes operators, monitoring, logging, networking, and
+  other system-level services. The manifests are organized by component and use
+  Kustomize for configuration management.
 
 - `applications`: Here you'll find the configurations for the various applications
   running in the cluster. Each application has its own directory, typically following
