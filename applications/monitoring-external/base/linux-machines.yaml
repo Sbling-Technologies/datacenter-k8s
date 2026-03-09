@@ -1,17 +1,6 @@
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
 metadata:
-  name: ddi-vm-external
-spec:
-  jobName: node-virt
-  staticConfigs:
-    - targets:
-        - ddi.vms.sbling.net:8080
-        - ddi.vms.sbling.net:9100
----
-apiVersion: monitoring.coreos.com/v1alpha1
-kind: ScrapeConfig
-metadata:
   name: mail-vm-external
 spec:
   jobName: node-virt
@@ -19,17 +8,6 @@ spec:
     - targets:
         - mail.vms.sbling.net:8080
         - mail.vms.sbling.net:9100
----
-apiVersion: monitoring.coreos.com/v1alpha1
-kind: ScrapeConfig
-metadata:
-  name: pi1-vm-external
-spec:
-  jobName: node-phys
-  staticConfigs:
-    - targets:
-        - pi1.vms.sbling.net:8080
-        - pi1.vms.sbling.net:9100
 ---
 apiVersion: monitoring.coreos.com/v1alpha1
 kind: ScrapeConfig
