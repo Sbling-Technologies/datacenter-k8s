@@ -27,13 +27,13 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 1e9ec62749fb49154727a5c13222ffeffa36fc71 # frozen: 43.64.3
+    rev: 943f2cbb8fbfe3bfbc6c5d5341c5a1bd3a74e7be # frozen: 43.65.0
     hooks:
       - id: renovate-config-validator
         args: [--strict]
 
   - repo: https://github.com/gitleaks/gitleaks
-    rev: 6eaad039603a4de39fddd1cf5f727391efe9974e # frozen: v8.30.0
+    rev: 8d1f98c7967eb1e79cb44ac6241a124e145d2165 # frozen: v8.30.1
     hooks:
       - id: gitleaks
 
