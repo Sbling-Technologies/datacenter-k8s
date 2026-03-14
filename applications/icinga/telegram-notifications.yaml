@@ -6,27 +6,80 @@ data:
   telegram_notify.sh: |
     #!/usr/bin/env bash
 
-    # Simple Telegram notification script for Icinga2
+    set -u
 
     while [[ "$#" -gt 0 ]]; do
-      case "$1" in
-        --bottoken) BOT_TOKEN="$2"; shift 2 ;;
-        --chatid)   CHAT_ID="$2"; shift 2 ;;
-        --subject)  SUBJECT="$2"; shift 2 ;;
-        --message)  MESSAGE="$2"; shift 2 ;;
-        *) echo "Unknown parameter: $1" >&2; shift ;;
-      esac
+        case "$1" in
+        --bottoken)
+            BOT_TOKEN="$2"
+            shift 2
+            ;;
+        --chatid)
+            CHAT_ID="$2"
+            shift 2
+            ;;
+        --subject)
+            SUBJECT="$2"
+            shift 2
+            ;;
+        --message)
+            MESSAGE="$2"
+            shift 2
+            ;;
+        *)
+            echo "Unknown parameter: $1" >&2
+            shift
+            ;;
+        esac
     done
 
-    if [[ -z "$BOT_TOKEN" || -z "$CHAT_ID" || -z "$MESSAGE" ]]; then
-      echo "Missing required parameters" >&2
-      exit 1
+    if [[ -z "${BOT_TOKEN:-}" || -z "${CHAT_ID:-}" || -z "${MESSAGE:-}" ]]; then
+        echo "Missing required parameters" >&2
+        exit 1
     fi
 
-    TEXT="*${SUBJECT}*
-    ${MESSAGE}"
+    # Turn literal \n into real newlines
+    SUBJECT=$(printf "%b" "${SUBJECT:-}")
+    MESSAGE=$(printf "%b" "${MESSAGE:-}")
 
-    curl -s -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
-      -d chat_id="$CHAT_ID" \
-      -d text="$TEXT" \
-      -d parse_mode="Markdown" >/dev/null 2>&1
+    # Escape text for Telegram HTML parse mode
+    html_escape() {
+        local s="${1:-}"
+        s=${s//&/&amp;}
+        s=${s//</&lt;}
+        s=${s//>/&gt;}
+        printf '%s' "$s"
+    }
+
+    SUBJECT_ESCAPED=$(html_escape "$SUBJECT")
+    MESSAGE_ESCAPED=$(html_escape "$MESSAGE")
+
+    # Choose icon based on common Icinga words in the subject/message
+    STATE_TEXT="${SUBJECT} ${MESSAGE}"
+    ICON="ℹ️"
+
+    case "$STATE_TEXT" in
+    *CRITICAL*) ICON="🔴" ;;
+    *WARNING*) ICON="🟠" ;;
+    *OK*) ICON="🟢" ;;
+    *UP*) ICON="🟢" ;;
+    *DOWN*) ICON="🔴" ;;
+    *UNKNOWN*) ICON="🔵" ;;
+    *RECOVERY*) ICON="✅" ;;
+    *ACKNOWLEDG*) ICON="👍" ;;
+    esac
+
+    TEXT=$(
+        cat <<EOF
+    <b>${ICON} ${SUBJECT_ESCAPED}</b>
+
+    <pre>${MESSAGE_ESCAPED}</pre>
+    EOF
+    )
+
+    curl -sS -X POST "https://api.telegram.org/bot${BOT_TOKEN}/sendMessage" \
+        --data-urlencode "chat_id=${CHAT_ID}" \
+        --data-urlencode "text=${TEXT}" \
+        --data-urlencode "parse_mode=HTML" \
+        --data-urlencode "disable_web_page_preview=true" \
+        >/dev/null
