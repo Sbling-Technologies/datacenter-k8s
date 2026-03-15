@@ -27,7 +27,7 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: f9976081ac3954bc19d149b413df1ab9fcdf5567 # frozen: 43.76.1
+    rev: fc04b5dc8df0840e371e6d0b968431448db2491f # frozen: 43.76.2
     hooks:
       - id: renovate-config-validator
         args: [--strict]
