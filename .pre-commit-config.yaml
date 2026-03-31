@@ -22,12 +22,12 @@ repos:
       - id: codespell
 
   - repo: https://github.com/rhysd/actionlint
-    rev: 393031adb9afb225ee52ae2ccd7a5af5525e03e8 # frozen: v1.7.11
+    rev: 914e7df21a07ef503a81201c76d2b11c789d3fca # frozen: v1.7.12
     hooks:
       - id: actionlint
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: fd854a77701ce0ec08d2a9e4d675f801ee4819bc # frozen: 43.100.1
+    rev: 0ff78c1a26418cf5d54a124175154d3dae76b8df # frozen: 43.101.2
     hooks:
       - id: renovate-config-validator
         args: [--strict]
