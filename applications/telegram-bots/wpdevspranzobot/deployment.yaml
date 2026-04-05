@@ -8,7 +8,7 @@ spec:
     spec:
       containers:
         - name: wpdevspranzobot
-          image: ghcr.io/luigimiazzo17/wpdevspranzobot:v0.2.0@sha256:afb0cdb1386652a2c7e249c6ee58f10659590e945c0fac46af93ad3156570069
+          image: ghcr.io/luigimiazzo17/wpdevspranzobot:v0.2.1@sha256:1d21d07bac402648b5b7d8965d1e692ad5176f0ddfbda3303dc0bc8f2b79716f
           env:
             - name: TZ
               value: Europe/Rome
