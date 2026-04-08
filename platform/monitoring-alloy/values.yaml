@@ -2,27 +2,32 @@ cluster:
   name: datacenter-k8s
 
 destinations:
-  - name: loki
+  loki:
     type: loki
     url: http://loki-gateway.platform-monitoring-loki.svc.cluster.local/loki/api/v1/push
 
 clusterEvents:
   enabled: true
+  collector: alloy-singleton
 
 nodeLogs:
   enabled: true
+  collector: alloy-logs
 
-podLogs:
+podLogsViaKubernetesApi:
   enabled: true
-  gatherMethod: kubernetesApi
+  collector: alloy-logs
 
-alloy-singleton:
-  enabled: true
-
-alloy-logs:
-  enabled: true
-  alloy:
-    mounts:
-      varlog: true
-    clustering:
-      enabled: true
+collectors:
+  alloy-logs:
+    presets:
+      - filesystem-log-reader
+      - daemonset
+    alloy:
+      mounts:
+        varlog: true
+      clustering:
+        enabled: true
+  alloy-singleton:
+    presets:
+      - singleton
