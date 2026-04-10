@@ -11,4 +11,5 @@ helmCharts:
 
 resources:
   - base/bitwarden-certificates.yaml
+  - base/grafana-dashboards.yaml
   - base/secret-store.yaml
