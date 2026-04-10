@@ -1,5 +1,8 @@
 bitwarden-sdk-server:
   enabled: true
 
+serviceMonitor:
+  enabled: true
+
 log:
   level: debug
