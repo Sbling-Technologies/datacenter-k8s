@@ -1,6 +1,6 @@
 configuration:
   prometheusUrl: http://kube-prometheus-stack-prometheus.platform-monitoring-prometheus.svc.cluster.local:9090
-  alertFilterRegexp: ^(Watchdog|InfoInhibitor|RebootRequired|ArgoApplicationUnstable)$
+  alertFilterRegexp: ^(Watchdog|InfoInhibitor|RebootRequired|ArgoApplicationUnstable|LonghornVolumeActualSpaceUsedWarning)$
   alertFiringOnly: true
 
   timeZone: Europe/Rome
