@@ -1,2 +1,5 @@
 bitwarden-sdk-server:
   enabled: true
+
+log:
+  level: debug
