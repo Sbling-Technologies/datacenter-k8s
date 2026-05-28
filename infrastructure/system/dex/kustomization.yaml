@@ -5,7 +5,7 @@ helmCharts:
   - repo: https://charts.dexidp.io
     name: dex
     releaseName: dex
-    version: 0.24.0
+    version: 0.24.1
     valuesFile: values.yaml
     namespace: dex
 
