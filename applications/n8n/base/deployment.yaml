@@ -20,7 +20,7 @@ spec:
     spec:
       initContainers:
         - name: volume-permissions
-          image: busybox:1.37@sha256:1487d0af5f52b4ba31c7e465126ee2123fe3f2305d638e7827681e7cf6c83d5e
+          image: busybox:1.38@sha256:fd8d9aa63ba2f0982b5304e1ee8d3b90a210bc1ffb5314d980eb6962f1a9715d
           command: ["sh", "-c", "chown 1000:1000 /data"]
           volumeMounts:
             - name: n8n-volume
@@ -57,7 +57,7 @@ spec:
           envFrom:
             - configMapRef:
                 name: n8n-config
-          image: ghcr.io/n8n-io/n8n:2.20.6@sha256:d8b7ace22609c8297f02b2103543b2babdfa3880d5bcfb14e4e0d9d8ec11671c
+          image: ghcr.io/n8n-io/n8n:2.23.1@sha256:a0aa4012094eec804c17ef8014b1e397a337d33f63faebf33b439388ada93289
           name: n8n
           ports:
             - containerPort: 80
