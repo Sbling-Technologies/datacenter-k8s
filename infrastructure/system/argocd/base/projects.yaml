@@ -1,0 +1,49 @@
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: infra
+  namespace: argocd
+spec:
+  description: Core cluster infrastructure
+  sourceRepos:
+    - git@github.com:Sbling-Technologies/datacenter-k8s.git
+  destinations:
+    - namespace: "*"
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: platform
+  namespace: argocd
+spec:
+  description: Cluster-wide platform services
+  sourceRepos:
+    - git@github.com:Sbling-Technologies/datacenter-k8s.git
+  destinations:
+    - namespace: platform-*
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
+---
+apiVersion: argoproj.io/v1alpha1
+kind: AppProject
+metadata:
+  name: apps
+  namespace: argocd
+spec:
+  description: User-facing applications
+  sourceRepos:
+    - git@github.com:Sbling-Technologies/datacenter-k8s.git
+  destinations:
+    - namespace: prod-*
+      server: https://kubernetes.default.svc
+    - namespace: staging-*
+      server: https://kubernetes.default.svc
+  clusterResourceWhitelist:
+    - group: "*"
+      kind: "*"
