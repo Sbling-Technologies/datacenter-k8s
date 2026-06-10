@@ -28,6 +28,30 @@ jobs:
       - name: Check that all files are referenced in kustomization.yaml
         run: just kref
 
+  kubeconform-appsets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@df4cb1c069e1874edd31b4311f1884172cec0e10 # v6
+
+      - name: Install kubeconform
+        run: |
+          curl \
+            --silent \
+            --location \
+            --output /tmp/kubeconform.tar.gz \
+            "https://github.com/yannh/kubeconform/releases/download/${KUBECONFORM_VERSION}/kubeconform-linux-amd64.tar.gz"
+          tar --extract --file=/tmp/kubeconform.tar.gz --directory=/usr/local/bin kubeconform
+
+      - name: Validate appsets and root application
+        run: |
+          kubeconform \
+            --strict \
+            --ignore-missing-schemas \
+            --schema-location default \
+            --schema-location 'https://raw.githubusercontent.com/datreeio/CRDs-catalog/main/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json' \
+            --schema-location 'https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}/{{.ResourceKind}}.json' \
+            root-argocd-app.yaml appsets/
+
   detect-apps:
     runs-on: ubuntu-latest
     outputs:
