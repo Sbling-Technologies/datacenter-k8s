@@ -16,8 +16,10 @@ spec:
   template:
     metadata:
       name: "prod-{{.path.basenameNormalized}}"
+      annotations:
+        argocd.argoproj.io/compare-options: ServerSideDiff=true
     spec:
-      project: default
+      project: apps
       destination:
         server: https://kubernetes.default.svc
         namespace: "prod-{{.path.basenameNormalized}}"

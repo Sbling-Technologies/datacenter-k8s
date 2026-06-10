@@ -16,8 +16,10 @@ spec:
   template:
     metadata:
       name: "{{index .path.segments 3}}-{{index .path.segments 1}}"
+      annotations:
+        argocd.argoproj.io/compare-options: ServerSideDiff=true
     spec:
-      project: default
+      project: apps
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{index .path.segments 3}}-{{index .path.segments 1}}"
