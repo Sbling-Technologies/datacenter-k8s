@@ -7,7 +7,7 @@ helmCharts:
     releaseName: kured
     version: 6.0.0
     valuesFile: values.yaml
-    namespace: platform-kured
+    namespace: kured
 
 resources:
   - prometheus-rule.yaml
