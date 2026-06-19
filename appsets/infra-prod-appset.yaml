@@ -14,10 +14,7 @@ spec:
           - path: infrastructure/*
             # TODO: Remove after refactor is over
           - path: infrastructure/operators/*
-          - path: infrastructure/system/*
           - path: infrastructure/operators
-            exclude: true
-          - path: infrastructure/system
             exclude: true
 
   template:
