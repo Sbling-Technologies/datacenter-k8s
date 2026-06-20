@@ -4,6 +4,4 @@ kind: Kustomization
 resources:
   - carpoolerbot
   - lmbatbot
-  - punbot
-  - wpdevspranzobot
   - renso-ghcrio.yaml

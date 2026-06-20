@@ -4,3 +4,4 @@ kind: Kustomization
 resources:
   - unifi
   - linux-machines.yaml
+  - namespace.yaml
