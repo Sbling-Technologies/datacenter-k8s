@@ -9,7 +9,7 @@
   "pre-commit": { "enabled": true },
   "reviewers": ["ardubev16", "LuigiMiazzo17"],
   "argocd": {
-    "managerFilePatterns": ["/^apps/.+\\.yaml$/", "/^app-of-apps.yaml$/"]
+    "managerFilePatterns": ["/^appsets/.+\\.yaml$/", "/^root-argocd-app\\.yaml$/"]
   },
   "kubernetes": { "managerFilePatterns": ["/^.+\\.yaml$/"] },
   "customManagers": [
@@ -28,6 +28,13 @@
         "https://github\\.com/(?<depName>[^/]+/[^/]+)/releases/download/(?<currentValue>[^/]+)/.*"
       ],
       "datasourceTemplate": "github-releases"
+    },
+    {
+      "customType": "regex",
+      "managerFilePatterns": ["/^\\.github/workflows/.+\\.ya?ml$/"],
+      "matchStrings": [
+        "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)\\s+\\w+: \"(?<currentValue>[^\"]+)\""
+      ]
     }
   ],
   "packageRules": [
