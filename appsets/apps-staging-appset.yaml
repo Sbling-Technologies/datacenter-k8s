@@ -16,6 +16,8 @@ spec:
   template:
     metadata:
       name: "{{index .path.segments 3}}-{{index .path.segments 1}}"
+      annotations:
+        argocd.argoproj.io/compare-options: ServerSideDiff=true
     spec:
       project: default
       destination:
@@ -34,4 +36,5 @@ spec:
           selfHeal: true
           prune: true
         syncOptions:
+          - ServerSideApply=true
           - CreateNamespace=true
