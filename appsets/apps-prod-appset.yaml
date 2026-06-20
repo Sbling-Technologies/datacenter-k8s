@@ -16,6 +16,8 @@ spec:
   template:
     metadata:
       name: "prod-{{.path.basenameNormalized}}"
+      annotations:
+        argocd.argoproj.io/compare-options: ServerSideDiff=true
     spec:
       project: default
       destination:
@@ -30,6 +32,7 @@ spec:
           selfHeal: true
           prune: true
         syncOptions:
+          - ServerSideApply=true
           - RespectIgnoreDifferences=true
       # https://github.com/argoproj/argo-cd/issues/12569
       ignoreDifferences:
