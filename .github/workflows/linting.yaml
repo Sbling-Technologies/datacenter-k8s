@@ -31,52 +31,23 @@ jobs:
   detect-apps:
     runs-on: ubuntu-latest
     outputs:
-      matrix: ${{ steps.merged.outputs.all_changed_files }}
-      any_changed: ${{ steps.merged.outputs.any_changed }}
+      matrix: ${{ steps.changed-files.outputs.all_changed_files }}
+      any_changed: ${{ steps.changed-files.outputs.any_changed }}
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
 
       - uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
-        id: depth2
+        id: changed-files
         with:
           files: |
             applications/**
+            infrastructure/**
             platform/**
           dir_names: "true"
           dir_names_max_depth: "2"
           matrix: "true"
-
-      - uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
-        id: depth3
-        with:
-          files: |
-            infrastructure/operators/**
-            infrastructure/system/**
-          dir_names: "true"
-          dir_names_max_depth: "3"
-          matrix: "true"
-
-      - name: Merge changed dirs
-        id: merged
-        env:
-          D2: ${{ steps.depth2.outputs.all_changed_files }}
-          D3: ${{ steps.depth3.outputs.all_changed_files }}
-        run: |
-          MERGED=$(jq \
-            --null-input \
-            --compact-output \
-            --argjson d2 "$D2" \
-            --argjson d3 "$D3" \
-            '$d2 + $d3 | unique'
-          )
-          echo "all_changed_files=$MERGED" >> "$GITHUB_OUTPUT"
-          if [ "$(echo "$MERGED" | jq 'length')" -gt 0 ]; then
-            echo "any_changed=true" >> "$GITHUB_OUTPUT"
-          else
-            echo "any_changed=false" >> "$GITHUB_OUTPUT"
-          fi
 
   kubeconform:
     needs: detect-apps
