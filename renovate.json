@@ -9,13 +9,16 @@
   "pre-commit": { "enabled": true },
   "reviewers": ["ardubev16", "LuigiMiazzo17"],
   "argocd": {
-    "managerFilePatterns": ["/^appsets/.+\\.yaml$/", "/^root-argocd-app\\.yaml$/"]
+    "managerFilePatterns": [
+      "/^appsets/.+\\.yaml$/",
+      "/^root-argocd-app\\.yaml$/"
+    ]
   },
   "kubernetes": { "managerFilePatterns": ["/^.+\\.yaml$/"] },
   "customManagers": [
     {
       "customType": "regex",
-      "managerFilePatterns": ["/^.+/kustomization.yaml$/"],
+      "managerFilePatterns": ["/^.+/kustomization\\.yaml$/"],
       "matchStrings": [
         "https://raw\\.githubusercontent\\.com/(?<depName>[^/]+/[^/]+)/(?<currentValue>[^/]+)/.*"
       ],
@@ -23,7 +26,7 @@
     },
     {
       "customType": "regex",
-      "managerFilePatterns": ["/^.+/kustomization.yaml$/"],
+      "managerFilePatterns": ["/^.+/kustomization\\.yaml$/"],
       "matchStrings": [
         "https://github\\.com/(?<depName>[^/]+/[^/]+)/releases/download/(?<currentValue>[^/]+)/.*"
       ],
@@ -31,7 +34,7 @@
     },
     {
       "customType": "regex",
-      "managerFilePatterns": ["/^\\.github/workflows/.+\\.ya?ml$/"],
+      "managerFilePatterns": ["/^\\.github/workflows/.+\\.yaml$/"],
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)\\s+\\w+: \"(?<currentValue>[^\"]+)\""
       ]
@@ -40,7 +43,7 @@
   "packageRules": [
     {
       "groupName": "Actions & Checks",
-      "matchManagers": ["github-actions", "pre-commit"],
+      "matchFileNames": [".github/workflows/**", ".pre-commit-config.yaml"],
       "separateMajorMinor": false,
       "separateMinorPatch": false,
       "automerge": true
