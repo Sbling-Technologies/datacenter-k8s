@@ -22,7 +22,7 @@ jobs:
           dir_names: "true"
           matrix: "true"
 
-  comment-diff:
+  collect-diff:
     needs: detect-apps
     if: needs.detect-apps.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
@@ -44,12 +44,56 @@ jobs:
           git checkout origin/master -- "$DIRECTORY"
           kustomize build --enable-helm "$DIRECTORY" > /tmp/pr_base.yaml
 
-          diff=$(diff -C 5 /tmp/pr_base.yaml /tmp/pr_run.yaml || true)
+          mkdir -p /tmp/artifact
+          echo "$DIRECTORY" > /tmp/artifact/directory.txt
+          diff --unified=5 /tmp/pr_base.yaml /tmp/pr_run.yaml > /tmp/artifact/diff.txt || true
+
+          echo "safe_name=$(echo "$DIRECTORY" | tr '/' '__')" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: diff-${{ steps.diff.outputs.safe_name }}
+          path: /tmp/artifact
+          retention-days: 1
+
+  comment-diff:
+    needs: [detect-apps, collect-diff]
+    if: always() && needs.detect-apps.outputs.any_changed == 'true'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: diff-*
+          path: /tmp/diffs
+
+      - name: Build comment body
+        id: body
+        run: |
           {
-            echo "diff<<EOF"
-            echo "$diff"
-            echo "EOF"
-          } >> "$GITHUB_OUTPUT"
+            echo "## Application diffs"
+            echo
+
+            unchanged=()
+            for dir in /tmp/diffs/*/; do
+              directory=$(cat "$dir/directory.txt")
+              if [ -s "$dir/diff.txt" ]; then
+                echo "<details><summary><code>$directory</code> (changed)</summary>"
+                echo
+                echo '```diff'
+                cat "$dir/diff.txt"
+                echo '```'
+                echo "</details>"
+                echo
+              else
+                unchanged+=("$directory")
+              fi
+            done
+
+            if [ "${#unchanged[@]}" -gt 0 ]; then
+              # shellcheck disable=SC2016
+              echo "No diff for: $(printf '`%s` ' "${unchanged[@]}")"
+            fi
+          } > /tmp/comment_body.md
 
       - name: Find Comment
         uses: peter-evans/find-comment@v3
@@ -57,16 +101,12 @@ jobs:
         with:
           issue-number: ${{ github.event.pull_request.number }}
           comment-author: "github-actions[bot]"
-          body-includes: Application diff for `${{ matrix.directory }}`
+          body-includes: "## Application diffs"
 
       - name: Create or update comment
         uses: peter-evans/create-or-update-comment@v5
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
-          body: |
-            Application diff for `${{ matrix.directory }}`
-            ```diff
-            ${{ steps.diff.outputs.diff }}
-            ```
+          body-path: /tmp/comment_body.md
           edit-mode: replace
