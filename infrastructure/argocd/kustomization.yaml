@@ -10,6 +10,7 @@ resources:
   - base/ingress.yaml
   - base/namespace.yaml
   - base/network-policy.yaml
+  - base/projects.yaml
   - base/secrets.yaml
   - https://raw.githubusercontent.com/argoproj/argo-cd/v3.4.3/manifests/ha/install-with-hydrator.yaml
 
