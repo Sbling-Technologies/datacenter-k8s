@@ -12,7 +12,7 @@ resources:
   - base/network-policy.yaml
   - base/projects.yaml
   - base/secrets.yaml
-  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.4.3/manifests/ha/install-with-hydrator.yaml
+  - https://raw.githubusercontent.com/argoproj/argo-cd/v3.4.4/manifests/ha/install-with-hydrator.yaml
 
 patches:
   - path: overlays/production/argocd-cm.yaml
