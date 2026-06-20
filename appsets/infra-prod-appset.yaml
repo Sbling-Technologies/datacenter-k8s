@@ -23,7 +23,7 @@ spec:
       annotations:
         argocd.argoproj.io/compare-options: ServerSideDiff=true
     spec:
-      project: default
+      project: infrastructure
       destination:
         server: https://kubernetes.default.svc
         namespace: "{{.path.basenameNormalized}}"
