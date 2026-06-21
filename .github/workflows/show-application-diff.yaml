@@ -17,8 +17,6 @@ jobs:
         with:
           files: applications/**
           dir_names_max_depth: "2"
-          # files: applications/*/envs/prod/**
-          # dir_names_max_depth: "4"
           dir_names: "true"
           matrix: "true"
 
@@ -38,7 +36,7 @@ jobs:
       - name: Calculate diff
         id: diff
         env:
-          DIRECTORY: ${{ matrix.directory }}
+          DIRECTORY: ${{ matrix.directory }}/envs/prod
         run: |
           kustomize build --enable-helm "$DIRECTORY" > /tmp/pr_run.yaml
           git checkout origin/master -- "$DIRECTORY"
