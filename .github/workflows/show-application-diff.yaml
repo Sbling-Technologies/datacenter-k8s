@@ -17,8 +17,6 @@ jobs:
         with:
           files: applications/**
           dir_names_max_depth: "2"
-          # files: applications/*/envs/prod/**
-          # dir_names_max_depth: "4"
           dir_names: "true"
           matrix: "true"
 
