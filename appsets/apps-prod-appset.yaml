@@ -11,18 +11,18 @@ spec:
         repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
         revision: HEAD
         directories:
-          - path: applications/*
+          - path: applications/*/envs/prod
 
   template:
     metadata:
-      name: "prod-{{.path.basenameNormalized}}"
+      name: "prod-{{index .path.segments 1}}"
       annotations:
         argocd.argoproj.io/compare-options: ServerSideDiff=true
     spec:
       project: production-apps
       destination:
         server: https://kubernetes.default.svc
-        namespace: "prod-{{.path.basenameNormalized}}"
+        namespace: "prod-{{index .path.segments 1}}"
       source:
         repoURL: git@github.com:Sbling-Technologies/datacenter-k8s.git
         targetRevision: HEAD
