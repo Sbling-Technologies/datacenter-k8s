@@ -1,32 +1,5 @@
 apiVersion: kustomize.config.k8s.io/v1beta1
 kind: Kustomization
 
-namespace: prod-homepage
-commonLabels:
-  app.kubernetes.io/name: homepage
-  app.kubernetes.io/instance: homepage-prod
-
 resources:
-  - base/deployment.yaml
-  - base/ingress.yaml
-  - base/namespace.yaml
-  - base/rbac.yaml
-  - base/secrets.yaml
-  - base/service.yaml
-
-configMapGenerator:
-  - name: homepage-config
-    files:
-      - config/bookmarks.yaml
-      - config/kubernetes.yaml
-      - config/services.yaml
-      - config/settings.yaml
-      - config/widgets.yaml
-    literals:
-      - custom.css=
-      - custom.js=
-      - docker.yaml=
-      - proxmox.yaml=
-  - name: homepage-icons
-    files:
-      - icons/linear.ico
+  - envs/prod
