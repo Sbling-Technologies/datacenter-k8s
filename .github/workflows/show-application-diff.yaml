@@ -36,7 +36,7 @@ jobs:
       - name: Calculate diff
         id: diff
         env:
-          DIRECTORY: ${{ matrix.directory }}
+          DIRECTORY: ${{ matrix.directory }}/envs/prod
         run: |
           kustomize build --enable-helm "$DIRECTORY" > /tmp/pr_run.yaml
           git checkout origin/master -- "$DIRECTORY"
