@@ -10,7 +10,7 @@ jobs:
       matrix: ${{ steps.applications.outputs.all_changed_files }}
       any_changed: ${{ steps.applications.outputs.any_changed }}
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
 
       - uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
         id: applications
@@ -29,7 +29,7 @@ jobs:
         directory: ${{ fromJson(needs.detect-apps.outputs.matrix) }}
       fail-fast: false
     steps:
-      - uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
         with:
           fetch-depth: 0
 
@@ -48,7 +48,7 @@ jobs:
 
           echo "safe_name=$(echo "$DIRECTORY" | tr '/' '__')" >> "$GITHUB_OUTPUT"
 
-      - uses: actions/upload-artifact@v4
+      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7
         with:
           name: diff-${{ steps.diff.outputs.safe_name }}
           path: /tmp/artifact
@@ -59,7 +59,7 @@ jobs:
     if: always() && needs.detect-apps.outputs.any_changed == 'true'
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/download-artifact@v4
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8
         with:
           pattern: diff-*
           path: /tmp/diffs
@@ -94,7 +94,7 @@ jobs:
           } > /tmp/comment_body.md
 
       - name: Find Comment
-        uses: peter-evans/find-comment@v3
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
         id: fc
         with:
           issue-number: ${{ github.event.pull_request.number }}
@@ -102,7 +102,7 @@ jobs:
           body-includes: "## Application diffs"
 
       - name: Create or update comment
-        uses: peter-evans/create-or-update-comment@v5
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
         with:
           comment-id: ${{ steps.fc.outputs.comment-id }}
           issue-number: ${{ github.event.pull_request.number }}
