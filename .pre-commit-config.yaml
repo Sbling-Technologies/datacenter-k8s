@@ -1,20 +1,28 @@
 repos:
-  - repo: https://github.com/pre-commit/pre-commit-hooks
-    rev: 3e8a8703264a2f4a69428a0aa4dcb512790b2c8c # frozen: v6.0.0
+  - repo: builtin
     hooks:
       - id: check-added-large-files
+      - id: check-case-conflict
       - id: check-executables-have-shebangs
       - id: check-json
+      - id: check-json5
       - id: check-merge-conflict
       - id: check-shebang-scripts-are-executable
       - id: check-symlinks
       - id: check-toml
+      - id: check-xml
       - id: check-yaml
         args: [--allow-multiple-documents]
+      - id: detect-private-key
       - id: end-of-file-fixer
+      - id: fix-byte-order-marker
       - id: mixed-line-ending
         args: [--fix=lf]
       - id: trailing-whitespace
+
+  - repo: meta
+    hooks:
+      - id: check-useless-excludes
 
   - repo: https://github.com/codespell-project/codespell
     rev: 2ccb47ff45ad361a21071a7eedda4c37e6ae8c5a # frozen: v2.4.2
@@ -46,3 +54,8 @@ repos:
     rev: v0.22.1
     hooks:
       - id: markdownlint-cli2
+
+  - repo: https://github.com/hadolint/hadolint
+    rev: 57e1618d78fd469a92c1e584e8c9313024656623 # frozen: v2.14.0
+    hooks:
+      - id: hadolint-docker
