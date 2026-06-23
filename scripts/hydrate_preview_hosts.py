@@ -2,15 +2,14 @@
 # /// script
 # dependencies = ["pyyaml"]
 # ///
-"""Rewrite Ingress/HTTPRoute hostnames in a hydrated manifest for a PR preview.
+"""Rewrite preview placeholder hostnames in a hydrated manifest.
 
-Reads a multi-document Kubernetes manifest from stdin (the output of
-`kustomize build`), replaces the leading DNS label of every exposed hostname
-with `preview-<app>-pr-<n>` and writes the result to stdout. Namespaces are
-handled by kustomize itself, not here.
+Reads a multi-document manifest (the output of `kustomize build`) from stdin,
+replaces the --placeholder first DNS label of every Ingress/HTTPRoute hostname
+with `preview-<app>-pr-<n>`, writes the result to stdout and the resulting public
+URLs to --urls-out.
 
-The list of resulting public URLs is written, one per line, to the path given
-by --urls-out (used to build the PR comment).
+Assumes the manifest has already passed validate_preview.py.
 """
 
 import argparse
@@ -19,24 +18,27 @@ import sys
 import yaml
 
 
-def rewrite_host(host: str, prefix: str) -> str:
-    """Replace the first DNS label, e.g. n8n.services.sbling.net -> <prefix>.services.sbling.net."""
-    labels = host.split(".")
-    labels[0] = prefix
-    return ".".join(labels)
-
-
 def main() -> None:
     parser = argparse.ArgumentParser()
     parser.add_argument("--app", required=True)
     parser.add_argument("--pr", required=True)
+    parser.add_argument("--placeholder", required=True)
     parser.add_argument("--urls-out")
     args = parser.parse_args()
 
     prefix = f"preview-{args.app}-pr-{args.pr}"
     urls: list[str] = []
-    docs = []
 
+    def rewrite(host: str) -> str:
+        labels = host.split(".")
+        if labels[0] != args.placeholder:
+            return host
+        labels[0] = prefix
+        new = ".".join(labels)
+        urls.append(new)
+        return new
+
+    docs = []
     for doc in yaml.safe_load_all(sys.stdin):
         if not doc:
             continue
@@ -46,17 +48,14 @@ def main() -> None:
         if kind == "Ingress":
             for rule in spec.get("rules") or []:
                 if "host" in rule:
-                    rule["host"] = rewrite_host(rule["host"], prefix)
-                    urls.append(rule["host"])
+                    rule["host"] = rewrite(rule["host"])
             for tls in spec.get("tls") or []:
                 if "hosts" in tls:
-                    tls["hosts"] = [rewrite_host(h, prefix) for h in tls["hosts"]]
+                    tls["hosts"] = [rewrite(h) for h in tls["hosts"]]
 
         elif kind == "HTTPRoute":
-            hostnames = spec.get("hostnames") or []
-            if hostnames:
-                spec["hostnames"] = [rewrite_host(h, prefix) for h in hostnames]
-                urls.extend(spec["hostnames"])
+            if spec.get("hostnames"):
+                spec["hostnames"] = [rewrite(h) for h in spec["hostnames"]]
 
         docs.append(doc)
 
