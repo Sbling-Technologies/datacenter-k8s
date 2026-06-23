@@ -1,0 +1,235 @@
+name: Preview environments
+
+on:
+  pull_request:
+    types:
+      - labeled
+      - unlabeled
+      - synchronize
+      - closed
+
+# One preview per PR; never cancel a teardown halfway through.
+concurrency:
+  group: preview-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+env:
+  PREVIEW_LABEL: "app:preview"
+  COMMENT_MARKER: "## Preview environment"
+
+jobs:
+  deploy:
+    # Build on label add, and rebuild on every push while the label is set.
+    if: |
+      (github.event.action == 'labeled' && github.event.label.name == 'app:preview') ||
+      (github.event.action == 'synchronize' && contains(github.event.pull_request.labels.*.name, 'app:preview'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # push the preview/pr-<n> branch
+      pull-requests: write # comment on the PR
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      BRANCH: preview/pr-${{ github.event.pull_request.number }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
+        with:
+          ref: ${{ github.event.pull_request.head.sha }}
+          fetch-depth: 0
+
+      - uses: astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+
+      - uses: tj-actions/changed-files@24d32ffd492484c1d75e0c0b894501ddb9d30d62 # v47
+        id: changed
+        with:
+          files: applications/**
+          dir_names: "true"
+          dir_names_max_depth: "2"
+          matrix: "true"
+          base_sha: ${{ github.event.pull_request.base.sha }}
+          sha: ${{ github.event.pull_request.head.sha }}
+
+      - name: Hydrate previews
+        id: hydrate
+        env:
+          CHANGED_DIRS: ${{ steps.changed.outputs.all_changed_files || '[]' }}
+        run: |
+          set -euo pipefail
+
+          out=/tmp/preview-branch
+          mkdir -p "$out/previews"
+
+          deployed=()      # "app|url1 url2"
+          missing=()       # apps without envs/preview
+
+          for dir in $(echo "$CHANGED_DIRS" | jq -r '.[]'); do
+            app=$(basename "$dir")
+            preview_overlay="$dir/envs/preview"
+
+            if [ ! -f "$preview_overlay/kustomization.yaml" ]; then
+              missing+=("$app")
+              continue
+            fi
+
+            ns="preview-${app}-pr-${PR_NUMBER}"
+
+            # Wrap the app's preview overlay to force the PR-scoped namespace.
+            # Kept inside the tree so kustomize resolves the relative path
+            # without relaxing the load restrictor.
+            wrap="$dir/envs/.preview-pr-${PR_NUMBER}"
+            mkdir -p "$wrap"
+            cat > "$wrap/kustomization.yaml" <<EOF
+          apiVersion: kustomize.config.k8s.io/v1beta1
+          kind: Kustomization
+          namespace: ${ns}
+          resources:
+            - ../preview
+          EOF
+
+            kustomize build --enable-helm "$wrap" \
+              | uv run scripts/hydrate_preview_hosts.py \
+                  --app "$app" \
+                  --pr "$PR_NUMBER" \
+                  --urls-out "/tmp/urls-${app}.txt" \
+              > "$out/previews/${app}.yaml"
+
+            rm -rf "$wrap"
+
+            urls=$(paste -sd' ' "/tmp/urls-${app}.txt")
+            deployed+=("${app}|${urls}")
+          done
+
+          # Only write when non-empty so a later `[ -s ... ]` reflects real content
+          # (an absent file reads as empty too).
+          [ ${#deployed[@]} -gt 0 ] && printf '%s\n' "${deployed[@]}" > /tmp/deployed.txt
+          [ ${#missing[@]} -gt 0 ] && printf '%s\n' "${missing[@]}" > /tmp/missing.txt
+          echo "deployed_count=${#deployed[@]}" >> "$GITHUB_OUTPUT"
+
+      - name: Push preview branch
+        if: steps.hydrate.outputs.deployed_count != '0'
+        run: |
+          set -euo pipefail
+          cd /tmp/preview-branch
+
+          git init -q -b "$BRANCH"
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add -A
+          git commit -q -m "Preview for PR #${PR_NUMBER}"
+
+          remote="https://x-access-token:${{ secrets.GITHUB_TOKEN }}@github.com/${{ github.repository }}.git"
+          git push -f "$remote" "HEAD:refs/heads/${BRANCH}"
+
+      - name: Build comment body
+        run: |
+          set -euo pipefail
+          repo_url="${{ github.server_url }}/${{ github.repository }}"
+          body=/tmp/comment_body.md
+
+          {
+            echo "${COMMENT_MARKER}"
+            echo
+
+            if [ -s /tmp/deployed.txt ]; then
+              echo "Hydrated manifests pushed to [\`${BRANCH}\`](${repo_url}/tree/${BRANCH})."
+              echo
+              echo "| Application | Namespace | Exposed URL |"
+              echo "| --- | --- | --- |"
+              while IFS='|' read -r app urls; do
+                ns="preview-${app}-pr-${PR_NUMBER}"
+                if [ -n "$urls" ]; then
+                  links=""
+                  for u in $urls; do links="${links}https://${u}<br>"; done
+                else
+                  links="_none_"
+                fi
+                echo "| \`${app}\` | \`${ns}\` | ${links} |"
+              done < /tmp/deployed.txt
+              echo
+            fi
+
+            if [ -s /tmp/missing.txt ]; then
+              echo "> [!WARNING]"
+              echo "> **Missing preview environment definition.** The following changed"
+              echo "> applications have no \`envs/preview\` overlay and were skipped:"
+              echo ">"
+              while read -r app; do
+                echo "> - \`${app}\` - add \`applications/${app}/envs/preview/kustomization.yaml\`"
+              done < /tmp/missing.txt
+              echo
+            fi
+
+            if [ ! -s /tmp/deployed.txt ] && [ ! -s /tmp/missing.txt ]; then
+              echo "No changed applications under \`applications/\`, so there is nothing to preview."
+              echo
+            fi
+
+            if [ -s /tmp/deployed.txt ]; then
+              echo "<sub>Remove the \`${PREVIEW_LABEL}\` label or close the PR to tear this down.</sub>"
+            fi
+          } > "$body"
+
+      - name: Find existing comment
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
+        id: fc
+        with:
+          issue-number: ${{ env.PR_NUMBER }}
+          comment-author: "github-actions[bot]"
+          body-includes: ${{ env.COMMENT_MARKER }}
+
+      - name: Create or update comment
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ env.PR_NUMBER }}
+          body-path: /tmp/comment_body.md
+          edit-mode: replace
+
+  teardown:
+    if: |
+      (github.event.action == 'unlabeled' && github.event.label.name == 'app:preview') ||
+      (github.event.action == 'closed' && contains(github.event.pull_request.labels.*.name, 'app:preview'))
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write # delete the preview branch
+      pull-requests: write # update the comment
+    env:
+      PR_NUMBER: ${{ github.event.pull_request.number }}
+      BRANCH: preview/pr-${{ github.event.pull_request.number }}
+    steps:
+      - name: Delete preview branch
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          ref="heads/${BRANCH}"
+          if gh api "repos/${{ github.repository }}/git/refs/${ref}" >/dev/null 2>&1; then
+            gh api --method DELETE "repos/${{ github.repository }}/git/refs/${ref}"
+            echo "Deleted ${BRANCH}"
+          else
+            echo "Branch ${BRANCH} not found, nothing to delete"
+          fi
+
+      - name: Build teardown comment
+        run: |
+          {
+            echo "${COMMENT_MARKER}"
+            echo
+            echo "Preview environment for this PR has been torn down and branch"
+            echo "\`${BRANCH}\` was deleted."
+          } > /tmp/comment_body.md
+
+      - name: Find existing comment
+        uses: peter-evans/find-comment@b30e6a3c0ed37e7c023ccd3f1db5c6c0b0c23aad # v4
+        id: fc
+        with:
+          issue-number: ${{ env.PR_NUMBER }}
+          comment-author: "github-actions[bot]"
+          body-includes: ${{ env.COMMENT_MARKER }}
+
+      - name: Update comment
+        if: steps.fc.outputs.comment-id != ''
+        uses: peter-evans/create-or-update-comment@e8674b075228eee787fea43ef493e45ece1004c9 # v5
+        with:
+          comment-id: ${{ steps.fc.outputs.comment-id }}
+          issue-number: ${{ env.PR_NUMBER }}
+          body-path: /tmp/comment_body.md
+          edit-mode: replace
