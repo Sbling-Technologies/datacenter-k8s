@@ -5,3 +5,5 @@ namespace: prod-pelican
 
 resources:
   - ../../base
+  - httproute-dmz.yaml
+  - secrets.yaml
