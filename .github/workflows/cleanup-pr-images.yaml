@@ -4,6 +4,9 @@ on:
   pull_request:
     types:
       - closed
+    paths:
+      - .github/workflows/cleanup-pr-images.yaml
+      - "images/**"
 
 jobs:
   cleanup:
