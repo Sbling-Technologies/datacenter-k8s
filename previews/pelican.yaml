@@ -1,0 +1,174 @@
+apiVersion: v1
+kind: Namespace
+metadata:
+  name: preview-pelican-pr-268
+---
+apiVersion: v1
+data:
+  Caddyfile: "{\n  admin off\n  servers {\n    trusted_proxies static 127.0.0.1\n\
+    \  }\n}\n\n:80 {\n  root * /var/www/html/public\n  encode gzip\n\n  php_fastcgi\
+    \ 127.0.0.1:9000 {\n    env PHP_VALUE \"upload_max_filesize = 256M post_max_size\
+    \ = 256M\"\n  }\n  file_server\n}\n"
+  exporter_config.yaml: 'host: localhost
+
+    port: 9531
+
+    # api_key:
+
+    https: false
+
+    server_list_type: admin-all
+
+    '
+kind: ConfigMap
+metadata:
+  name: pelican-panel-configfiles
+  namespace: preview-pelican-pr-268
+---
+apiVersion: v1
+data:
+  APP_INSTALLED: 'true'
+  APP_URL: https://games.dmz.sbling.net
+  BEHIND_PROXY: 'true'
+  CACHE_STORE: file
+  DB_CONNECTION: pgsql
+  DB_DATABASE: panel
+  DB_HOST: pelican-panel-db-rw
+  DB_PORT: '5432'
+  MAIL_FROM_ADDRESS: noreply@sbling.net
+  MAIL_FROM_NAME: Sbling Gaming
+  MAIL_HOST: mail.sbling.net
+  MAIL_MAILER: smtp
+  MAIL_PORT: '587'
+  MAIL_SCHEME: smtp
+  QUEUE_CONNECTION: database
+  SESSION_DRIVER: database
+  TRUSTED_PROXIES: 127.0.0.1
+kind: ConfigMap
+metadata:
+  name: pelican-panel-env
+  namespace: preview-pelican-pr-268
+---
+apiVersion: v1
+data:
+  password: cHJldmlldy1kYi0xMjM=
+  username: cGVsaWNhbg==
+kind: Secret
+metadata:
+  name: db-credentials-2g4kfkcft4
+  namespace: preview-pelican-pr-268
+type: Opaque
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  annotations:
+    reloader.stakater.com/auto: 'true'
+  labels:
+    app: pelican-panel
+  name: pelican-panel
+  namespace: preview-pelican-pr-268
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: pelican-panel
+  template:
+    metadata:
+      labels:
+        app: pelican-panel
+    spec:
+      containers:
+      - env:
+        - name: XDG_DATA_HOME
+          value: /pelican-data
+        - name: DB_USERNAME
+          valueFrom:
+            secretKeyRef:
+              key: username
+              name: db-credentials-2g4kfkcft4
+        - name: DB_PASSWORD
+          valueFrom:
+            secretKeyRef:
+              key: password
+              name: db-credentials-2g4kfkcft4
+        envFrom:
+        - configMapRef:
+            name: pelican-panel-env
+        - secretRef:
+            name: mail-credentials-env
+        - secretRef:
+            name: secrets-env
+        image: ghcr.io/pelican-dev/panel:v1.0.0-beta34@sha256:e22f847fc727b1af287222c3294046afc5a76555e9bd2eef29bc02052bf45354
+        name: pelican-panel
+        ports:
+        - containerPort: 80
+          name: http
+        volumeMounts:
+        - mountPath: /app/storage/logs
+          name: logs
+        - mountPath: /pelican-data
+          name: pelican-data
+        - mountPath: /etc/caddy/Caddyfile
+          name: configfiles
+          readOnly: true
+          subPath: Caddyfile
+      securityContext:
+        fsGroup: 82
+      volumes:
+      - emptyDir: null
+        name: logs
+      - configMap:
+          name: pelican-panel-configfiles
+        name: configfiles
+  volumeClaimTemplates:
+  - metadata:
+      name: pelican-data
+    spec:
+      accessModes:
+      - ReadWriteOnce
+      resources:
+        requests:
+          storage: 1Gi
+---
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: pelican
+  namespace: preview-pelican-pr-268
+spec:
+  ingressClassName: cilium
+  rules:
+  - host: preview-pelican-pr-268.services.sbling.net
+    http:
+      paths:
+      - backend:
+          service:
+            name: wallabag
+            port:
+              number: 80
+        path: /
+        pathType: Prefix
+  tls:
+  - hosts:
+    - preview-pelican-pr-268.services.sbling.net
+---
+apiVersion: postgresql.cnpg.io/v1
+kind: Cluster
+metadata:
+  name: pelican-panel-db
+  namespace: preview-pelican-pr-268
+spec:
+  bootstrap:
+    initdb:
+      database: panel
+      owner: pelican
+      secret:
+        name: db-credentials
+  imageName: ghcr.io/cloudnative-pg/postgresql:17.4
+  instances: 1
+  monitoring:
+    enablePodMonitor: true
+  storage:
+    size: 5Gi
+    storageClass: longhorn-single-replica-retain
