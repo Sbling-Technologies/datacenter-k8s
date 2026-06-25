@@ -42,11 +42,15 @@
   ],
   "packageRules": [
     {
+      "description": "Batch all CI updates into one PR, automerged once a week in the Monday 3am window",
       "groupName": "Actions & Checks",
       "matchFileNames": [".github/workflows/**", ".pre-commit-config.yaml"],
       "separateMajorMinor": false,
       "separateMinorPatch": false,
-      "automerge": true
+      "automerge": true,
+      "automergeSchedule": ["* 3 * * 1"],
+      "platformAutomerge": false,
+      "automergeStrategy": "squash"
     },
     {
       "matchFileNames": ["infrastructure/**"],
