@@ -2,6 +2,9 @@ name: Show applications diff
 
 on:
   pull_request:
+    paths:
+      - .github/workflows/show-application-diff.yaml
+      - "applications/**"
 
 jobs:
   detect-apps:
