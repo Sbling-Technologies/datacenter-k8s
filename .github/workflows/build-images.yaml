@@ -50,6 +50,7 @@ jobs:
     with:
       image-name: ${{ github.event.repository.name }}/${{ matrix.name }}
       context: images/${{ matrix.name }}
+      dockerfile: images/${{ matrix.name }}/Dockerfile
       tags: |
         type=raw,value=latest,enable={{is_default_branch}}
         type=raw,value={{date 'YYYYMMDDTHHmmss'}},enable={{is_default_branch}}
