@@ -11,10 +11,7 @@ env:
 
 jobs:
   prek:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7
-      - uses: j178/prek-action@bdca6f102f98e2b4c7029491a53dfd366469e33d # v2
+    uses: ardubev16/common/.github/workflows/prek.yaml@main
 
   kref:
     runs-on: ubuntu-latest
