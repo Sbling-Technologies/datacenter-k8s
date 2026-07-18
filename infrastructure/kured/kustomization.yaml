@@ -5,7 +5,7 @@ helmCharts:
   - repo: https://kubereboot.github.io/charts
     name: kured
     releaseName: kured
-    version: 6.0.0
+    version: 6.1.0
     valuesFile: values.yaml
     namespace: kured
 
