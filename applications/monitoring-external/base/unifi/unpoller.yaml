@@ -15,7 +15,7 @@ spec:
         app: unpoller
     spec:
       containers:
-        - image: ghcr.io/unpoller/unpoller:v3.3.0@sha256:1c03bc25d83c5dde54e7436a010851d2db4831f8afe4f2ee60699d52dd01c5c4
+        - image: ghcr.io/unpoller/unpoller:v3.3.4@sha256:6cd108c731a4f5896d008982ba53b398a5510421d4ef67ce2218aa61d6d2cf8d
           name: unpoller
           livenessProbe:
             httpGet:
