@@ -37,6 +37,21 @@ read:
 write:
   replicas: 3 # To ensure data durability with replication
 
+monitoring:
+  dashboards:
+    enabled: true
+    grafanaOperator:
+      enabled: true
+      instanceSelector:
+        matchLabels:
+          dashboards: grafana
+  rules:
+    enabled: true
+  alerts:
+    enabled: true
+  serviceMonitor:
+    enabled: true
+
 # Enable minio for storage
 minio:
   enabled: true
