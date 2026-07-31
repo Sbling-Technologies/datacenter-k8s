@@ -11,3 +11,16 @@ helmCharts:
     version: 18.7.1
     valuesFile: values.yaml
     namespace: platform-monitoring-loki
+
+patches:
+  - patch: |-
+      apiVersion: batch/v1
+      kind: Job
+      metadata:
+        annotations:
+          argocd.argoproj.io/hook: Sync
+          argocd.argoproj.io/sync-wave: "0"
+          argocd.argoproj.io/hook-delete-policy: BeforeHookCreation,HookSucceeded
+        name: none
+    target:
+      kind: Job
