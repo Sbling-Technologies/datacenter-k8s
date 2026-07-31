@@ -1,6 +1,3 @@
-# NOTE: For future reference this does not really bootstrap because the minio Job runs PostSync.
-# To workaround this issue follow the instructions at https://github.com/grafana/loki/issues/9634
-
 loki:
   auth_enabled: false
   schemaConfig:
