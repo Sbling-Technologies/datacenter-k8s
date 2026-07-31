@@ -39,6 +39,7 @@ monitoring:
     enabled: true
     grafanaOperator:
       enabled: true
+      folder: Loki
       instanceSelector:
         matchLabels:
           dashboards: grafana
