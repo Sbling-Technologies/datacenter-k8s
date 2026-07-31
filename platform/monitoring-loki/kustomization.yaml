@@ -5,9 +5,9 @@ resources:
   - grafana-datasource.yaml
 
 helmCharts:
-  - repo: https://grafana.github.io/helm-charts
+  - repo: https://grafana-community.github.io/helm-charts
     name: loki
     releaseName: loki
-    version: 7.2.0
+    version: 18.7.1
     valuesFile: values.yaml
     namespace: platform-monitoring-loki
