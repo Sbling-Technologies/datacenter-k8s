@@ -63,6 +63,12 @@
       "matchUpdateTypes": ["patch", "minor"]
     },
     {
+      "matchFileNames": ["platform/**"],
+      "matchPackageNames": ["kube-prometheus-stack"],
+      "groupName": "platform non-major",
+      "matchUpdateTypes": ["major", "patch", "minor"]
+    },
+    {
       "matchFileNames": ["applications/icinga/**"],
       "groupName": "icinga2",
       "reviewers": ["LuigiMiazzo17"],
