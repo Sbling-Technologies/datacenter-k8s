@@ -38,6 +38,10 @@ spec:
   destinations:
     - namespace: platform-*
       server: https://kubernetes.default.svc
+      # FIXME: This is a very broad setting, the only Application requiring access to kube-system is monitoring-prometheus,
+      # used to monitor kubernetes components.
+    - namespace: kube-system
+      server: https://kubernetes.default.svc
   clusterResourceWhitelist:
     - group: "*"
       kind: "*"
