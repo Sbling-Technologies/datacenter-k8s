@@ -25,7 +25,7 @@ repos:
       - id: check-useless-excludes
 
   - repo: https://github.com/codespell-project/codespell
-    rev: 2ccb47ff45ad361a21071a7eedda4c37e6ae8c5a # frozen: v2.4.2
+    rev: 57b21406f092110c18776e39b0bda50d37c945c8 # frozen: v2.4.3
     hooks:
       - id: codespell
 
@@ -35,7 +35,7 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 71cbfa26bd17647442fe0e467485301c246ff58b # frozen: 43.246.1
+    rev: 8f4d39781f3a8b4fee31fc6c3186dd68743f87a1 # frozen: 44.65.5
     hooks:
       - id: renovate-config-validator
         args: [--strict]
@@ -51,11 +51,11 @@ repos:
       - id: shellcheck
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.22.1
+    rev: v0.23.2
     hooks:
       - id: markdownlint-cli2
 
   - repo: https://github.com/hadolint/hadolint
-    rev: 57e1618d78fd469a92c1e584e8c9313024656623 # frozen: v2.14.0
+    rev: 2eece55955ced00200be9729e9728cb7dacca505 # frozen: v2.15.1
     hooks:
       - id: hadolint-docker
