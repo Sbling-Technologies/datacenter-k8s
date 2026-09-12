@@ -5,8 +5,8 @@ resources:
   - base/secrets.yaml
   # HACK: TCPRoute and UDPRoute were promoted to stable in Gateway API 1.6.0, external-dns still expects the v1alpha2 versions.
   # see: https://github.com/kubernetes-sigs/external-dns/issues/6247
-  - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.6.1/config/crd/experimental/gateway.networking.k8s.io_tcproutes.yaml
-  - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.6.1/config/crd/experimental/gateway.networking.k8s.io_udproutes.yaml
+  - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.6.2/config/crd/experimental/gateway.networking.k8s.io_tcproutes.yaml
+  - https://raw.githubusercontent.com/kubernetes-sigs/gateway-api/v1.6.2/config/crd/experimental/gateway.networking.k8s.io_udproutes.yaml
 
 helmCharts:
   - repo: https://kubernetes-sigs.github.io/external-dns/
