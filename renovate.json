@@ -90,7 +90,7 @@
       "automerge": true
     },
     {
-      "matchPackageNames": ["ghcr.io/pelican-dev/*"],
+      "matchPackageNames": ["ghcr.io/pelican/*"],
       "versioning": "loose",
       "ignoreUnstable": false
     }

@@ -1,7 +1,7 @@
 FROM alpine:3.24.1@sha256:28bd5fe8b56d1bd048e5babf5b10710ebe0bae67db86916198a6eec434943f8b as builder
 
 WORKDIR /builder
-RUN wget --quiet https://github.com/pelican-dev/plugins/archive/refs/heads/main.zip \
+RUN wget --quiet https://github.com/pelican/plugins/archive/refs/heads/main.zip \
     && unzip main.zip \
     && rm main.zip \
     && find plugins-main -maxdepth 1 -type f -delete \
