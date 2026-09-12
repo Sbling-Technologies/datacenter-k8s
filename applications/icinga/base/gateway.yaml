@@ -19,7 +19,7 @@ kind: TLSRoute
 metadata:
   name: icinga-api-tls-route
   annotations:
-    external-dns.alpha.kubernetes.io/hostname: icinga2-master.services.sbling.net
+    external-dns.kubernetes.io/hostname: icinga2-master.services.sbling.net
 spec:
   parentRefs:
     - name: icinga-gateway
