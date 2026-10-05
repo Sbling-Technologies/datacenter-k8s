@@ -21,7 +21,7 @@ spec:
         fsGroup: 82
       containers:
         - name: pelican-panel
-          image: ghcr.io/pelican/panel:1.0.0-beta38@sha256:0b4a75a7c0d480712125cac3e5dcb8044154368cc44a084be809680bd48179c3
+          image: ghcr.io/pelican/panel:1.0.0-beta38@sha256:59306afada985e18f83d5cbafac87d3ba4c1abab8e3c698796077b4684f26c34
           ports:
             - containerPort: 80
               name: http
