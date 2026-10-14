@@ -5,6 +5,4 @@ resources:
   - config-cm.yaml
   - database.yaml
   - deployment.yaml
-  - httproute-dmz.yaml
   - namespace.yaml
-  - secrets.yaml
