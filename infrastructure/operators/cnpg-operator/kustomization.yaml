@@ -7,10 +7,10 @@ helmCharts:
   - repo: https://cloudnative-pg.github.io/charts
     name: cloudnative-pg
     releaseName: cnpg-operator
-    version: 0.29.0
+    version: 0.29.1
     namespace: cnpg-operator
     valuesFile: values.yaml
 
 resources:
-  - https://github.com/cloudnative-pg/plugin-barman-cloud/releases/download/v0.15.0/manifest.yaml
+  - https://github.com/cloudnative-pg/plugin-barman-cloud/releases/download/v0.15.1/manifest.yaml
   - monitoring/dashboards.yaml
