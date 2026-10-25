@@ -38,8 +38,8 @@ sources:
   - gateway-httproute
   - gateway-grpcroute
   - gateway-tlsroute
-  - gateway-tcproute
-  - gateway-udproute
+  # - gateway-tcproute
+  # - gateway-udproute
 txtOwnerId: default
 txtPrefix: k8s.
 domainFilters:
