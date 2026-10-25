@@ -12,3 +12,13 @@ defaultSettings:
   replicaAutoBalance: best-effort
   storageReservedPercentageForDefaultDisk: "0"
   storageOverProvisioningPercentage: "150"
+
+metrics:
+  serviceMonitor:
+    enabled: true
+
+networkPolicies:
+  metricsScrapeSources:
+    - namespaceSelector:
+        matchLabels:
+          kubernetes.io/metadata.name: platform-monitoring-prometheus
