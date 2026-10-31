@@ -37,41 +37,33 @@ spec:
     - fromEntities:
         - ingress
 ---
+# TODO: Tighten to only Github FQDN or other git providers
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy
 metadata:
-  name: allow-monitoring
+  name: allow-ssh-to-internet
 spec:
-  description: Allow inbound traffic from monitoring system (Prometheus)
-  endpointSelector: {}
-  ingress:
-    - fromEndpoints:
-        - matchLabels:
-            io.kubernetes.pod.namespace: platform-monitoring-prometheus
-            app.kubernetes.io/name: prometheus
----
-# NOTE: Probably to Github FQDN would be enough
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
-metadata:
-  name: allow-to-internet
-spec:
-  description: Allow outbound traffic to the internet (HTTP/S)
+  description: Allow outbound SSH to the internet (git over SSH)
   endpointSelector: {}
   egress:
     - toCIDRSet:
         - cidr: 0.0.0.0/0
           except:
+            # Keep in sync with components/netpols/allow-http-to-internet
+            - 0.0.0.0/8
             - 10.0.0.0/8
             - 172.16.0.0/12
             - 192.168.0.0/16
+            - 100.64.0.0/10
+            - 127.0.0.0/8
+            - 169.254.0.0/16
+            - 198.18.0.0/15
+            - 224.0.0.0/4
+            - 240.0.0.0/4
       toPorts:
         - ports:
             - port: "22"
-        - ports:
-            - port: "80"
-        - ports:
-            - port: "443"
+              protocol: TCP
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy

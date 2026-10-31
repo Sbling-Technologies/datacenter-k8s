@@ -14,3 +14,6 @@ resources:
   - telegram-bot.yaml
   - tt-svc.yaml
   - updater.yaml
+
+components:
+  - ../../../components/netpols/allow-http-to-internet
