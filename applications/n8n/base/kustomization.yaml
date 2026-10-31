@@ -11,3 +11,7 @@ resources:
   - network-policy.yaml
   - secrets.yaml
   - volume.yaml
+
+components:
+  - ../../../components/netpols/allow-monitoring
+  - ../../../components/netpols/allow-http-to-internet

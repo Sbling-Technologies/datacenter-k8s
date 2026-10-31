@@ -1,0 +1,34 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-http-to-internet
+spec:
+  description: Allow outbound traffic to the internet (HTTP/S)
+  endpointSelector: {}
+  egress:
+    - toCIDRSet:
+        - cidr: 0.0.0.0/0
+          except:
+            # "This network" (RFC 1122); not routable as a destination
+            - 0.0.0.0/8
+            # RFC 1918 private ranges
+            - 10.0.0.0/8
+            - 172.16.0.0/12
+            - 192.168.0.0/16
+            # Shared address space (RFC 6598): Tailscale/Headscale tailnets, ISP CGNAT
+            - 100.64.0.0/10
+            # Loopback
+            - 127.0.0.0/8
+            # Link-local (RFC 3927): cloud metadata endpoints, APIPA, node-local services
+            - 169.254.0.0/16
+            # Benchmarking (RFC 2544): sometimes used by VPNs/proxies for internal addressing
+            - 198.18.0.0/15
+            # Multicast (224/4) and reserved/broadcast (240/4)
+            - 224.0.0.0/4
+            - 240.0.0.0/4
+      toPorts:
+        - ports:
+            - port: "443"
+              protocol: TCP
+            - port: "80"
+              protocol: TCP

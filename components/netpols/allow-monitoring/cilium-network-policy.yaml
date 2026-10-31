@@ -1,0 +1,12 @@
+apiVersion: cilium.io/v2
+kind: CiliumNetworkPolicy
+metadata:
+  name: allow-monitoring
+spec:
+  description: Allow inbound traffic from monitoring system (Prometheus)
+  endpointSelector: {}
+  ingress:
+    - fromEndpoints:
+        - matchLabels:
+            io.kubernetes.pod.namespace: platform-monitoring-prometheus
+            app.kubernetes.io/name: prometheus
