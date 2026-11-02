@@ -38,6 +38,34 @@
       "matchStrings": [
         "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)\\s+\\w+: \"(?<currentValue>[^\"]+)\""
       ]
+    },
+    {
+      "description": "Traefik plugins",
+      "customType": "regex",
+      "managerFilePatterns": ["/^.+/values\\.yaml$/"],
+      "matchStrings": [
+        "moduleName: (?<depName>\\S+)\\s+version: (?<currentValue>\\S+)"
+      ],
+      "datasourceTemplate": "go"
+    },
+    {
+      "description": "Versioned raw GitHub files in the Justfile",
+      "customType": "regex",
+      "managerFilePatterns": ["/^Justfile$/"],
+      "matchStrings": [
+        "https://raw\\.githubusercontent\\.com/(?<depName>[^/]+/[^/]+)/(?<currentValue>v\\d[^/]*)/"
+      ],
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "description": "kro CLI, pinned by commit because cmd/kro has no Go module tags",
+      "customType": "regex",
+      "managerFilePatterns": ["/^Justfile$/"],
+      "matchStrings": [
+        "github\\.com/kubernetes-sigs/kro/cmd/kro@(?<currentDigest>[a-f0-9]{40})\" # (?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "kubernetes-sigs/kro",
+      "datasourceTemplate": "github-tags"
     }
   ],
   "packageRules": [
@@ -93,6 +121,14 @@
       "matchPackageNames": ["ghcr.io/pelican/*"],
       "versioning": "loose",
       "ignoreUnstable": false
+    },
+    {
+      "description": "Keep the kro CLI used for schema generation in step with the deployed controller",
+      "matchPackageNames": [
+        "kubernetes-sigs/kro",
+        "registry.k8s.io/kro/charts/kro"
+      ],
+      "groupName": "kro"
     }
   ]
 }

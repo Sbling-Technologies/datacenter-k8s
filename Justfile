@@ -2,7 +2,7 @@ _crds_schema_location := "https://raw.githubusercontent.com/datreeio/CRDs-catalo
 _k8s_schema_location := "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}/{{.ResourceKind}}.json"
 _local_schema_location := justfile_directory() + "/schemas/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json"
 
-# kro's CLI lives in the cmd/kro submodule, which has no Go module tags: pin the commit of the kro release in platform/kro.
+# kro's CLI lives in the cmd/kro submodule, which has no Go module tags: pin the commit of the kro release in platform/kro (Renovate updates both together).
 _kro_cli := "github.com/kubernetes-sigs/kro/cmd/kro@4ba0e410fd8c87ff5d2df638b6942d46766995f7" # v0.9.4
 _openapi2jsonschema := "https://raw.githubusercontent.com/yannh/kubeconform/v0.8.0/scripts/openapi2jsonschema.py"
 
