@@ -128,7 +128,7 @@ spec:
             # Operator status checks and barman-cloud plugin
             - fromEndpoints:
                 - matchLabels:
-                    io.kubernetes.pod.namespace: cnpg-operator
+                    io.kubernetes.pod.namespace: platform-cnpg-operator
             # Replication
             - fromEndpoints:
                 - matchLabels: *clusterLabels
