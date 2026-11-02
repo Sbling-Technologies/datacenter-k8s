@@ -2,6 +2,8 @@ apiVersion: postgresql.cnpg.io/v1
 kind: Cluster
 metadata:
   name: n8n-db
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
   instances: 2
   imageName: ghcr.io/cloudnative-pg/postgresql:17.4
