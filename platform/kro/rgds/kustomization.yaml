@@ -3,3 +3,4 @@ kind: Kustomization
 
 resources:
   - ./internet-egress.yaml
+  - ./postgres-db.yaml

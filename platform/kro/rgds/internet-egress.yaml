@@ -21,6 +21,7 @@ spec:
       podSelector: "map[string]string | default={}"
       ports: "[]Port | required=true minItems=1"
       fqdns: "[]FQDN | default=[]"
+
   resources:
     - id: fqdnEgress
       includeWhen:
