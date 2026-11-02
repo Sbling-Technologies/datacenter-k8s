@@ -59,6 +59,16 @@
       ],
       "depNameTemplate": "kubernetes-sigs/kro",
       "datasourceTemplate": "github-tags"
+    },
+    {
+      "description": "CRDs-catalog used by kubeconform, pinned to a commit of main",
+      "customType": "regex",
+      "managerFilePatterns": ["/^Justfile$/"],
+      "matchStrings": [
+        "_crds_catalog_ref := \"(?<currentDigest>[a-f0-9]{40})\" # (?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "https://github.com/datreeio/CRDs-catalog",
+      "datasourceTemplate": "git-refs"
     }
   ],
   "packageRules": [
@@ -122,6 +132,15 @@
         "registry.k8s.io/kro/charts/kro"
       ],
       "groupName": "kro"
+    },
+    {
+      "description": "Own PR for catalog bumps, so a broken catalog fails the schemas check on that PR only",
+      "matchPackageNames": ["https://github.com/datreeio/CRDs-catalog"],
+      "groupName": "CRDs-catalog",
+      "automerge": true,
+      "automergeSchedule": ["* 0-3 * * 1"],
+      "platformAutomerge": false,
+      "automergeStrategy": "squash"
     }
   ]
 }
