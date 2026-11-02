@@ -1,0 +1,13 @@
+# Tools used by the Justfile, pre-commit hooks and CI; Renovate keeps them updated.
+[tools]
+go = "1.27.3"
+# cmd/kro is a nested Go module without its own tags: pin the commit of the kro release deployed in platform/kro.
+"go:github.com/kubernetes-sigs/kro/cmd/kro" = "4ba0e410fd8c87ff5d2df638b6942d46766995f7" # v0.9.4
+helm = "4.3.1"
+jq = "1.8.2"
+just = "1.59.0"
+kubeconform = "0.8.0"
+kustomize = "5.8.3"
+prek = "0.5.9"
+uv = "0.13.6"
+yq = "4.54.1"

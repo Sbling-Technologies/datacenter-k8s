@@ -33,13 +33,6 @@
       "datasourceTemplate": "github-releases"
     },
     {
-      "customType": "regex",
-      "managerFilePatterns": ["/^\\.github/workflows/.+\\.yaml$/"],
-      "matchStrings": [
-        "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)\\s+\\w+: \"(?<currentValue>[^\"]+)\""
-      ]
-    },
-    {
       "description": "Traefik plugins",
       "customType": "regex",
       "managerFilePatterns": ["/^.+/values\\.yaml$/"],
@@ -60,9 +53,9 @@
     {
       "description": "kro CLI, pinned by commit because cmd/kro has no Go module tags",
       "customType": "regex",
-      "managerFilePatterns": ["/^Justfile$/"],
+      "managerFilePatterns": ["/^mise\\.toml$/"],
       "matchStrings": [
-        "github\\.com/kubernetes-sigs/kro/cmd/kro@(?<currentDigest>[a-f0-9]{40})\" # (?<currentValue>\\S+)"
+        "\"go:github\\.com/kubernetes-sigs/kro/cmd/kro\" = \"(?<currentDigest>[a-f0-9]{40})\" # (?<currentValue>\\S+)"
       ],
       "depNameTemplate": "kubernetes-sigs/kro",
       "datasourceTemplate": "github-tags"
@@ -70,9 +63,9 @@
   ],
   "packageRules": [
     {
-      "description": "Batch all CI updates into one PR, automerged once a week in the Monday 3am window",
+      "description": "Batch all CI and dev tooling updates into one PR, automerged once a week in the Monday 3am window",
       "groupName": "Actions & Checks",
-      "matchFileNames": [".github/workflows/**", ".pre-commit-config.yaml"],
+      "matchFileNames": [".github/workflows/**", ".pre-commit-config.yaml", "mise.toml"],
       "separateMajorMinor": false,
       "separateMinorPatch": false,
       "automerge": true,
