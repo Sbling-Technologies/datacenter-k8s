@@ -1,0 +1,89 @@
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: internet-egress-policy
+  annotations:
+    argocd.argoproj.io/sync-options: Prune=false,Delete=false
+spec:
+  schema:
+    apiVersion: v1alpha1
+    kind: InternetEgressPolicy
+    scope: Namespaced
+    types:
+      Port:
+        port: string | required=true pattern="^[0-9]+$"
+        endPort: integer | minimum=1 maximum=65535
+        protocol: string | enum="TCP,UDP" default="TCP"
+      FQDN:
+        matchName: string
+        matchPattern: string
+    spec:
+      podSelector: "map[string]string | default={}"
+      ports: "[]Port | required=true minItems=1"
+      fqdns: "[]FQDN | default=[]"
+  resources:
+    - id: fqdnEgress
+      includeWhen:
+        - ${size(schema.spec.fqdns) > 0}
+      template:
+        apiVersion: cilium.io/v2
+        kind: CiliumNetworkPolicy
+        metadata:
+          name: allow-egress-${schema.metadata.name}
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: &ownerReferences
+            - apiVersion: kro.run/v1alpha1
+              kind: ${schema.kind}
+              name: ${schema.metadata.name}
+              uid: ${schema.metadata.uid}
+              blockOwnerDeletion: true
+              controller: false
+          annotations: &annotations
+            argocd.argoproj.io/tracking-id: ${schema.metadata.?annotations["argocd.argoproj.io/tracking-id"]}
+        spec:
+          description: Allow outbound traffic to specific FQDNs
+          endpointSelector:
+            matchLabels: ${schema.spec.podSelector}
+          egress:
+            - toFQDNs: ${schema.spec.fqdns}
+              toPorts:
+                - ports: ${schema.spec.ports}
+
+    - id: openEgress
+      includeWhen:
+        - ${size(schema.spec.fqdns) == 0}
+      template:
+        apiVersion: cilium.io/v2
+        kind: CiliumNetworkPolicy
+        metadata:
+          name: allow-egress-${schema.metadata.name}
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: *ownerReferences
+          annotations: *annotations
+        spec:
+          description: Allow outbound traffic to the internet
+          endpointSelector:
+            matchLabels: ${schema.spec.podSelector}
+          egress:
+            - toCIDRSet:
+                - cidr: 0.0.0.0/0
+                  except:
+                    # "This network" (RFC 1122); not routable as a destination
+                    - 0.0.0.0/8
+                    # RFC 1918 private ranges
+                    - 10.0.0.0/8
+                    - 172.16.0.0/12
+                    - 192.168.0.0/16
+                    # Shared address space (RFC 6598): Tailscale/Headscale tailnets, ISP CGNAT
+                    - 100.64.0.0/10
+                    # Loopback
+                    - 127.0.0.0/8
+                    # Link-local (RFC 3927): cloud metadata endpoints, APIPA, node-local services
+                    - 169.254.0.0/16
+                    # Benchmarking (RFC 2544): sometimes used by VPNs/proxies for internal addressing
+                    - 198.18.0.0/15
+                    # Multicast (224/4) and reserved/broadcast (240/4)
+                    - 224.0.0.0/4
+                    - 240.0.0.0/4
+              toPorts:
+                - ports: ${schema.spec.ports}

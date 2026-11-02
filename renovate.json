@@ -33,18 +33,49 @@
       "datasourceTemplate": "github-releases"
     },
     {
+      "description": "Traefik plugins",
       "customType": "regex",
-      "managerFilePatterns": ["/^\\.github/workflows/.+\\.yaml$/"],
+      "managerFilePatterns": ["/^.+/values\\.yaml$/"],
       "matchStrings": [
-        "# renovate: datasource=(?<datasource>[^\\s]+) depName=(?<depName>[^\\s]+)\\s+\\w+: \"(?<currentValue>[^\"]+)\""
-      ]
+        "moduleName: (?<depName>\\S+)\\s+version: (?<currentValue>\\S+)"
+      ],
+      "datasourceTemplate": "go"
+    },
+    {
+      "description": "Versioned raw GitHub files in the Justfile",
+      "customType": "regex",
+      "managerFilePatterns": ["/^Justfile$/"],
+      "matchStrings": [
+        "https://raw\\.githubusercontent\\.com/(?<depName>[^/]+/[^/]+)/(?<currentValue>v\\d[^/]*)/"
+      ],
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "description": "kro CLI, pinned by commit because cmd/kro has no Go module tags",
+      "customType": "regex",
+      "managerFilePatterns": ["/^mise\\.toml$/"],
+      "matchStrings": [
+        "\"go:github\\.com/kubernetes-sigs/kro/cmd/kro\" = \"(?<currentDigest>[a-f0-9]{40})\" # (?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "kubernetes-sigs/kro",
+      "datasourceTemplate": "github-tags"
+    },
+    {
+      "description": "CRDs-catalog used by kubeconform, pinned to a commit of main",
+      "customType": "regex",
+      "managerFilePatterns": ["/^Justfile$/"],
+      "matchStrings": [
+        "_crds_catalog_ref := \"(?<currentDigest>[a-f0-9]{40})\" # (?<currentValue>\\S+)"
+      ],
+      "depNameTemplate": "https://github.com/datreeio/CRDs-catalog",
+      "datasourceTemplate": "git-refs"
     }
   ],
   "packageRules": [
     {
-      "description": "Batch all CI updates into one PR, automerged once a week in the Monday 3am window",
+      "description": "Batch all CI and dev tooling updates into one PR, automerged once a week in the Monday 3am window",
       "groupName": "Actions & Checks",
-      "matchFileNames": [".github/workflows/**", ".pre-commit-config.yaml"],
+      "matchFileNames": [".github/workflows/**", ".pre-commit-config.yaml", "mise.toml"],
       "separateMajorMinor": false,
       "separateMinorPatch": false,
       "automerge": true,
@@ -93,6 +124,23 @@
       "matchPackageNames": ["ghcr.io/pelican/*"],
       "versioning": "loose",
       "ignoreUnstable": false
+    },
+    {
+      "description": "Keep the kro CLI used for schema generation in step with the deployed controller",
+      "matchPackageNames": [
+        "kubernetes-sigs/kro",
+        "registry.k8s.io/kro/charts/kro"
+      ],
+      "groupName": "kro"
+    },
+    {
+      "description": "Own PR for catalog bumps, so a broken catalog fails the schemas check on that PR only",
+      "matchPackageNames": ["https://github.com/datreeio/CRDs-catalog"],
+      "groupName": "CRDs-catalog",
+      "automerge": true,
+      "automergeSchedule": ["* 0-3 * * 1"],
+      "platformAutomerge": false,
+      "automergeStrategy": "squash"
     }
   ]
 }

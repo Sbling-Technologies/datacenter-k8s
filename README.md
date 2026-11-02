@@ -64,3 +64,17 @@ of manifests for a Kubernetes cluster. Here's a breakdown of the directory struc
 
 - `misc`: This directory is for miscellaneous Kubernetes manifests and files that
   aren't deployed with ArgoCD.
+
+## Development
+
+The tools used by the `Justfile`, the pre-commit hooks and CI are pinned in `mise.toml`
+and kept up to date by Renovate. Install them with [mise](https://mise.jdx.dev/):
+
+```sh
+mise trust && mise install
+prek install  # optional: run the pre-commit hooks on every commit
+just          # list the available commands
+```
+
+`just kro-schemas` regenerates the kubeconform schemas of the kro ResourceGraphDefinitions
+in `schemas/`; it needs access to the cluster.

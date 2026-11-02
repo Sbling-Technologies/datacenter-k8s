@@ -36,6 +36,10 @@ jobs:
         with:
           fetch-depth: 0
 
+      - uses: jdx/mise-action@6612f0ef07ed2a736cd1e00a94a065522dd41195 # v5.2.5
+        with:
+          install_args: kustomize helm
+
       - name: Calculate diff
         id: diff
         env:
