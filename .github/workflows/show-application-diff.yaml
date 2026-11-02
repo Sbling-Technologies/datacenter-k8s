@@ -79,8 +79,11 @@ jobs:
             echo
 
             unchanged=()
-            for dir in /tmp/diffs/*/; do
-              directory=$(cat "$dir/directory.txt")
+            # download-artifact extracts flat (no per-artifact subdir) when only one artifact matches
+            shopt -s globstar
+            for file in /tmp/diffs/**/directory.txt; do
+              dir=$(dirname "$file")
+              directory=$(cat "$file")
               if [ -s "$dir/diff.txt" ]; then
                 echo "<details><summary><code>$directory</code> (changed)</summary>"
                 echo
