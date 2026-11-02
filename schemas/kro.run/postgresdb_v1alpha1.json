@@ -1,0 +1,221 @@
+{
+  "type": "object",
+  "properties": {
+    "apiVersion": {
+      "type": "string"
+    },
+    "kind": {
+      "type": "string"
+    },
+    "metadata": {
+      "type": "object"
+    },
+    "spec": {
+      "type": "object",
+      "required": [
+        "bootstrap",
+        "credentialsKey",
+        "imageName",
+        "instances"
+      ],
+      "properties": {
+        "backup": {
+          "type": "object",
+          "default": {},
+          "properties": {
+            "credentials": {
+              "type": "array",
+              "items": {
+                "type": "object",
+                "required": [
+                  "secretKey",
+                  "remoteKey"
+                ],
+                "properties": {
+                  "remoteKey": {
+                    "type": "string"
+                  },
+                  "secretKey": {
+                    "type": "string"
+                  }
+                },
+                "additionalProperties": false
+              }
+            },
+            "egress": {
+              "type": "object",
+              "properties": {
+                "fqdns": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "matchName": {
+                        "type": "string"
+                      },
+                      "matchPattern": {
+                        "type": "string"
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                },
+                "ports": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "required": [
+                      "port"
+                    ],
+                    "properties": {
+                      "endPort": {
+                        "type": "integer",
+                        "maximum": 65535,
+                        "minimum": 1
+                      },
+                      "port": {
+                        "type": "string",
+                        "pattern": "^[0-9]+$"
+                      },
+                      "protocol": {
+                        "type": "string",
+                        "default": "TCP",
+                        "enum": [
+                          "TCP",
+                          "UDP"
+                        ]
+                      }
+                    },
+                    "additionalProperties": false
+                  }
+                }
+              },
+              "additionalProperties": false
+            },
+            "enabled": {
+              "type": "boolean",
+              "default": false
+            },
+            "objectStore": {
+              "type": "object",
+              "x-kubernetes-preserve-unknown-fields": true
+            },
+            "schedule": {
+              "type": "string"
+            },
+            "serverName": {
+              "type": "string"
+            }
+          },
+          "additionalProperties": false
+        },
+        "bootstrap": {
+          "type": "object",
+          "x-kubernetes-preserve-unknown-fields": true
+        },
+        "clientSelector": {
+          "type": "object",
+          "default": {},
+          "additionalProperties": {
+            "type": "string"
+          }
+        },
+        "credentialsKey": {
+          "type": "string"
+        },
+        "externalClusters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "x-kubernetes-preserve-unknown-fields": true
+          }
+        },
+        "imageName": {
+          "type": "string"
+        },
+        "instances": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "monitoring": {
+          "type": "object",
+          "default": {},
+          "properties": {
+            "enabled": {
+              "type": "boolean",
+              "default": true
+            }
+          },
+          "additionalProperties": false
+        },
+        "plugins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "x-kubernetes-preserve-unknown-fields": true
+          }
+        },
+        "storage": {
+          "type": "object",
+          "default": {},
+          "properties": {
+            "size": {
+              "type": "string",
+              "default": "2Gi"
+            },
+            "storageClass": {
+              "type": "string",
+              "default": "longhorn-single-replica-retain"
+            }
+          },
+          "additionalProperties": false
+        }
+      },
+      "additionalProperties": false
+    },
+    "status": {
+      "type": "object",
+      "properties": {
+        "conditions": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "lastTransitionTime": {
+                "type": "string"
+              },
+              "message": {
+                "type": "string"
+              },
+              "observedGeneration": {
+                "type": "integer"
+              },
+              "reason": {
+                "type": "string"
+              },
+              "status": {
+                "type": "string"
+              },
+              "type": {
+                "type": "string"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "phase": {
+          "description": "unknown CEL type: optional_type(string)",
+          "x-kubernetes-preserve-unknown-fields": true
+        },
+        "readyInstances": {
+          "description": "unknown CEL type: optional_type(int)",
+          "x-kubernetes-preserve-unknown-fields": true
+        },
+        "state": {
+          "type": "string"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

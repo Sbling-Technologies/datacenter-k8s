@@ -1,0 +1,260 @@
+apiVersion: kro.run/v1alpha1
+kind: ResourceGraphDefinition
+metadata:
+  name: postgres-db
+spec:
+  schema:
+    apiVersion: v1alpha1
+    kind: PostgresDB
+    scope: Namespaced
+    types:
+      Port:
+        port: string | required=true pattern="^[0-9]+$"
+        endPort: integer | minimum=1 maximum=65535
+        protocol: string | enum="TCP,UDP" default="TCP"
+      FQDN:
+        matchName: string
+        matchPattern: string
+      SecretData:
+        secretKey: string | required=true
+        remoteKey: string | required=true
+    spec:
+      instances: integer | required=true minimum=1
+      imageName: string | required=true
+      storage:
+        size: string | default="2Gi"
+        storageClass: string | default="longhorn-single-replica-retain"
+      # Bitwarden key prefix holding `<prefix>/username` and `<prefix>/password` of the owner, synced into the `<name>-user` secret.
+      credentialsKey: string | required=true
+      # Pods of the namespace allowed to connect to the database.
+      clientSelector: "map[string]string | default={}"
+      monitoring:
+        enabled: boolean | default=true
+      backup:
+        enabled: boolean | default=false
+        schedule: string
+        # spec of the `<name>-backup` barmancloud.cnpg.io ObjectStore, also usable for recovery with backups disabled.
+        # Reference credentials as the `<name>-backup-creds` secret.
+        objectStore: object
+        # Bitwarden keys copied into the `<name>-backup-creds` secret.
+        credentials: "[]SecretData"
+        # Where the object store lives; allowed through an InternetEgressPolicy.
+        egress:
+          ports: "[]Port"
+          fqdns: "[]FQDN"
+        # Defaults to the cluster name. Barman refuses to archive into a non-empty server path: after a restore, archive under a new serverName.
+        serverName: string
+      # Cluster spec.bootstrap, only read when the Cluster is created. Reference the owner secret as `<name>-user`.
+      bootstrap: object | required=true
+      # Cluster spec.externalClusters, e.g. the source of a recovery or pg_basebackup bootstrap.
+      externalClusters: "[]object"
+      # Cluster spec.plugins, added to the barman-cloud one managed by `backup`.
+      plugins: "[]object"
+    status:
+      phase: ${cluster.status.?phase}
+      readyInstances: ${cluster.status.?readyInstances}
+
+  resources:
+    - id: credentials
+      template:
+        apiVersion: external-secrets.io/v1
+        kind: ExternalSecret
+        metadata:
+          name: ${schema.metadata.name}-user
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: &ownerReferences
+            - apiVersion: kro.run/v1alpha1
+              kind: ${schema.kind}
+              name: ${schema.metadata.name}
+              uid: ${schema.metadata.uid}
+              blockOwnerDeletion: true
+              controller: false
+          annotations: &annotations
+            argocd.argoproj.io/tracking-id: ${schema.metadata.?annotations["argocd.argoproj.io/tracking-id"]}
+        spec:
+          secretStoreRef:
+            name: bitwarden-secretsmanager
+            kind: ClusterSecretStore
+          data:
+            - secretKey: username
+              remoteRef:
+                key: ${schema.spec.credentialsKey}/username
+            - secretKey: password
+              remoteRef:
+                key: ${schema.spec.credentialsKey}/password
+
+    - id: cluster
+      readyWhen:
+        - ${cluster.status.?readyInstances.orValue(0) == cluster.spec.instances}
+      template:
+        apiVersion: postgresql.cnpg.io/v1
+        kind: Cluster
+        metadata:
+          name: ${schema.metadata.name}
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: *ownerReferences
+          annotations: *annotations
+        spec:
+          instances: ${schema.spec.instances}
+          imageName: ${schema.spec.imageName}
+          bootstrap: ${schema.spec.bootstrap}
+          externalClusters: ${schema.spec.?externalClusters.orValue([])}
+          plugins: >-
+            ${dyn(schema.spec.backup.enabled
+              ? [{"name": "barman-cloud.cloudnative-pg.io", "isWALArchiver": true, "parameters": {
+                  "barmanObjectName": schema.metadata.name + "-backup",
+                  "serverName": schema.spec.backup.?serverName.orValue(schema.metadata.name)}}]
+              : []) + schema.spec.?plugins.orValue([])}
+          storage:
+            storageClass: ${schema.spec.storage.storageClass}
+            size: ${schema.spec.storage.size}
+
+    - id: networkPolicy
+      template:
+        apiVersion: cilium.io/v2
+        kind: CiliumNetworkPolicy
+        metadata:
+          name: allow-cnpg-${schema.metadata.name}
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: *ownerReferences
+          annotations: *annotations
+        spec:
+          description: Allow the traffic a CNPG cluster needs to run
+          endpointSelector:
+            matchLabels: &clusterLabels
+              cnpg.io/cluster: ${schema.metadata.name}
+          ingress:
+            # Operator status checks and barman-cloud plugin
+            - fromEndpoints:
+                - matchLabels:
+                    io.kubernetes.pod.namespace: cnpg-operator
+            # Replication
+            - fromEndpoints:
+                - matchLabels: *clusterLabels
+            - fromEndpoints:
+                - matchLabels: ${schema.spec.clientSelector}
+              toPorts:
+                - ports:
+                    - port: "5432"
+                      protocol: TCP
+            # Metrics collection
+            - fromEndpoints:
+                - matchLabels:
+                    io.kubernetes.pod.namespace: platform-monitoring-prometheus
+                    app.kubernetes.io/name: prometheus
+              toPorts:
+                - ports:
+                    - port: "9187"
+                      protocol: TCP
+          egress:
+            - toEntities:
+                - kube-apiserver
+            - toEndpoints:
+                - matchLabels: *clusterLabels
+            # pg_basebackup/replica bootstrap from another CNPG cluster of the namespace
+            - toEndpoints:
+                - matchLabels:
+                    cnpg.io/podRole: instance
+              toPorts:
+                - ports:
+                    - port: "5432"
+                      protocol: TCP
+            # Replicas resolve the -rw service; DNS proxy also feeds the backup FQDN policy
+            - toEndpoints:
+                - matchLabels:
+                    io.kubernetes.pod.namespace: kube-system
+                    k8s-app: kube-dns
+              toPorts:
+                - ports:
+                    - port: "53"
+                      protocol: UDP
+                  rules:
+                    dns:
+                      - matchPattern: "*"
+
+    - id: podMonitor
+      includeWhen:
+        - ${schema.spec.monitoring.enabled}
+      template:
+        apiVersion: monitoring.coreos.com/v1
+        kind: PodMonitor
+        metadata:
+          name: ${schema.metadata.name}
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: *ownerReferences
+          annotations: *annotations
+        spec:
+          selector:
+            matchLabels:
+              cnpg.io/cluster: ${schema.metadata.name}
+              cnpg.io/podRole: instance
+          podMetricsEndpoints:
+            - port: metrics
+
+    - id: backupCredentials
+      includeWhen:
+        - ${has(schema.spec.backup.objectStore) && has(schema.spec.backup.credentials)}
+      template:
+        apiVersion: external-secrets.io/v1
+        kind: ExternalSecret
+        metadata:
+          name: ${schema.metadata.name}-backup-creds
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: *ownerReferences
+          annotations: *annotations
+        spec:
+          secretStoreRef:
+            name: bitwarden-secretsmanager
+            kind: ClusterSecretStore
+          data: >-
+            ${schema.spec.backup.credentials.map(c, {"secretKey": c.secretKey, "remoteRef": {"key": c.remoteKey}})}
+
+    - id: objectStore
+      includeWhen:
+        - ${has(schema.spec.backup.objectStore)}
+      template:
+        apiVersion: barmancloud.cnpg.io/v1
+        kind: ObjectStore
+        metadata:
+          name: ${schema.metadata.name}-backup
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: *ownerReferences
+          annotations: *annotations
+        spec: ${schema.spec.backup.objectStore}
+
+    - id: backupEgress
+      includeWhen:
+        - ${has(schema.spec.backup.objectStore) && has(schema.spec.backup.egress)}
+      template:
+        apiVersion: kro.run/v1alpha1
+        kind: InternetEgressPolicy
+        metadata:
+          name: cnpg-backup-${schema.metadata.name}
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: *ownerReferences
+          annotations: *annotations
+        spec:
+          podSelector: *clusterLabels
+          ports: ${schema.spec.backup.egress.ports}
+          fqdns: ${schema.spec.backup.?egress.?fqdns.orValue([])}
+
+    - id: scheduledBackup
+      includeWhen:
+        - ${schema.spec.backup.enabled}
+      template:
+        apiVersion: postgresql.cnpg.io/v1
+        kind: ScheduledBackup
+        metadata:
+          name: ${schema.metadata.name}-backup
+          namespace: ${schema.metadata.namespace}
+          ownerReferences: *ownerReferences
+          annotations: *annotations
+        spec:
+          cluster:
+            name: ${cluster.metadata.name}
+          method: plugin
+          pluginConfiguration:
+            name: barman-cloud.cloudnative-pg.io
+          immediate: true
+          # See: https://cloudnative-pg.io/docs/devel/backup/#cron-schedule
+          schedule: ${schema.spec.backup.schedule}
