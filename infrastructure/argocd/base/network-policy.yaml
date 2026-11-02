@@ -51,27 +51,15 @@ spec:
             app.kubernetes.io/name: prometheus
 ---
 # NOTE: Probably to Github FQDN would be enough
-apiVersion: cilium.io/v2
-kind: CiliumNetworkPolicy
+apiVersion: lbevi.com/v1alpha1
+kind: InternetEgressPolicy
 metadata:
-  name: allow-to-internet
+  name: argocd-egress
 spec:
-  description: Allow outbound traffic to the internet (HTTP/S)
-  endpointSelector: {}
-  egress:
-    - toCIDRSet:
-        - cidr: 0.0.0.0/0
-          except:
-            - 10.0.0.0/8
-            - 172.16.0.0/12
-            - 192.168.0.0/16
-      toPorts:
-        - ports:
-            - port: "22"
-        - ports:
-            - port: "80"
-        - ports:
-            - port: "443"
+  ports:
+    - port: "22"
+    - port: "80"
+    - port: "443"
 ---
 apiVersion: cilium.io/v2
 kind: CiliumNetworkPolicy

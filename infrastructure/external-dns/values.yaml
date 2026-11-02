@@ -1,4 +1,4 @@
-logLevel: &logLevel debug
+logLevel: &logLevel info
 provider:
   name: webhook
   webhook:
