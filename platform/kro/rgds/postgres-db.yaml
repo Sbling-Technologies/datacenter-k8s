@@ -2,8 +2,6 @@ apiVersion: kro.run/v1alpha1
 kind: ResourceGraphDefinition
 metadata:
   name: postgres-db
-  annotations:
-    argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
   schema:
     apiVersion: v1alpha1
@@ -23,22 +21,20 @@ spec:
     spec:
       instances: integer | required=true minimum=1
       imageName: string | required=true
-      database: string | required=true
-      owner: string | required=true
       storage:
         size: string | default="2Gi"
         storageClass: string | default="longhorn-single-replica-retain"
-      # Bitwarden key prefix holding `<prefix>/username` and `<prefix>/password` of the owner.
+      # Bitwarden key prefix holding `<prefix>/username` and `<prefix>/password` of the owner, synced into the `<name>-user` secret.
       credentialsKey: string | required=true
       # Pods of the namespace allowed to connect to the database.
       clientSelector: "map[string]string | default={}"
       monitoring:
         enabled: boolean | default=true
-      # Also used by bootstrap.method=recovery.
       backup:
         enabled: boolean | default=false
         schedule: string
-        # spec of the barmancloud.cnpg.io ObjectStore. Reference credentials as the `<name>-backup-creds` secret.
+        # spec of the `<name>-backup` barmancloud.cnpg.io ObjectStore, also usable for recovery with backups disabled.
+        # Reference credentials as the `<name>-backup-creds` secret.
         objectStore: object
         # Bitwarden keys copied into the `<name>-backup-creds` secret.
         credentials: "[]SecretData"
@@ -48,14 +44,16 @@ spec:
           fqdns: "[]FQDN"
         # Defaults to the cluster name. Barman refuses to archive into a non-empty server path: after a restore, archive under a new serverName.
         serverName: string
-      # Only read when the Cluster is created.
-      bootstrap:
-        method: string | enum="initdb,recovery,pg_basebackup" default="initdb"
-        # recovery: serverName in the backup bucket. pg_basebackup: CNPG Cluster in the same namespace, same major version.
-        source: string | default=""
+      # Cluster spec.bootstrap, only read when the Cluster is created. Reference the owner secret as `<name>-user`.
+      bootstrap: object | required=true
+      # Cluster spec.externalClusters, e.g. the source of a recovery or pg_basebackup bootstrap.
+      externalClusters: "[]object"
+      # Cluster spec.plugins, added to the barman-cloud one managed by `backup`.
+      plugins: "[]object"
     status:
       phase: ${cluster.status.?phase}
       readyInstances: ${cluster.status.?readyInstances}
+
   resources:
     - id: credentials
       template:
@@ -99,31 +97,14 @@ spec:
         spec:
           instances: ${schema.spec.instances}
           imageName: ${schema.spec.imageName}
-          bootstrap: >-
-            ${schema.spec.bootstrap.method == "recovery"
-              ? {"recovery": {"database": schema.spec.database, "owner": schema.spec.owner, "secret": {"name": credentials.metadata.name}, "source": "source"}}
-              : schema.spec.bootstrap.method == "pg_basebackup"
-              ? {"pg_basebackup": {"database": schema.spec.database, "owner": schema.spec.owner, "secret": {"name": credentials.metadata.name}, "source": "source"}}
-              : {"initdb": {"database": schema.spec.database, "owner": schema.spec.owner, "secret": {"name": credentials.metadata.name}}}}
-          # Clone over streaming replication with the source's replication certificate, as in https://cloudnative-pg.io/documentation/current/bootstrap/#bootstrap-from-a-live-cluster-pg_basebackup
-          externalClusters: >-
-            ${schema.spec.bootstrap.method == "recovery"
-              ? [{"name": "source", "plugin": {"name": "barman-cloud.cloudnative-pg.io", "parameters": {"barmanObjectName": schema.metadata.name + "-backup", "serverName": schema.spec.bootstrap.source}}}]
-              : schema.spec.bootstrap.method == "pg_basebackup"
-              ? [{"name": "source",
-                  "connectionParameters": {"host": schema.spec.bootstrap.source + "-rw." + schema.metadata.namespace + ".svc", "user": "streaming_replica", "sslmode": "verify-full", "dbname": "postgres"},
-                  "sslKey": {"name": schema.spec.bootstrap.source + "-replication", "key": "tls.key"},
-                  "sslCert": {"name": schema.spec.bootstrap.source + "-replication", "key": "tls.crt"},
-                  "sslRootCert": {"name": schema.spec.bootstrap.source + "-ca", "key": "ca.crt"}}]
-              : []}
-          plugins:
-            # TODO: check that a disabled plugin pointing to a missing ObjectStore is ignored by the operator
-            - name: barman-cloud.cloudnative-pg.io
-              enabled: ${schema.spec.backup.enabled}
-              isWALArchiver: true
-              parameters:
-                barmanObjectName: ${schema.metadata.name}-backup
-                serverName: ${schema.spec.backup.?serverName.orValue(schema.metadata.name)}
+          bootstrap: ${schema.spec.bootstrap}
+          externalClusters: ${schema.spec.?externalClusters.orValue([])}
+          plugins: >-
+            ${dyn(schema.spec.backup.enabled
+              ? [{"name": "barman-cloud.cloudnative-pg.io", "isWALArchiver": true, "parameters": {
+                  "barmanObjectName": schema.metadata.name + "-backup",
+                  "serverName": schema.spec.backup.?serverName.orValue(schema.metadata.name)}}]
+              : []) + schema.spec.?plugins.orValue([])}
           storage:
             storageClass: ${schema.spec.storage.storageClass}
             size: ${schema.spec.storage.size}
@@ -156,6 +137,7 @@ spec:
                 - ports:
                     - port: "5432"
                       protocol: TCP
+            # Metrics collection
             - fromEndpoints:
                 - matchLabels:
                     io.kubernetes.pod.namespace: platform-monitoring-prometheus
@@ -169,6 +151,14 @@ spec:
                 - kube-apiserver
             - toEndpoints:
                 - matchLabels: *clusterLabels
+            # pg_basebackup/replica bootstrap from another CNPG cluster of the namespace
+            - toEndpoints:
+                - matchLabels:
+                    cnpg.io/podRole: instance
+              toPorts:
+                - ports:
+                    - port: "5432"
+                      protocol: TCP
             # Replicas resolve the -rw service; DNS proxy also feeds the backup FQDN policy
             - toEndpoints:
                 - matchLabels:
@@ -189,8 +179,7 @@ spec:
         apiVersion: monitoring.coreos.com/v1
         kind: PodMonitor
         metadata:
-          # Not `<name>`: the operator owns that one while migrating from enablePodMonitor
-          name: cnpg-${schema.metadata.name}
+          name: ${schema.metadata.name}
           namespace: ${schema.metadata.namespace}
           ownerReferences: *ownerReferences
           annotations: *annotations
@@ -202,33 +191,9 @@ spec:
           podMetricsEndpoints:
             - port: metrics
 
-    - id: sourceEgress
-      includeWhen:
-        - ${schema.spec.bootstrap.method == "pg_basebackup"}
-      template:
-        apiVersion: cilium.io/v2
-        kind: CiliumNetworkPolicy
-        metadata:
-          name: allow-cnpg-${schema.metadata.name}-source
-          namespace: ${schema.metadata.namespace}
-          ownerReferences: *ownerReferences
-          annotations: *annotations
-        spec:
-          description: Allow the CNPG cluster to clone its bootstrap source
-          endpointSelector:
-            matchLabels: *clusterLabels
-          egress:
-            - toEndpoints:
-                - matchLabels:
-                    cnpg.io/cluster: ${schema.spec.bootstrap.source}
-              toPorts:
-                - ports:
-                    - port: "5432"
-                      protocol: TCP
-
     - id: backupCredentials
       includeWhen:
-        - ${(schema.spec.backup.enabled || schema.spec.bootstrap.method == "recovery") && has(schema.spec.backup.credentials)}
+        - ${has(schema.spec.backup.objectStore) && has(schema.spec.backup.credentials)}
       template:
         apiVersion: external-secrets.io/v1
         kind: ExternalSecret
@@ -246,7 +211,7 @@ spec:
 
     - id: objectStore
       includeWhen:
-        - ${schema.spec.backup.enabled || schema.spec.bootstrap.method == "recovery"}
+        - ${has(schema.spec.backup.objectStore)}
       template:
         apiVersion: barmancloud.cnpg.io/v1
         kind: ObjectStore
@@ -259,7 +224,7 @@ spec:
 
     - id: backupEgress
       includeWhen:
-        - ${(schema.spec.backup.enabled || schema.spec.bootstrap.method == "recovery") && has(schema.spec.backup.egress)}
+        - ${has(schema.spec.backup.objectStore) && has(schema.spec.backup.egress)}
       template:
         apiVersion: kro.run/v1alpha1
         kind: InternetEgressPolicy

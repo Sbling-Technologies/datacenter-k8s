@@ -13,11 +13,10 @@
     "spec": {
       "type": "object",
       "required": [
-        "database",
+        "bootstrap",
+        "credentialsKey",
         "imageName",
-        "instances",
-        "owner",
-        "credentialsKey"
+        "instances"
       ],
       "properties": {
         "backup": {
@@ -29,8 +28,8 @@
               "items": {
                 "type": "object",
                 "required": [
-                  "remoteKey",
-                  "secretKey"
+                  "secretKey",
+                  "remoteKey"
                 ],
                 "properties": {
                   "remoteKey": {
@@ -112,23 +111,7 @@
         },
         "bootstrap": {
           "type": "object",
-          "default": {},
-          "properties": {
-            "method": {
-              "type": "string",
-              "default": "initdb",
-              "enum": [
-                "initdb",
-                "recovery",
-                "pg_basebackup"
-              ]
-            },
-            "source": {
-              "type": "string",
-              "default": ""
-            }
-          },
-          "additionalProperties": false
+          "x-kubernetes-preserve-unknown-fields": true
         },
         "clientSelector": {
           "type": "object",
@@ -140,8 +123,12 @@
         "credentialsKey": {
           "type": "string"
         },
-        "database": {
-          "type": "string"
+        "externalClusters": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "x-kubernetes-preserve-unknown-fields": true
+          }
         },
         "imageName": {
           "type": "string"
@@ -161,8 +148,12 @@
           },
           "additionalProperties": false
         },
-        "owner": {
-          "type": "string"
+        "plugins": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "x-kubernetes-preserve-unknown-fields": true
+          }
         },
         "storage": {
           "type": "object",
