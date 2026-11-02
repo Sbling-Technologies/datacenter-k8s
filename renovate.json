@@ -8,6 +8,7 @@
   ],
   "pre-commit": { "enabled": true },
   "reviewers": ["ardubev16", "LuigiMiazzo17"],
+  "labels": ["renovate"],
   "argocd": {
     "managerFilePatterns": [
       "/^appsets/.+\\.yaml$/",
