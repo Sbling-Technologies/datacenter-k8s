@@ -6,6 +6,7 @@ metadata:
     argocd.argoproj.io/sync-options: Prune=false,Delete=false
 spec:
   schema:
+    group: lbevi.com
     apiVersion: v1alpha1
     kind: InternetEgressPolicy
     scope: Namespaced

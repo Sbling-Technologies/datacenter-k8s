@@ -13,10 +13,10 @@
     "spec": {
       "type": "object",
       "required": [
+        "instances",
         "bootstrap",
-        "credentialsKey",
         "imageName",
-        "instances"
+        "credentialsKey"
       ],
       "properties": {
         "backup": {
@@ -28,8 +28,8 @@
               "items": {
                 "type": "object",
                 "required": [
-                  "secretKey",
-                  "remoteKey"
+                  "remoteKey",
+                  "secretKey"
                 ],
                 "properties": {
                   "remoteKey": {

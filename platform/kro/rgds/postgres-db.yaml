@@ -4,6 +4,7 @@ metadata:
   name: postgres-db
 spec:
   schema:
+    group: lbevi.com
     apiVersion: v1alpha1
     kind: PostgresDB
     scope: Namespaced
@@ -226,7 +227,7 @@ spec:
       includeWhen:
         - ${has(schema.spec.backup.objectStore) && has(schema.spec.backup.egress)}
       template:
-        apiVersion: kro.run/v1alpha1
+        apiVersion: lbevi.com/v1alpha1
         kind: InternetEgressPolicy
         metadata:
           name: cnpg-backup-${schema.metadata.name}
