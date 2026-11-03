@@ -38,7 +38,8 @@ spec:
             summary: "'{{ $labels.name }}' Application is unstable"
             impact: Application is frequently changing state, which may indicate instability or misconfiguration.
             description: The ArgoCD application '{{ $labels.name }}' has been in a 'Progressing' health status while being 'Synced' more than 8 times in the last 24 hours.
-          expr: count_over_time(count_over_time(argocd_app_info{health_status="Progressing", sync_status="Synced"}[5m])[24h:5m]) > 8
+          # max by: the controller pod IP changes on restart, splitting one app into several 24h series.
+          expr: count_over_time((max by (name, namespace, project, dest_namespace) (count_over_time(argocd_app_info{health_status="Progressing", sync_status="Synced"}[5m])))[24h:5m]) > 8
           for: 0s
           labels:
             severity: warning

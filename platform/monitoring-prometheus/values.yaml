@@ -98,7 +98,8 @@ alertmanager:
       {{- $s := .Labels.severity -}}
       {{ if eq $s "critical" }}🔴{{ else if eq $s "warning" }}🟠{{ else if eq $s "info" }}🔵{{ else }}⚪{{ end }} <b>{{ .Labels.alertname }}</b>
       {{- $t := "" -}}
-      {{- range (stringSlice "pod" "deployment" "statefulset" "daemonset" "job_name" "persistentvolumeclaim" "service" "node" "instance" "job") -}}
+      {{- /* subject labels (Argo app name, Longhorn volume) before scrape-target labels, which name the exporter */ -}}
+      {{- range (stringSlice "name" "volume" "pod" "deployment" "statefulset" "daemonset" "job_name" "persistentvolumeclaim" "service" "node" "instance" "job") -}}
       {{- if and (not $t) (index $.Labels .) }}{{ $t = index $.Labels . }}{{ end -}}
       {{- end -}}
       {{- $ns := .Labels.namespace -}}
