@@ -106,22 +106,51 @@ alertmanager:
       {{- if or $ns $t }} ({{ $ns }}{{ if and $ns $t }}/{{ end }}{{ $t }}){{ end -}}
       {{- end -}}
 
+      {{- /* Older firing alerts, by severity then longest firing first. Templates have no sort, so: selection sort on (StartsAt, Fingerprint). */ -}}
+      {{- define "__still_firing" -}}
+      {{- $alerts := . -}}
+      {{- range $sev := stringSlice "critical" "warning" "info" "" -}}
+      {{- $started := false }}{{ $pT := now }}{{ $pF := "" }}{{ $done := false -}}
+      {{- range $alerts }}{{ if not $done -}}
+      {{- $best := false -}}
+      {{- range $alerts -}}
+      {{- $s := .Labels.severity -}}
+      {{- if and (ge (since .StartsAt).Minutes 5.0)
+                 (or (eq $s $sev) (and (not $sev) (not (match "^(critical|warning|info)$" $s))))
+                 (or (not $started) (.StartsAt.After $pT) (and (.StartsAt.Equal $pT) (gt .Fingerprint $pF)))
+                 (or (not $best) (.StartsAt.Before $best.StartsAt) (and (.StartsAt.Equal $best.StartsAt) (lt .Fingerprint $best.Fingerprint))) -}}
+      {{- $best = . -}}
+      {{- end -}}
+      {{- end -}}
+      {{- if $best }}
+      - {{ template "__alert" $best }}{{ $started = true }}{{ $pT = $best.StartsAt }}{{ $pF = $best.Fingerprint }}
+      {{- else }}{{ $done = true }}{{ end -}}
+      {{- end }}{{ end -}}
+      {{- end -}}
+      {{- end -}}
+
       {{- /* shortcut: "new" = started less than group_interval (5m) ago; Alertmanager does not say which alerts are new. */ -}}
       {{- define "telegram.message" -}}
-      {{- $new := false }}{{ $old := false -}}
-      {{- range .Alerts.Firing }}{{ if lt (since .StartsAt).Minutes 5.0 }}{{ $new = true }}{{ else }}{{ $old = true }}{{ end }}{{ end -}}
-      {{- if $new }}🚨 New alert firing:
+      {{- $new := false }}{{ $old := false }}{{ $oldest := now -}}
+      {{- range .Alerts.Firing -}}
+      {{- if lt (since .StartsAt).Minutes 5.0 }}{{ $new = true }}{{ else }}{{ $old = true }}{{ end -}}
+      {{- if .StartsAt.Before $oldest }}{{ $oldest = .StartsAt }}{{ end -}}
+      {{- end -}}
+      {{- if $new }}🚨 Newly firing:
       {{ range .Alerts.Firing }}{{ if lt (since .StartsAt).Minutes 5.0 }}
-      {{ template "__alert" . }}{{ end }}{{ end }}
-
-      {{ end -}}
-      {{- if .Alerts.Resolved }}✅ Alert resolved:
-      {{ range .Alerts.Resolved }}
-      {{ template "__alert" . }}{{ end }}
-
-      {{ end -}}
-      {{- if $old }}Other alerts still firing:
-      {{ range .Alerts.Firing }}{{ if not (lt (since .StartsAt).Minutes 5.0) }}
       - {{ template "__alert" . }}{{ end }}{{ end }}
-      {{- else }}No other alerts firing.{{ end -}}
+
+      {{ end -}}
+      {{- if .Alerts.Resolved }}✅ Resolved:
+      {{ range .Alerts.Resolved }}
+      - {{ template "__alert" . }}{{ end }}
+
+      {{ end -}}
+      {{- if $old }}Still firing:
+      {{ template "__still_firing" .Alerts.Firing }}
+
+      {{ end -}}
+      {{- with .Alerts.Firing -}}
+      🔥 {{ len . }} alert{{ if gt (len .) 1 }}s{{ end }} firing, longest for {{ humanizeDuration (since $oldest).Seconds }}
+      {{- else }}All clear, no alerts firing.{{ end -}}
       {{- end -}}
