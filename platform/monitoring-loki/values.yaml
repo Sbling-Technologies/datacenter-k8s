@@ -50,9 +50,16 @@ monitoring:
   serviceMonitor:
     enabled: true
 
-# Enable minio for storage
+# TODO: Swap out for something else, will be removed in loki 20.0.0
 ignoreMinioDeprecation: true
 minio:
   enabled: true
+  image:
+    repository: docker.io/pgsty/silo
+    tag: RELEASE.2026-10-26T00-00-00Z
+  mcImage:
+    repository: docker.io/pgsty/mc
+    tag: RELEASE.2026-10-26T00-00-00Z
+
   persistence:
     size: 30Gi
