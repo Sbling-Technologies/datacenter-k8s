@@ -67,7 +67,6 @@ alertmanager:
   config:
     route:
       receiver: "null"
-      # receiver: inchident-telegram-receiver
       routes:
         - receiver: healthcheck-io-webhook
           group_interval: 1m
@@ -75,6 +74,12 @@ alertmanager:
           group_wait: 0s
           matchers:
             - alertname = "Watchdog"
+        # group_by a label no alert has puts every alert in one group, so each message can list the others still firing.
+        # severity "none" is only Watchdog/InfoInhibitor, which exist for plumbing, not for people.
+        - receiver: inchident-telegram-receiver
+          group_by: ["single_group"]
+          matchers:
+            - severity != "none"
     receivers:
       - name: "null"
       - name: inchident-telegram-receiver
@@ -88,40 +93,34 @@ alertmanager:
 
   templateFiles:
     telegram_template.tmpl: |-
-      {{- /* Telegram message to use: {{ template "telegram.message" . }} */ -}}
-      {{ define "__alerts_list" -}}
-      {{ range . }}
-      {{if ne (index .Labels "alertname") "" -}}
-      {{ if eq .Status "firing" }}🔴{{ else }}🟢{{ end }}
-          {{- if ne (index .Labels "severity") "" -}}
-              <u><b>{{ index .Labels "severity" }}</b></u> {{ end -}}
-      <b>{{ index .Labels "alertname" }}</b>
-      🕙 {{ .StartsAt.Format "15:04:05 🗓️ 2006-01-02" }}{{ end }}
+      {{- /* "<severity emoji> AlertName (namespace/target)", target = first identifying label present */ -}}
+      {{- define "__alert" -}}
+      {{- $s := .Labels.severity -}}
+      {{ if eq $s "critical" }}🔴{{ else if eq $s "warning" }}🟠{{ else if eq $s "info" }}🔵{{ else }}⚪{{ end }} <b>{{ .Labels.alertname }}</b>
+      {{- $t := "" -}}
+      {{- range (stringSlice "pod" "deployment" "statefulset" "daemonset" "job_name" "persistentvolumeclaim" "service" "node" "instance" "job") -}}
+      {{- if and (not $t) (index $.Labels .) }}{{ $t = index $.Labels . }}{{ end -}}
+      {{- end -}}
+      {{- $ns := .Labels.namespace -}}
+      {{- if or $ns $t }} ({{ $ns }}{{ if and $ns $t }}/{{ end }}{{ $t }}){{ end -}}
+      {{- end -}}
 
-      <b>Summary:</b> {{ if len .Annotations.summary }}{{ trimSpace .Annotations.summary }}{{ else }}N/A{{ end }}
-      <b>Description:</b> {{ if len .Annotations.description }}{{ trimSpace .Annotations.description }}{{ else }}N/A{{ end }}
-      <b>Impact:</b> {{ if len .Annotations.impact }}{{ trimSpace .Annotations.impact }}{{ else }}N/A{{ end }}
+      {{- /* shortcut: "new" = started less than group_interval (5m) ago; Alertmanager does not say which alerts are new. */ -}}
+      {{- define "telegram.message" -}}
+      {{- $new := false }}{{ $old := false -}}
+      {{- range .Alerts.Firing }}{{ if lt (since .StartsAt).Minutes 5.0 }}{{ $new = true }}{{ else }}{{ $old = true }}{{ end }}{{ end -}}
+      {{- if $new }}🚨 New alert firing:
+      {{ range .Alerts.Firing }}{{ if lt (since .StartsAt).Minutes 5.0 }}
+      {{ template "__alert" . }}{{ end }}{{ end }}
 
-      {{ if len .Labels -}}
-      <b>Labels:</b>
-      <pre>
-      {{- range .Labels.SortedPairs -}}
-      - {{ .Name }}: {{ .Value }}
       {{ end -}}
-      </pre>
-      {{ end }}
-      {{- if len .GeneratorURL }}<a href="{{ .GeneratorURL }}">source</a>{{ end }}
-      ---
-      {{- end -}} {{- /* range */ -}}
-      {{- end -}} {{- /* define __alerts_list */ -}}
+      {{- if .Alerts.Resolved }}✅ Alert resolved:
+      {{ range .Alerts.Resolved }}
+      {{ template "__alert" . }}{{ end }}
 
-      {{ define "telegram.message" }}
-      {{ if gt (len .Alerts.Firing) 0 }}
-      🚨 <b>ALARM</b> (#{{ .Alerts.Firing | len }})
-      {{- template "__alerts_list" .Alerts.Firing }}{{ end -}}
-      {{ if gt (len .Alerts.Resolved) 0 }}
-      ✅ <b>RESOLVED</b> (#{{ .Alerts.Resolved | len }})
-      {{- template "__alerts_list" .Alerts.Resolved }}{{ end }}
-
-      <a href="{{ .ExternalURL }}">📲 Grafana</a>
+      {{ end -}}
+      {{- if $old }}Other alerts still firing:
+      {{ range .Alerts.Firing }}{{ if not (lt (since .StartsAt).Minutes 5.0) }}
+      - {{ template "__alert" . }}{{ end }}{{ end }}
+      {{- else }}No other alerts firing.{{ end -}}
       {{- end -}}
