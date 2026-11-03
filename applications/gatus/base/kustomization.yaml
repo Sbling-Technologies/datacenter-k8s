@@ -11,6 +11,7 @@ resources:
   - deployment.yaml
   - ingress.yaml
   - namespace.yaml
+  - prometheus-rule.yaml
   - secrets.yaml
   - service-monitor.yaml
   - service.yaml

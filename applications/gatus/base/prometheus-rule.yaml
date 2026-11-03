@@ -1,0 +1,26 @@
+apiVersion: monitoring.coreos.com/v1
+kind: PrometheusRule
+metadata:
+  name: gatus-rules
+spec:
+  groups:
+    - name: Gatus Rules
+      rules:
+        - alert: GatusCheckFailing
+          annotations:
+            summary: "Gatus check '{{ $labels.name }}' is failing or unknown"
+            impact: The monitored service may be unavailable, or its health is not being observed.
+            description: The Gatus check '{{ $labels.key }}' last reported failure, or has not reported any result in the last 10 minutes.
+          # Aggregated to the check's own labels so `or` dedupes: one alert per check.
+          # Unknown = seen in the last hour but no new results in 10m (stuck check, or Gatus down/unscraped).
+          expr: |
+            (max by (namespace, key, group, name, type) (gatus_results_endpoint_success) == 0)
+            or
+            (
+              max by (namespace, key, group, name, type) (last_over_time(gatus_results_endpoint_success[1h]))
+              unless
+              (sum by (namespace, key, group, name, type) (increase(gatus_results_total[10m])) > 0)
+            )
+          for: 5m
+          labels:
+            severity: warning
