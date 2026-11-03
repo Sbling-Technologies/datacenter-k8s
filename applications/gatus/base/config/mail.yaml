@@ -3,8 +3,6 @@ x-mail-common: &mail-common
   conditions:
     - "[CONNECTED] == true"
     - "[CERTIFICATE_EXPIRATION] > 168h" # 7d
-  alerts:
-    - type: telegram
 
 endpoints:
   - name: Mailcow internal UI
@@ -13,8 +11,6 @@ endpoints:
     conditions:
       - "[STATUS] == 200"
       - "[CERTIFICATE_EXPIRATION] > 168h" # 7d
-    alerts:
-      - type: telegram
 
   - name: Mailcow internal IMAP
     <<: *mail-common
