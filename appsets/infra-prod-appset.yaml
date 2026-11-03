@@ -12,10 +12,6 @@ spec:
         revision: HEAD
         directories:
           - path: infrastructure/*
-            # TODO: Remove after refactor is over
-          - path: infrastructure/operators/*
-          - path: infrastructure/operators
-            exclude: true
 
   template:
     metadata:
