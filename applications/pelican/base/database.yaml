@@ -33,7 +33,7 @@ spec:
 #   ingress:
 #     - fromEndpoints:
 #         - matchLabels:
-#             io.kubernetes.pod.namespace: cnpg-operator
+#             io.kubernetes.pod.namespace: platform-cnpg-operator
 #   egress:
 #     - toEntities:
 #         - kube-apiserver
