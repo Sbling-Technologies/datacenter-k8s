@@ -50,7 +50,7 @@ spec:
             io.kubernetes.pod.namespace: platform-monitoring-prometheus
             app.kubernetes.io/name: prometheus
 ---
-apiVersion: kro.run/v1alpha1
+apiVersion: lbevi.com/v1alpha1
 kind: InternetEgressPolicy
 metadata:
   name: n8n-egress
