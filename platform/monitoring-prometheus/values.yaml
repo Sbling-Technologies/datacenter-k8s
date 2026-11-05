@@ -85,7 +85,7 @@ alertmanager:
       - name: inchident-telegram-receiver
         telegram_configs:
           - bot_token_file: /etc/alertmanager/secrets/inchident-bot-secret/token
-            chat_id: -1001844822513
+            chat_id: -1003985670892
             message: '{{ template "telegram.message" . }}'
       - name: healthcheck-io-webhook
         webhook_configs:
