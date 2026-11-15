@@ -3,6 +3,5 @@ kind: ConfigMap
 metadata:
   name: argocd-cmd-params-cm
 data:
-  hydrator.enabled: "true"
   server.insecure: "true"
   controller.diff.server.side: "true"
