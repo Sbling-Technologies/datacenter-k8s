@@ -5,7 +5,7 @@ experimental:
   plugins:
     traefikoidc:
       moduleName: github.com/lukaszraczylo/traefikoidc
-      version: v1.0.63
+      version: v1.0.64
 
 deployment:
   replicas: 2
