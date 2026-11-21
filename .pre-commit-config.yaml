@@ -35,7 +35,7 @@ repos:
       - id: actionlint
 
   - repo: https://github.com/renovatebot/pre-commit-hooks
-    rev: 2370605edf4fc5668a6f1a11acacaea09537d0f9 # frozen: 44.181.5
+    rev: f67b966f84893d07835b8c9ffde9a0db7c244950 # frozen: 44.257.8
     hooks:
       - id: renovate-config-validator
         args: [--strict]
@@ -51,7 +51,7 @@ repos:
       - id: shellcheck
 
   - repo: https://github.com/DavidAnson/markdownlint-cli2
-    rev: v0.24.0
+    rev: v0.24.2
     hooks:
       - id: markdownlint-cli2
 
