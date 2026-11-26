@@ -1,5 +1,5 @@
 # CRDs-catalog has no releases: pin a commit of its main branch, so a broken catalog update fails the Renovate PR bumping it instead of every PR.
-_crds_catalog_ref := "04af58d740718c4dc719441bf39fb284c784f4a8" # main
+_crds_catalog_ref := "b50f3fbc45169a14b6d2d3f767b32fd96ef4a3fa" # main
 _crds_schema_location := "https://raw.githubusercontent.com/datreeio/CRDs-catalog/" + _crds_catalog_ref + "/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json"
 _k8s_schema_location := "https://raw.githubusercontent.com/yannh/kubernetes-json-schema/master/{{.NormalizedKubernetesVersion}}/{{.ResourceKind}}.json"
 _local_schema_location := justfile_directory() + "/schemas/{{.Group}}/{{.ResourceKind}}_{{.ResourceAPIVersion}}.json"
